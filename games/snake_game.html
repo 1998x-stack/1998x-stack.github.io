@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>贪吃蛇游戏</title>
+    <style>
+        #game-board {
+            position: relative;
+            border: 1px solid black;
+        }
+        .dot {
+            position: absolute;
+            transition: all 0.1s;
+        }
+        .snake-dot {
+            background: green;
+        }
+        .food {
+            background: red;
+        }
+        #score {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+        }
+        #high-score {
+            position: absolute;
+            right: 10px;
+            top: 40px;
+        }
+        #timer {
+            position: absolute;
+            right: 10px;
+            top: 70px;
+        }
+        #restart-button {
+            position: absolute;
+            right: 10px;
+            top: 100px;
+        }
+        #level-select {
+            position: absolute;
+            right: 10px;
+            top: 130px;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-board"></div>
+    <div id="score"></div>
+    <div id="high-score"></div>
+    <div id="timer"></div>
+    <button id="restart-button">重新开始</button>
+    <select id="level-select">
+        <option value="300">小</option>
+        <option value="600">中</option>
+        <option value="900">大</option>
+    </select>
+
+    <script>
+        var dotSize = 20;
+        var direction = 'right';
+        var snake = [{ top: 0, left: 0 }];
+        var food = null;
+        var score = 0;
+        var highScore = localStorage.getItem('highScore') || 0;  // 从localStorage中获取最高分数
+        var startTime = Date.now();
+        var gameInterval = null;
+        var boardSize = 600;
+
+        function createDot(top, left, id, color) {
+            var dot = document.createElement('div');
+            dot.classList.add('dot');
+            dot.id = id;
+            dot.style.top = `${top}px`;
+            dot.style.left = `${left}px`;
+            dot.style.background = color;
+            dot.style.width = `${dotSize}px`;
+            dot.style.height = `${dotSize}px`;
+            return dot;
+        }
+
+        function updateGameBoard() {
+            var gameBoard = document.getElementById('game-board');
+            gameBoard.innerHTML = '';
+            gameBoard.style.height = `${boardSize}px`;
+            gameBoard.style.width = `${boardSize}px`;
+            snake.forEach(function(dot, index) {
+                gameBoard.appendChild(createDot(dot.top, dot.left, `snake-dot-${index}`, 'green'));
+            });
+            if(food === null) {
+                food = { top: Math.floor(Math.random() * boardSize/dotSize) * dotSize, left: Math.floor(Math.random() * boardSize/dotSize) * dotSize };
+            }
+            gameBoard.appendChild(createDot(food.top, food.left, 'food', 'red'));
+            document.getElementById('score').textContent = `Score: ${score}`;
+            document.getElementById('timer').textContent = `Time: ${Math.floor((Date.now() - startTime) / 1000)} seconds`;
+            document.getElementById('high-score').textContent = `High Score: ${highScore}`;
+        }
+
+        function updateSnake() {
+            var head = Object.assign({}, snake[0]);
+            switch(direction) {
+                case 'left':
+                    head.left -= dotSize;
+                    break;
+                case 'right':
+                    head.left += dotSize;
+                    break;
+                case 'up':
+                    head.top -= dotSize;
+                    break;
+                case 'down':
+                    head.top += dotSize;
+                    break;
+            }
+            snake.unshift(head);
+
+            if(food && food.top === head.top && food.left === head.left) {
+                food = null;
+                score += 10;
+            } else {
+                snake.pop();
+            }
+
+            if(head.left < 0 || head.left >= boardSize || head.top < 0 || head.top >= boardSize || snake.some(function(dot, index) {
+                return index !== 0 && dot.top === head.top && dot.left === head.left;
+            })) {
+                endGame();
+            }
+        }
+
+        function startGame() {
+            if(gameInterval !== null) {
+                endGame();
+            }
+            direction = 'right';
+            snake = [{ top: 0, left: 0 }];
+            food = null;
+            score = 0;
+            startTime = Date.now();
+            gameInterval = setInterval(function() {
+                updateSnake();
+                updateGameBoard();
+            }, 200);
+        }
+
+        function endGame() {
+            clearInterval(gameInterval);
+            gameInterval = null;
+            if(score > highScore) {
+                highScore = score;
+                localStorage.setItem('highScore', highScore);  // 更新最高分数
+            }
+            alert('Game over!');
+        }
+
+        window.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowUp':
+                    if(direction !== 'down') direction = 'up';
+                    break;
+                case 'ArrowDown':
+                    if(direction !== 'up') direction = 'down';
+                    break;
+                case 'ArrowLeft':
+                    if(direction !== 'right') direction = 'left';
+                    break;
+                case 'ArrowRight':
+                    if(direction !== 'left') direction = 'right';
+                    break;
+            }
+        });
+
+        document.getElementById('restart-button').addEventListener('click', startGame);
+        document.getElementById('level-select').addEventListener('change', function() {
+            boardSize = document.getElementById('level-select').value;  // 改变游戏界面尺寸
+            startGame();
+        });
+
+        startGame();
+    </script>
+</body>
+</html>
