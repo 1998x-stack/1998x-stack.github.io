@@ -26,9 +26,9 @@ def update_links():
 
     # 在<h1>The information</h1>后面插入链接
     for i, line in enumerate(lines):
-        if '<h1>The information</h1>' in line:
+        if '<h2>The information</h2><ul>' == line.strip():
             for href, txt in links:
-                lines.insert(i + 1, f'<p><a href="{href}">{txt}</a></p>\n')
+                lines.insert(i + 1, f'\t\t<li><a href="{href}">{txt}</a></li>\n')
             break
 
     # 将更新后的内容写回index.html文件
