@@ -35,9 +35,9 @@ class LinkScraper:
             lines = file.readlines()
             
         for i, line in enumerate(lines):
-            if f'<h2>{self.h2_name}</h2><ul>' == line.strip():
+            if self.h2_name == line.strip():
                 for href, txt in links:
-                    lines.insert(i + 1, f'\t\t<li><a href="{href}">{txt}</a></li>\n')
+                    lines.insert(i + 1, f'\t\t\t\t\t\t\t\t<li><a href="{href}">{txt}</a></li>\n')
                 break
             
         with open(self.index_file, 'w') as file:
@@ -55,13 +55,13 @@ scraper1 = LinkScraper(
    'http://theinformation.com', 
    '.title',
    'https://www.theinformation.com/',
-   'The information!!!')
+   '<!-- The information!!! -->')
 scraper1.run()
 
 scraper2 = LinkScraper(
    'https://news.ycombinator.com/', 
    '.titleline',
    '',
-   'Hacker News!!!')
+   '<!-- Hacker News!!! -->')
 scraper2.run()
 
