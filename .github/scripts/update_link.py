@@ -1,65 +1,66 @@
 import requests
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup  
 from fake_headers import Headers
 
+class LinkScraper:
 
-def update_links():
-    headers = Headers(headers=True).generate()
+    def __init__(self, url, selector, base_url, h2_name, index_file='index.html'):
+        self.url = url
+        self.selector = selector
+        self.base_url = base_url  
+        self.index_file = index_file
+        self.h2_name = h2_name
+
+    def scrape(self):
+        headers = Headers(headers=True).generate()
+        response = requests.get(self.url, headers=headers)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        links = []
+        for a in soup.select(self.selector):
+            if a.select_one('a[href]') is not None:
+                href = self.base_url + a.select_one('a[href]')['href']
+                txt = a.select_one('a[href]').text
+                links.append((href, txt))
+                
+        return links
     
-    # 发送请求获取网页内容
-    response = requests.get("http://theinformation.com", headers=headers)
-
-    # 使用BeautifulSoup解析网页内容
-    soup = BeautifulSoup(response.text, 'html.parser')
-
-    # 获取所有的链接和文本
-    links = []
-    for a in soup.select('.title'):
-        if a.select_one('a[href]') is not None:
-            href = 'https://www.theinformation.com/' + a.select_one('a[href]')['href']
-            txt = a.select_one('a[href]').text
-            links.append((href, txt))
-    try:
-        # 读取index.html文件
-        with open('index.html', 'r') as file:
+    def test_links(self):
+        links = self.scrape()
+        for href, txt in links:
+            print(f'Found link: {href} - {txt}')
+            
+    def update_index(self, links):
+        with open(self.index_file, 'r') as file:
             lines = file.readlines()
-
-        # 在<h1>The information</h1>后面插入链接
+            
         for i, line in enumerate(lines):
-            if '<h1>The information</h1>' in line:
+            if self.h2_name == line.strip():
                 for href, txt in links:
-                    lines.insert(i + 1, f'<p><a href="{href}">{txt}</a></p>\n')
+                    lines.insert(i + 1, f'\t\t\t\t\t\t\t\t<li><a href="{href}">{txt}</a></li>\n')
                 break
-
-        # 将更新后的内容写回index.html文件
-        with open('index.html', 'w') as file:
+            
+        with open(self.index_file, 'w') as file:
             file.writelines(lines)
-    except:
-        pass
+        
+    def run(self):
+        try:
+            links = self.scrape()
+            self.update_index(links)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+       
+# Usage:
+scraper1 = LinkScraper(
+   'http://theinformation.com', 
+   '.title',
+   'https://www.theinformation.com/',
+   '<!-- The information!!! -->')
+scraper1.run()
 
-
-    try:
-        # 读取index.html文件
-        with open('../../index.html', 'r') as file:
-            lines = file.readlines()
-
-        # 在<h1>The information</h1>后面插入链接
-        for i, line in enumerate(lines):
-            if '<h1>The information</h1>' in line:
-                for href, txt in links:
-                    lines.insert(i + 1, f'<p><a href="{href}">{txt}</a></p>\n')
-                break
-
-        # 将更新后的内容写回index.html文件
-        with open('../../index.html', 'w') as file:
-            file.writelines(lines)
-    except:
-        pass
-
-
-
-# 使用错误处理机制
-try:
-    update_links()
-except Exception as e:
-    print(f"An error occurred: {e}")
+scraper2 = LinkScraper(
+   'https://news.ycombinator.com/', 
+   '.titleline',
+   '',
+   '<!-- Hacker News!!! -->')
+scraper2.run()
