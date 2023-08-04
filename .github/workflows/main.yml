@@ -1,8 +1,8 @@
-name: Update The Information Link
+name: Update News Link
 
 on:
   schedule:
-    - cron: '0 */12 * * *'  # this means every 12 hours
+    - cron: '0 */1 * * *'  # this means every 1 hours
 
 jobs:
   update:
@@ -25,11 +25,12 @@ jobs:
     - name: Update Link
       run: |
         python .github/scripts/update_link.py
+        python update_link.py
 
     - name: Commit and push if it's updated
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --local user.email "2484230700@qq.com"
+        git config --local user.name "1998x-stack"
         git add .
         git diff --quiet && git diff --staged --quiet || git commit -m "Update the information link"
         git push
