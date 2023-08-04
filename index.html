@@ -1,542 +1,316 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>XM的个人网站</title>
+    <title>XM's Personal Website</title>
     <style>
+        /* Global Styles */
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #fafafa;
+            color: #333;
         }
-        header {
-            padding: 2em;
-            text-align: center;
+    
+        /* Navigation Styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
             background-color: #f5f5f5;
-            color: black;
+            padding: 1em 2em;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.16);
         }
+        nav a {
+            color: #333;
+            text-decoration: none;
+            margin-left: 2em;
+            font-weight: 600;
+            font-size: 1.1em;
+        }
+    
+        /* Header Styles */
+        header {
+            background-color: #f5f5f5;
+            text-align: center;
+            padding: 5em 0;
+            margin-bottom: 2em;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #333;
+            margin-bottom: 0.5em;
+        }
+        h2 {
+            font-size: 2em;
+            color: #777;
+        }
+        h5 {
+            font-size: 1.4em;
+            color: #999;
+        }
+    
+        /* Section Styles */
         section {
             margin: 2em;
+            line-height: 1.6;
+            padding: 1em;
+            background-color: #fff;
+            box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
         }
-    </style>
+        section h2 {
+            margin-bottom: 1em;
+            font-size: 1.8em;
+            color: #444;
+        }
+        section p {
+            font-size: 1.1em;
+            color: #666;
+        }
+    
+        /* Link Styles */
+        a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-title {
+            color: #007bff;
+        }
+    
+        /* List Styles */
+        ul {
+            list-style-type: disc;
+            padding-left: 1em;
+        }
+        li {
+            margin-bottom: 0.5em;
+            color: #666;
+        }
+    </style>    
 </head>
 <body>
+    <nav>
+        <a href="#about-me">About Me</a>
+        <a href="#my-works">My Works</a>
+        <a href="#Study">Study</a>
+        <a href="#English-News">English News</a>
+        <a href="#resources">Resources</a>
+        <a href="#courses">Courses</a>
+        <a href="#games">Games</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
     <header>
-        <h1>欢迎来到我的个人网站！</h1>
-        <h3>我是XM</h3>
+        <h1>Welcome to my personal website!</h1>
+        <h2>I'm XM</h2>
     </header>
 
-    <section>
-        <h2>关于我</h2>
-        <p>无</p>
+    <section id="about-me">
+        <h2>About Me</h2>
+        <p>Details to be filled.</p>
     </section>
 
-    <section>
-        <h2>我的作品</h2>
-        <p>默默无名</p>
-    </section>
-
-    <section>
-        <h1>音频</h1>
-        <h2>轻音乐</h2>
-        <h3>贝多芬《第九交响曲》第四乐章</h3>
-        <audio src="mp3/贝多芬《第九交响曲》第四乐章.mp3" controls>贝多芬《第九交响曲》第四乐章</audio>
-        <h3>Rauf Faik</h3>
-        <audio src="mp3/Rauf  Faik.mp3" controls>Rauf  Faik</audio>
-
-        <h2>冥想</h2>
-        <h3>【练习一】正念呼吸：进入当下</h3>
-        <audio src="mp3/【练习一】正念呼吸：进入当下.mp3" controls>【练习一】正念呼吸：进入当下</audio>
-        <h3>【练习二】身体扫描：聆听身体</h3>
-        <audio src="mp3/【练习二】身体扫描：聆听身体.mp3" controls>【练习二】身体扫描：聆听身体</audio>
-        <h3>【练习三】观念头：念头并非事实</h3>
-        <audio src="mp3/【练习三】观念头：念头并非事实.mp3" controls>【练习三】观念头：念头并非事实</audio>
-        <h3>【练习四】观情绪：与情绪共舞</h3>
-        <audio src="mp3/【练习四】观情绪：与情绪共舞.mp3" controls>【练习四】观情绪：与情绪共舞</audio>
-        <h3>【练习五】三步呼吸空间：忙碌中的回归</h3>
-        <audio src="mp3/【练习五】三步呼吸空间：忙碌中的回归.mp3" controls>【练习五】三步呼吸空间：忙碌中的回归</audio>
-        <h3>【练习六】感恩练习：睡前放松</h3>
-        <audio src="mp3/【练习六】感恩练习：睡前放松.mp3" controls>【练习六】感恩练习：睡前放松</audio>
-    </section>
-
-    <section>
-        <p>book</p>
-        <a href="a.html">book</a>
-        <p>blog</p>
-        <a href="blog.html">blog</a>
-        <p>行业研究</p>
-        <a href="行业研究.html">行业研究</a>
-
-        <img src="transformer.png" alt="transformer">
-
-        <h1>STUDY</h1>
-        <p>Awesome-Deep-Learning-Papers-for-Search-Recommendation-Advertising</p>
-        <a href="papers/README.html">Awesome-Deep-Learning-Papers-for-Search-Recommendation-Advertising</a>
-        
-        <p>Awesome RL</p>
-        <a href="papers/awsome_rl.html">awsome_rl</a>
-
-        <p>openai</p>
-        <a href="openai/openai.html">openai</a>
-
-        <p>LIMU</p>
-        <a href="papers/LIMU.html">LIMU</a>
-
-        <p>awesome-deep-learning-papers</p>
-        <a href="papers/deep_learning_papers.html">awesome-deep-learning-papers</a>
-
-        <p>awesome-deeplearning-resources</p>
-        <a href="awsome_papers/papers.html">wesome-deeplearning-resources</a>
-
-        <p>awesome-deeplearning-resources</p>
-        <a href="awsome_papers/papers.html">wesome-deeplearning-resources</a>
-
-
-    </section>
-
-
-
-
-    <section>
-        <h1>课程</h1>
-        <p>苏杰的产品创新课</p>
-        <a href="study_html/95-苏杰的产品创新课.html">苏杰的产品创新课</a>
-        <p>设计模式之美</p>
-        <a href="study_html/98-设计模式之美.html">设计模式之美</a>
-        <p>深度学习推荐系统实战</p>
-        <a href="study_html/157-深度学习推荐系统实战.html">深度学习推荐系统实战</a>
-        <p>成为AI产品经理</p>
-        <a href="study_html/171-成为AI产品经理.html">成为AI产品经理</a>
-        <p>科技参考</p>
-        <a href="study_html/293丨《卓克科技参考2》（卓克）.html">科技参考</a>
-        <p>大厂广告产品心法</p>
-        <a href="study_html/236-大厂广告产品心法.html">大厂广告产品心法</a>
-        <p>《熊逸讲透资治通鉴2》</p>
-        <a href="study_html/262丨《熊逸讲透资治通鉴2》（熊逸）.html">《熊逸讲透资治通鉴2》</a>
-        <p>《年度得到沈祖芸全球教育报告》</p>
-        <a href="study_html/289丨《年度得到沈祖芸全球教育报告》（沈祖芸）.html">《年度得到沈祖芸全球教育报告》</a>
-        <p>《年度得到孙亚飞材料科学前沿报告》</p>
-        <a href="study_html/290丨《年度得到孙亚飞材料科学前沿报告》（孙亚飞）.html">《年度得到孙亚飞材料科学前沿报告》</a>
-        <p>《飞书组织数字化工具9讲》</p>
-        <a href="study_html/291丨《飞书组织数字化工具9讲》（谢欣）.html">《飞书组织数字化工具9讲》</a>
-        <p>《王志纲年度报告2021》</p>
-        <a href="study_html/292丨《王志纲年度报告2021》（王志纲）.html">《王志纲年度报告2021》</a>
-
-        
-        <!-- <p>深度学习推荐系统实战</p>
-        <a href="study_html/157-深度学习推荐系统实战.html">深度学习推荐系统实战</a>
-        <p>成为AI产品经理</p>
-        <a href="study_html/171-成为AI产品经理.html">成为AI产品经理</a>
-        <p>算法实战高手课</p>
-        <a href="study_html/226-算法实战高手课.html">算法实战高手课</a> -->
-    </section>
-
-
-    <section>
-        <h2>缓存区-pdf</h2>
-        <p>llama</p>
-        <a href="llama.pdf">s1</a>
-        <a href="llama2.pdf">s1</a>
-
-        <p>PDFs</p>
-
-
-        
-        
-        <h1>English PDFS</h1>
-        <a href="pdf/s1.pdf">s1</a>
-        <a href="pdf/s2.pdf">s2</a>
-        <a href="pdf/s3.pdf">s3</a>
-        <a href="pdf/s4.pdf">s4</a>
-        <a href="pdf/s5.pdf">s5</a>
-        <a href="pdf/s6.pdf">s6</a>
-        <a href="pdf/s7.pdf">s7</a>
-        <a href="pdf/s8.pdf">s8</a>
-        <a href="pdf/s9.pdf">s9</a>
-        <a href="pdf/s10.pdf">s10</a>
-        <a href="pdf/s11.pdf">s11</a>
-        <a href="pdf/s12.pdf">s12</a>
-        <a href="pdf/s13.pdf">s13</a>
-        <a href="pdf/t1.pdf">t1</a>
-        <a href="pdf/t2.pdf">t2</a>
-        <a href="pdf/t3.pdf">t3</a>
-        <a href="pdf/t4.pdf">t4</a>
-        <a href="pdf/t5.pdf">t5</a>
-        <a href="pdf/t6.pdf">t6</a>
-        <a href="pdf/t7.pdf">t7</a>
-        <a href="pdf/t8.pdf">t8</a>
-
-
-        <h1>Finance PDFS</h1>
-        <a href="pdf/全球半导体产业框架与投资机遇研究报告.pdf">全球半导体产业框架与投资机遇研究报告</a>
-        <a href="pdf/消费趋势报告.pdf">消费趋势报告</a>
-
-
-        <h1>Learn PDFS</h1>
-        <a href="pdf/定位.pdf">定位</a>
-        <a href="pdf/德国：一个国家的记忆.pdf">德国：一个国家的记忆</a>
-        <a href="pdf/深度学习推荐系统.pdf">深度学习推荐系统</a>
-        <a href="pdf/ProbabilisticNumerics.pdf">ProbabilisticNumerics</a>
-        <a href="pdf/最优化.pdf">最优化</a>
-        <a href="pdf/并行计算导论.pdf">并行计算导论</a>
-        <a href="pdf/算法心得.pdf">算法心得</a>
-        <a href="pdf/Numerical Linear Algebra  ROLF RANNACHER.pdf">Numerical Linear Algebra  ROLF RANNACHER</a>
-        
-
-    <section>
-        <img src="transformer.png" alt="transformer">
-
-        <h1>视频号拍摄</h1>
-        <p>视频号</p>
-        <a href="video_wenan/视频号拍摄脚本.pdf">视频号拍摄脚本</a>
-        <p>访谈</p>
-        <a href="video_wenan/兵哥访谈.pdf">兵哥访谈</a>
-        <a href="video_wenan/然哥访谈.pdf">然哥访谈</a>
-        <a href="video_wenan/采访稿.pdf">采访稿</a>
-        
-
-    </section>
-
-    <section>
-        <h1>The information</h1>
-<p><a href="https://www.theinformation.com//articles/sequoia-capitals-u-s-partners-may-reap-china-gains-even-after-split">
-Sequoia Capital’s U.S. Partners May Reap China Gains Even After Split
-</a></p>
-<p><a href="https://www.theinformation.com//articles/how-amazon-misread-the-nfl-ad-market">
-How Amazon Misread the NFL Ad Market
-</a></p>
-<p><a href="https://www.theinformation.com//articles/buzzfeed-considers-sale-of-complex-networks">
-BuzzFeed Considers Sale of Complex Networks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/wall-street-firm-citadel-securities-courts-ai-startups-for-trading-edge">
-Wall Street Firm Citadel Securities Courts AI Startups for Trading Edge
-</a></p>
-<p><a href="https://www.theinformation.com//articles/states-are-taking-baby-steps-toward-protecting-kids-online">
-States Are Taking Baby Steps Toward Protecting Kids Online
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rise-of-new-open-source-ai-model-sparks-startup-acquisition-talks">
-Rise of New Open-Source AI Model Sparks Startup Acquisition Talks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/inside-the-culture-clash-at-jpmorgan-and-wepay">
-Inside the Culture Clash at JPMorgan and WePay
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-overlapping-galaxies-of-delian-asparouhov">
-The Overlapping Galaxies of Delian Asparouhov
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rave-on-the-nile-the-secretive-jetsetters-rethinking-the-future-of-travel">
-Rave on the Nile: The Secretive Jetsetters Rethinking the Future of Travel
-</a></p>
-<p><a href="https://www.theinformation.com//articles/u-s-federal-agencies-cut-tiktok-ad-spending">
-U.S. Federal Agencies Cut TikTok Ad Spending
-</a></p>
-<p><a href="https://www.theinformation.com//articles/andreessen-horowitz-merges-fintech-and-consumer-teams-after-some-bets-fizzle">
-Andreessen Horowitz Merges Fintech and Consumer Teams After Some Bets Fizzle
-</a></p>
-<p><a href="https://www.theinformation.com//articles/oracles-answer-to-the-microsoft-openai-alliance-cozying-up-to-cohere">
-Oracle’s Answer to the Microsoft-OpenAI Alliance: Cozying Up to Cohere
-</a></p>
-<p><a href="https://www.theinformation.com//articles/sumo-logic-cuts-staff-after-francisco-partners-takeover">
-Sumo Logic Cuts Staff After Francisco Partners Takeover
-</a></p>
-<p><a href="https://www.theinformation.com//articles/before-sequoia-split-a-100-billion-american-cash-spigot-to-chinese-vcs-ran-dry">
-U.S. Investors Are Bailing Out of China Funds
-</a></p>
-<p><a href="https://www.theinformation.com//articles/after-elon-musk-bashes-sacramento-data-centers-tesla-gets-one">
-After Elon Musk Bashes Sacramento Data Centers, Tesla Gets One
-</a></p>
-<p><a href="https://www.theinformation.com//articles/tcv-raised-50-to-75-less-than-planned-for-new-venture-fund">
-TCV Raised 50% to 75% Less Than Planned For New Venture Fund
-</a></p>
-<p><a href="https://www.theinformation.com//articles/a-reckoning-arrives-for-creator-economy-startups">
-A Reckoning Arrives for Creator Economy Startups
-</a></p>
-<p><a href="https://www.theinformation.com//articles/how-silicon-valley-can-stretch-its-dollars">
-How Silicon Valley Can Stretch Its Dollars
-</a></p>
-<p><a href="https://www.theinformation.com//articles/why-shopify-ditched-its-amazon-like-delivery-dreams">
-Why Shopify Ditched Its Amazon-Like Delivery Dreams
-</a></p>
-<p><a href="https://www.theinformation.com//articles/aws-cuts-ties-with-fast-rising-cloud-sales-partner">
-AWS Cuts Ties With Fast-Rising Cloud-Sales Partner
-</a></p>
-<p><a href="https://www.theinformation.com//briefings/salesforce-ai-cloud-gpt-software-launch-anthropic-cohere-openai">Salesforce Launches AI Software, Starting at $360,000 Per Year</a></p>
-<p><a href="https://www.theinformation.com//briefings/tcv-misses-5-5-billion-fundraising-goal-filings-show">TCV Misses $5.5 Billion Fundraising Goal, Filings Show</a></p>
-<p><a href="https://www.theinformation.com//briefings/ex-samsung-employee-accused-of-stealing-chip-making-secrets-for-china">Ex-Samsung Employee Accused of Stealing Chip-Making Secrets for China</a></p>
-<p><a href="https://www.theinformation.com//briefings/etoro-to-delist-four-tokens-for-u-s-customers-after-sec-sues-exchanges">EToro to Delist Four Tokens for U.S. Customers After SEC Sues Exchanges</a></p>
-<p><a href="https://www.theinformation.com//briefings/reddit-ceo-tells-employees-to-ignore-blowback">Reddit CEO Tells Employees To Ignore Blowback</a></p>
-<p><a href="https://www.theinformation.com//briefings/microsoft-ai-products-openai-will-add-10-billion-revenue">Microsoft CFO Says OpenAI and Other AI Products Will Add $10 Billion in Revenue</a></p>
-<p><a href="https://www.theinformation.com//briefings/shopifys-deliverr-u-turn-started-six-months-after-acquisition">Shopify’s Deliverr U-Turn Started Six Months After Acquisition</a></p>
-<p><a href="https://www.theinformation.com//briefings/aws-outage-appeared-to-impact-delta-mcdonalds-and-others">AWS Outage Appeared to Affect Delta, McDonald’s and Others</a></p>
-<p><a href="https://www.theinformation.com//briefings/ai-startup-mistral-raises-over-105-million-in-seed-round">AI Startup Mistral Raises Over €105 Million in Seed Round</a></p>
-<p><a href="https://www.theinformation.com//briefings/clouderas-ceo-says-he-will-leave">Cloudera’s CEO Says He Will Leave</a></p>
-<p><a href="https://www.theinformation.com//articles/the-electric-the-u-s-battery-program-spreads-the-wealth-will-that-save-it">The Electric: The U.S. Battery Program Spreads the Wealth. Will That Save It?</a></p>
-<p><a href="https://www.theinformation.com//articles/this-is-how-sam-altman-works-the-press-and-congress-i-know-from-experience">This Is How Sam Altman Works the Press and Congress. I Know From Experience.</a></p>
-<p><a href="https://www.theinformation.com//articles/breaking-down-the-secs-double-whammy">Breaking Down the SEC’s Double Whammy</a></p>
-<p><a href="https://www.theinformation.com//articles/stability-ai-drama-spotlights-vc-accountability">Stability AI Drama Spotlights VC Accountability</a></p>
-<p><a href="https://www.theinformation.com//articles/pro-weekly-more-generative-ai-companies-for-our-database">Pro Weekly: More Generative AI Companies for Our Database</a></p>
-<p><a href="https://www.theinformation.com//articles/why-we-must-love-a-moonshot">Why We Must Love A Moonshot</a></p>
-<p><a href="https://www.theinformation.com//articles/why-two-creator-founders-are-switching-to-ai">Why Two Creator Founders Are Switching to AI</a></p>
-<p><a href="https://www.theinformation.com//articles/new-revelations-about-shopifys-deliverr-sale-spotlights-ceo">New Revelations About Shopify’s Deliverr Sale Spotlights CEO</a></p>
-<p><a href="https://www.theinformation.com//articles/what-doom-loop-a-six-day-tech-party-tries-to-shift-the-vibes-in-san-francisco">
-What Doom Loop? A Six-Day Tech Party Tries to Shift the Vibes in San Francisco
-</a></p>
-<p><a href="https://www.theinformation.com//articles/five-startups-vying-to-be-the-openai-of-china">
-Five Startups Vying to Be the OpenAI of China
-</a></p>
-<p><a href="https://www.theinformation.com//articles/logistics-startup-next-trucking-tries-to-sell-itself">
-Logistics Startup Next Trucking Tries to Sell Itself
-</a></p>
-<p><a href="https://www.theinformation.com//articles/whats-clear-and-blurry-about-apples-vision-pro-headset">
-What’s Clear and Blurry About Apple’s Vision Pro Headset
-</a></p>
-<p><a href="https://www.theinformation.com//articles/a-long-strange-trip-for-the-uber-for-nurses">
-A Long, Strange Trip for the ‘Uber for Nurses’
-</a></p>
-<p><a href="https://www.theinformation.com//articles/mark-zuckerberg-is-the-hero-ai-needs">
-Mark Zuckerberg Is the Hero AI Needs
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-best-and-worst-case-scenarios-for-coinbase">
-The Best- and Worst-Case Scenarios for Coinbase
-</a></p>
-<p><a href="https://www.theinformation.com//articles/sequoia-capitals-u-s-partners-may-reap-china-gains-even-after-split">
-Sequoia Capital’s U.S. Partners May Reap China Gains Even After Split
-</a></p>
-<p><a href="https://www.theinformation.com//articles/how-amazon-misread-the-nfl-ad-market">
-How Amazon Misread the NFL Ad Market
-</a></p>
-<p><a href="https://www.theinformation.com//articles/buzzfeed-considers-sale-of-complex-networks">
-BuzzFeed Considers Sale of Complex Networks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/wall-street-firm-citadel-securities-courts-ai-startups-for-trading-edge">
-Wall Street Firm Citadel Securities Courts AI Startups for Trading Edge
-</a></p>
-<p><a href="https://www.theinformation.com//articles/states-are-taking-baby-steps-toward-protecting-kids-online">
-States Are Taking Baby Steps Toward Protecting Kids Online
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rise-of-new-open-source-ai-model-sparks-startup-acquisition-talks">
-Rise of New Open-Source AI Model Sparks Startup Acquisition Talks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/inside-the-culture-clash-at-jpmorgan-and-wepay">
-Inside the Culture Clash at JPMorgan and WePay
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-overlapping-galaxies-of-delian-asparouhov">
-The Overlapping Galaxies of Delian Asparouhov
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rave-on-the-nile-the-secretive-jetsetters-rethinking-the-future-of-travel">
-Rave on the Nile: The Secretive Jetsetters Rethinking the Future of Travel
-</a></p>
-<p><a href="https://www.theinformation.com//articles/u-s-federal-agencies-cut-tiktok-ad-spending">
-U.S. Federal Agencies Cut TikTok Ad Spending
-</a></p>
-<p><a href="https://www.theinformation.com//articles/andreessen-horowitz-merges-fintech-and-consumer-teams-after-some-bets-fizzle">
-Andreessen Horowitz Merges Fintech and Consumer Teams After Some Bets Fizzle
-</a></p>
-<p><a href="https://www.theinformation.com//articles/oracles-answer-to-the-microsoft-openai-alliance-cozying-up-to-cohere">
-Oracle’s Answer to the Microsoft-OpenAI Alliance: Cozying Up to Cohere
-</a></p>
-<p><a href="https://www.theinformation.com//articles/sumo-logic-cuts-staff-after-francisco-partners-takeover">
-Sumo Logic Cuts Staff After Francisco Partners Takeover
-</a></p>
-<p><a href="https://www.theinformation.com//briefings/openai-rival-cohere-raises-270-million-including-from-oracle-and-nvidia">OpenAI Rival Cohere Raises $270 Million, Including From Oracle and Nvidia</a></p>
-<p><a href="https://www.theinformation.com//briefings/mark-zuckerberg-outlines-metas-ai-plans-at-company-all-hands">Mark Zuckerberg Jabs at Apple’s Mixed Reality Headset</a></p>
-<p><a href="https://www.theinformation.com//briefings/former-amazon-media-boss-jeff-blackburn-joins-rokus-board">Former Amazon Media Boss Jeff Blackburn Joins Roku’s Board</a></p>
-<p><a href="https://www.theinformation.com//briefings/general-motors-to-join-the-tesla-supercharger-network">General Motors to Join the Tesla Supercharger Network</a></p>
-<p><a href="https://www.theinformation.com//briefings/google-says-office-attendance-will-count-in-performance-reviews">Google Says Office Attendance Will Count in Performance Reviews</a></p>
-<p><a href="https://www.theinformation.com//briefings/twilio-sells-india-business-valuefirst-issues-additional-proxy-materials">Twilio Sells India Business ValueFirst, Issues Additional Proxy Materials</a></p>
-<p><a href="https://www.theinformation.com//briefings/developers-of-fast-rising-falcon-ai-become-a-hot-commodity">Developers of Fast-Rising ‘Falcon’ AI Become a Hot Commodity</a></p>
-<p><a href="https://www.theinformation.com//briefings/binance-us-to-lose-banking-access-halts-dollar-deposits">Binance.US to Lose Banking Access, Halts Dollar Deposits</a></p>
-<p><a href="https://www.theinformation.com//briefings/robinhood-delists-cardano-solana-and-polygon-following-sec-suits">Robinhood Delists Cardano, Solana and Polygon Following SEC Suits</a></p>
-<p><a href="https://www.theinformation.com//briefings/reddit-ceo-cites-profit-push-in-response-to-backlash">Reddit CEO Cites Profit Push in Response to Backlash</a></p>
-<p><a href="https://www.theinformation.com//briefings/andreessen-horowitz-restructures-investment-teams-in-ai-push">Andreessen Horowitz Restructures Investment Teams in AI Push</a></p>
-<p><a href="https://www.theinformation.com//briefings/oracle-preps-cloud-ai-pact-with-openai-rival">Oracle Preps AI Pact with OpenAI Rival</a></p>
-<p><a href="https://www.theinformation.com//briefings/crypto-tax-software-startup-cuts-nearly-40-of-staff">Crypto Tax Software Startup Cuts Nearly 40% of Staff </a></p>
-<p><a href="https://www.theinformation.com//briefings/andreessen-horowitz-to-open-u-k-office-with-crypto-focus">Andreessen Horowitz to Open U.K. Office With Crypto Focus</a></p>
-<p><a href="https://www.theinformation.com//briefings/twitter-isnt-paying-its-google-cloud-bill">Twitter Isn’t Paying its Google Cloud Bill</a></p>
-<p><a href="https://www.theinformation.com//briefings/jpmorgan-settles-lawsuit-with-epstein-victims">JPMorgan Settles Lawsuit With Epstein Victims </a></p>
-<p><a href="https://www.theinformation.com//articles/the-electric-the-u-s-battery-program-spreads-the-wealth-will-that-save-it">The Electric: The U.S. Battery Program Spreads the Wealth. Will That Save It?</a></p>
-<p><a href="https://www.theinformation.com//articles/this-is-how-sam-altman-works-the-press-and-congress-i-know-from-experience">This Is How Sam Altman Works the Press and Congress. I Know From Experience.</a></p>
-<p><a href="https://www.theinformation.com//articles/breaking-down-the-secs-double-whammy">Breaking Down the SEC’s Double Whammy</a></p>
-<p><a href="https://www.theinformation.com//articles/stability-ai-drama-spotlights-vc-accountability">Stability AI Drama Spotlights VC Accountability</a></p>
-<p><a href="https://www.theinformation.com//articles/twitch-capitulates-reddit-may-not">Twitch Capitulates, Reddit May Not</a></p>
-<p><a href="https://www.theinformation.com//articles/why-the-return-to-the-office-is-inevitable">Why the Return to the Office Is Inevitable</a></p>
-<p><a href="https://www.theinformation.com//articles/pro-weekly-more-generative-ai-companies-for-our-database">Pro Weekly: More Generative AI Companies for Our Database</a></p>
-<p><a href="https://www.theinformation.com//articles/why-we-must-love-a-moonshot">Why We Must Love A Moonshot</a></p>
-<p><a href="https://www.theinformation.com//articles/adam-dangelos-endless-quest-to-answer-everything">
-Adam D’Angelo’s Endless Quest to Answer Everything
-</a></p>
-<p><a href="https://www.theinformation.com//articles/what-doom-loop-a-six-day-tech-party-tries-to-shift-the-vibes-in-san-francisco">
-What Doom Loop? A Six-Day Tech Party Tries to Shift the Vibes in San Francisco
-</a></p>
-<p><a href="https://www.theinformation.com//articles/five-startups-vying-to-be-the-openai-of-china">
-Five Startups Vying to Be the OpenAI of China
-</a></p>
-<p><a href="https://www.theinformation.com//articles/logistics-startup-next-trucking-tries-to-sell-itself">
-Logistics Startup Next Trucking Tries to Sell Itself
-</a></p>
-<p><a href="https://www.theinformation.com//articles/whats-clear-and-blurry-about-apples-vision-pro-headset">
-What’s Clear and Blurry About Apple’s Vision Pro Headset
-</a></p>
-<p><a href="https://www.theinformation.com//articles/a-long-strange-trip-for-the-uber-for-nurses">
-A Long, Strange Trip for the ‘Uber for Nurses’
-</a></p>
-<p><a href="https://www.theinformation.com//articles/mark-zuckerberg-is-the-hero-ai-needs">
-Mark Zuckerberg Is the Hero AI Needs
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-best-and-worst-case-scenarios-for-coinbase">
-The Best- and Worst-Case Scenarios for Coinbase
-</a></p>
-<p><a href="https://www.theinformation.com//articles/sequoia-capitals-u-s-partners-may-reap-china-gains-even-after-split">
-Sequoia Capital’s U.S. Partners May Reap China Gains Even After Split
-</a></p>
-<p><a href="https://www.theinformation.com//articles/how-amazon-misread-the-nfl-ad-market">
-How Amazon Misread the NFL Ad Market
-</a></p>
-<p><a href="https://www.theinformation.com//articles/buzzfeed-considers-sale-of-complex-networks">
-BuzzFeed Considers Sale of Complex Networks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/wall-street-firm-citadel-securities-courts-ai-startups-for-trading-edge">
-Wall Street Firm Citadel Securities Courts AI Startups for Trading Edge
-</a></p>
-<p><a href="https://www.theinformation.com//articles/states-are-taking-baby-steps-toward-protecting-kids-online">
-States Are Taking Baby Steps Toward Protecting Kids Online
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rise-of-new-open-source-ai-model-sparks-startup-acquisition-talks">
-Rise of New Open-Source AI Model Sparks Startup Acquisition Talks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/inside-the-culture-clash-at-jpmorgan-and-wepay">
-Inside the Culture Clash at JPMorgan and WePay
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-overlapping-galaxies-of-delian-asparouhov">
-The Overlapping Galaxies of Delian Asparouhov
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rave-on-the-nile-the-secretive-jetsetters-rethinking-the-future-of-travel">
-Rave on the Nile: The Secretive Jetsetters Rethinking the Future of Travel
-</a></p>
-<p><a href="https://www.theinformation.com//articles/u-s-federal-agencies-cut-tiktok-ad-spending">
-U.S. Federal Agencies Cut TikTok Ad Spending
-</a></p>
-<p><a href="https://www.theinformation.com//articles/andreessen-horowitz-merges-fintech-and-consumer-teams-after-some-bets-fizzle">
-Andreessen Horowitz Merges Fintech and Consumer Teams After Some Bets Fizzle
-</a></p>
-<p><a href="https://www.theinformation.com//articles/oracles-answer-to-the-microsoft-openai-alliance-cozying-up-to-cohere">
-Oracle’s Answer to the Microsoft-OpenAI Alliance: Cozying Up to Cohere
-</a></p>
-<p><a href="https://www.theinformation.com//briefings/openai-rival-cohere-raises-270-million-including-from-oracle-and-nvidia">OpenAI Rival Cohere Raises $270 Million, Including From Oracle and Nvidia</a></p>
-<p><a href="https://www.theinformation.com//briefings/mark-zuckerberg-outlines-metas-ai-plans-at-company-all-hands">Mark Zuckerberg Jabs at Apple’s Mixed Reality Headset</a></p>
-<p><a href="https://www.theinformation.com//briefings/former-amazon-media-boss-jeff-blackburn-joins-rokus-board">Former Amazon Media Boss Jeff Blackburn Joins Roku’s Board</a></p>
-<p><a href="https://www.theinformation.com//briefings/general-motors-to-join-the-tesla-supercharger-network">General Motors to Join the Tesla Supercharger Network</a></p>
-<p><a href="https://www.theinformation.com//briefings/google-says-office-attendance-will-count-in-performance-reviews">Google Says Office Attendance Will Count in Performance Reviews</a></p>
-<p><a href="https://www.theinformation.com//briefings/twilio-sells-india-business-valuefirst-issues-additional-proxy-materials">Twilio Sells India Business ValueFirst, Issues Additional Proxy Materials</a></p>
-<p><a href="https://www.theinformation.com//briefings/developers-of-fast-rising-falcon-ai-become-a-hot-commodity">Developers of Fast-Rising ‘Falcon’ AI Become a Hot Commodity</a></p>
-<p><a href="https://www.theinformation.com//briefings/binance-us-to-lose-banking-access-halts-dollar-deposits">Binance.US to Lose Banking Access, Halts Dollar Deposits</a></p>
-<p><a href="https://www.theinformation.com//briefings/robinhood-delists-cardano-solana-and-polygon-following-sec-suits">Robinhood Delists Cardano, Solana and Polygon Following SEC Suits</a></p>
-<p><a href="https://www.theinformation.com//briefings/reddit-ceo-cites-profit-push-in-response-to-backlash">Reddit CEO Cites Profit Push in Response to Backlash</a></p>
-<p><a href="https://www.theinformation.com//briefings/andreessen-horowitz-restructures-investment-teams-in-ai-push">Andreessen Horowitz Restructures Investment Teams in AI Push</a></p>
-<p><a href="https://www.theinformation.com//briefings/oracle-preps-cloud-ai-pact-with-openai-rival">Oracle Preps AI Pact with OpenAI Rival</a></p>
-<p><a href="https://www.theinformation.com//briefings/crypto-tax-software-startup-cuts-nearly-40-of-staff">Crypto Tax Software Startup Cuts Nearly 40% of Staff </a></p>
-<p><a href="https://www.theinformation.com//articles/the-electric-the-u-s-battery-program-spreads-the-wealth-will-that-save-it">The Electric: The U.S. Battery Program Spreads the Wealth. Will That Save It?</a></p>
-<p><a href="https://www.theinformation.com//articles/this-is-how-sam-altman-works-the-press-and-congress-i-know-from-experience">This Is How Sam Altman Works the Press and Congress. I Know From Experience.</a></p>
-<p><a href="https://www.theinformation.com//articles/breaking-down-the-secs-double-whammy">Breaking Down the SEC’s Double Whammy</a></p>
-<p><a href="https://www.theinformation.com//articles/stability-ai-drama-spotlights-vc-accountability">Stability AI Drama Spotlights VC Accountability</a></p>
-<p><a href="https://www.theinformation.com//articles/twitch-capitulates-reddit-may-not">Twitch Capitulates, Reddit May Not</a></p>
-<p><a href="https://www.theinformation.com//articles/why-the-return-to-the-office-is-inevitable">Why the Return to the Office Is Inevitable</a></p>
-<p><a href="https://www.theinformation.com//articles/pro-weekly-more-generative-ai-companies-for-our-database">Pro Weekly: More Generative AI Companies for Our Database</a></p>
-<p><a href="https://www.theinformation.com//articles/why-we-must-love-a-moonshot">Why We Must Love A Moonshot</a></p>
-<p><a href="https://www.theinformation.com//articles/softbanks-onetime-pizza-robot-darling-shuts-down">
-SoftBank’s Onetime Pizza-Robot Darling Shuts Down
-</a></p>
-<p><a href="https://www.theinformation.com//articles/adam-dangelos-endless-quest-to-answer-everything">
-Adam D’Angelo’s Endless Quest to Answer Everything
-</a></p>
-<p><a href="https://www.theinformation.com//articles/what-doom-loop-a-six-day-tech-party-tries-to-shift-the-vibes-in-san-francisco">
-What Doom Loop? A Six-Day Tech Party Tries to Shift the Vibes in San Francisco
-</a></p>
-<p><a href="https://www.theinformation.com//articles/five-startups-vying-to-be-the-openai-of-china">
-Five Startups Vying to Be the OpenAI of China
-</a></p>
-<p><a href="https://www.theinformation.com//articles/logistics-startup-next-trucking-tries-to-sell-itself">
-Logistics Startup Next Trucking Tries to Sell Itself
-</a></p>
-<p><a href="https://www.theinformation.com//articles/whats-clear-and-blurry-about-apples-vision-pro-headset">
-What’s Clear and Blurry About Apple’s Vision Pro Headset
-</a></p>
-<p><a href="https://www.theinformation.com//articles/a-long-strange-trip-for-the-uber-for-nurses">
-A Long, Strange Trip for the ‘Uber for Nurses’
-</a></p>
-<p><a href="https://www.theinformation.com//articles/mark-zuckerberg-is-the-hero-ai-needs">
-Mark Zuckerberg Is the Hero AI Needs
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-best-and-worst-case-scenarios-for-coinbase">
-The Best- and Worst-Case Scenarios for Coinbase
-</a></p>
-<p><a href="https://www.theinformation.com//articles/sequoia-capitals-u-s-partners-may-reap-china-gains-even-after-split">
-Sequoia Capital’s U.S. Partners May Reap China Gains Even After Split
-</a></p>
-<p><a href="https://www.theinformation.com//articles/how-amazon-misread-the-nfl-ad-market">
-How Amazon Misread the NFL Ad Market
-</a></p>
-<p><a href="https://www.theinformation.com//articles/buzzfeed-considers-sale-of-complex-networks">
-BuzzFeed Considers Sale of Complex Networks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/wall-street-firm-citadel-securities-courts-ai-startups-for-trading-edge">
-Wall Street Firm Citadel Securities Courts AI Startups for Trading Edge
-</a></p>
-<p><a href="https://www.theinformation.com//articles/states-are-taking-baby-steps-toward-protecting-kids-online">
-States Are Taking Baby Steps Toward Protecting Kids Online
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rise-of-new-open-source-ai-model-sparks-startup-acquisition-talks">
-Rise of New Open-Source AI Model Sparks Startup Acquisition Talks
-</a></p>
-<p><a href="https://www.theinformation.com//articles/inside-the-culture-clash-at-jpmorgan-and-wepay">
-Inside the Culture Clash at JPMorgan and WePay
-</a></p>
-<p><a href="https://www.theinformation.com//articles/the-overlapping-galaxies-of-delian-asparouhov">
-The Overlapping Galaxies of Delian Asparouhov
-</a></p>
-<p><a href="https://www.theinformation.com//articles/rave-on-the-nile-the-secretive-jetsetters-rethinking-the-future-of-travel">
-Rave on the Nile: The Secretive Jetsetters Rethinking the Future of Travel
-</a></p>
-<p><a href="https://www.theinformation.com//articles/u-s-federal-agencies-cut-tiktok-ad-spending">
-U.S. Federal Agencies Cut TikTok Ad Spending
-</a></p>
-<p><a href="https://www.theinformation.com//articles/andreessen-horowitz-merges-fintech-and-consumer-teams-after-some-bets-fizzle">
-Andreessen Horowitz Merges Fintech and Consumer Teams After Some Bets Fizzle
-</a></p>
-<p><a href="https://www.theinformation.com//briefings/openai-rival-cohere-raises-270-million-including-from-oracle-and-nvidia">OpenAI Rival Cohere Raises $270 Million, Including From Oracle and Nvidia</a></p>
-<p><a href="https://www.theinformation.com//briefings/mark-zuckerberg-outlines-metas-ai-plans-at-company-all-hands">Mark Zuckerberg Jabs at Apple’s Mixed Reality Headset</a></p>
-<p><a href="https://www.theinformation.com//briefings/former-amazon-media-boss-jeff-blackburn-joins-rokus-board">Former Amazon Media Boss Jeff Blackburn Joins Roku’s Board</a></p>
-<p><a href="https://www.theinformation.com//briefings/general-motors-to-join-the-tesla-supercharger-network">General Motors to Join the Tesla Supercharger Network</a></p>
-<p><a href="https://www.theinformation.com//briefings/google-says-office-attendance-will-count-in-performance-reviews">Google Says Office Attendance Will Count in Performance Reviews</a></p>
-<p><a href="https://www.theinformation.com//briefings/twilio-sells-india-business-valuefirst-issues-additional-proxy-materials">Twilio Sells India Business ValueFirst, Issues Additional Proxy Materials</a></p>
-<p><a href="https://www.theinformation.com//briefings/developers-of-fast-rising-falcon-ai-become-a-hot-commodity">Developers of Fast-Rising ‘Falcon’ AI Become a Hot Commodity</a></p>
-<p><a href="https://www.theinformation.com//briefings/binance-us-to-lose-banking-access-halts-dollar-deposits">Binance.US to Lose Banking Access, Halts Dollar Deposits</a></p>
-<p><a href="https://www.theinformation.com//briefings/robinhood-delists-cardano-solana-and-polygon-following-sec-suits">Robinhood Delists Cardano, Solana and Polygon Following SEC Suits</a></p>
-<p><a href="https://www.theinformation.com//briefings/reddit-ceo-cites-profit-push-in-response-to-backlash">Reddit CEO Cites Profit Push in Response to Backlash</a></p>
-<p><a href="https://www.theinformation.com//briefings/andreessen-horowitz-restructures-investment-teams-in-ai-push">Andreessen Horowitz Restructures Investment Teams in AI Push</a></p>
-<p><a href="https://www.theinformation.com//articles/live-from-sf-its-tech-week">Live from SF, It’s Tech Week</a></p>
-<p><a href="https://www.theinformation.com//articles/the-electric-the-u-s-battery-program-spreads-the-wealth-will-that-save-it">The Electric: The U.S. Battery Program Spreads the Wealth. Will That Save It?</a></p>
-<p><a href="https://www.theinformation.com//articles/this-is-how-sam-altman-works-the-press-and-congress-i-know-from-experience">This Is How Sam Altman Works the Press and Congress. I Know From Experience.</a></p>
-<p><a href="https://www.theinformation.com//articles/breaking-down-the-secs-double-whammy">Breaking Down the SEC’s Double Whammy</a></p>
-<p><a href="https://www.theinformation.com//articles/stability-ai-drama-spotlights-vc-accountability">Stability AI Drama Spotlights VC Accountability</a></p>
-<p><a href="https://www.theinformation.com//articles/twitch-capitulates-reddit-may-not">Twitch Capitulates, Reddit May Not</a></p>
-<p><a href="https://www.theinformation.com//articles/why-the-return-to-the-office-is-inevitable">Why the Return to the Office Is Inevitable</a></p>
-<p><a href="https://www.theinformation.com//articles/pro-weekly-more-generative-ai-companies-for-our-database">Pro Weekly: More Generative AI Companies for Our Database</a></p>
-    </section>
-
-
-    <section>
-        <h2>玩游戏</h2>
-        <p>点击下面的链接开始玩贪吃蛇游戏：</p>
-        <a href="games/snake_game.html">贪吃蛇游戏</a>
-        <p>点击下面的链接开始玩俄罗斯方块游戏：</p>
-        <a href="games/russian_game.html">俄罗斯方块游戏</a>
-    </section>
-
-
-    <section>
-        <h2>联系我</h2>
-        <p>如果你想联系我，你可以通过以下方式：</p>
+    <section id="my-works">
+        <h1>My Works</h1>
         <ul>
-            <li>Email: xieminghack@163.com</li>
-            <li>GitHub: <a href="https://github.com/1998x-stack">My GitHub</a></li>
+            <li>
+                <h2>视频号</h2>
+                <a href="video_wenan/视频号拍摄脚本.pdf">视频号拍摄脚本</a>
+            </li>
+            <li>
+                <h2>访谈</h2>
+                <ul>
+                    <li><a href="video_wenan/兵哥访谈.pdf">兵哥访谈</a></li>
+                    <li><a href="video_wenan/然哥访谈.pdf">然哥访谈</a></li>
+                    <li><a href="video_wenan/采访稿.pdf">采访稿</a></li>
+                </ul>
+            </li>
         </ul>
     </section>
+    
+    <section id="Study">
+        <h1>Study</h1>
+        <ul>
+            <li>
+                <h2>BOOK</h2>
+                <a href="book.html">书籍</a>
+            </li>
+
+            <li>
+                <h2>Blog</h2>
+                <a href="blog.html">blog</a>
+            </li>
+            <li>
+                <h2>行业研究</h2>
+                <a href="行业研究.html">行业研究</a>
+            </li>
+            <li>
+                <h2>Awesome-Deep-Learning-Papers-for-Search-Recommendation-Advertising</h2>
+                <a href="papers/README.html">Awesome-Deep-Learning-Papers-for-Search-Recommendation-Advertising</a>
+            </li>
+            <li>
+                <h2>Awesome RL</h2>
+                <a href="papers/awsome_rl.html">awsome_rl</a>
+            </li>
+            <li>
+                <h2>OpenAI</h2>
+                <a href="openai/openai.html">openai</a>
+            </li>
+            <li>
+                <h2>LIMU</h2>
+                <a href="papers/LIMU.html">LIMU</a>
+            </li>
+            <li>
+                <h2>Awesome Deep Learning Papers</h2>
+                <a href="papers/deep_learning_papers.html">Awesome Deep Learning Papers</a>
+            </li>
+            <li>
+                <h2>Awesome Deep Learning Resources</h2>
+                <a href="awsome_papers/papers.html">Awesome Deep Learning Resources</a>
+            </li>
+        </ul>
+    </section>    
+    <section id="English-News">
+        <h1>English-News</h1>
+        <ul>
+            <li><a href="pdf/s1.pdf">s1</a></li>
+            <li><a href="pdf/s2.pdf">s2</a></li>
+            <li><a href="pdf/s3.pdf">s3</a></li>
+            <li><a href="pdf/s4.pdf">s4</a></li>
+            <li><a href="pdf/s5.pdf">s5</a></li>
+            <li><a href="pdf/s6.pdf">s6</a></li>
+            <li><a href="pdf/s7.pdf">s7</a></li>
+            <li><a href="pdf/s8.pdf">s8</a></li>
+            <li><a href="pdf/s9.pdf">s9</a></li>
+            <li><a href="pdf/s10.pdf">s10</a></li>
+            <li><a href="pdf/s11.pdf">s11</a></li>
+            <li><a href="pdf/s12.pdf">s12</a></li>
+            <li><a href="pdf/s13.pdf">s13</a></li>
+            <li><a href="pdf/t1.pdf">t1</a></li>
+            <li><a href="pdf/t2.pdf">t2</a></li>
+            <li><a href="pdf/t3.pdf">t3</a></li>
+            <li><a href="pdf/t4.pdf">t4</a></li>
+            <li><a href="pdf/t5.pdf">t5</a></li>
+            <li><a href="pdf/t6.pdf">t6</a></li>
+            <li><a href="pdf/t7.pdf">t7</a></li>
+            <li><a href="pdf/t8.pdf">t8</a></li>
+        </ul>        
+    </section>
+
+    <section id="resources">
+        <h1>resources</h1>
+        <ul>
+            <li>
+                <h2>llama</h2>
+                <ul>
+                    <li><a href="resources/llama.pdf">llama1</a></li>
+                    <li><a href="resources/llama2.pdf">llama2</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2>ML papers</h2>
+                <ul>
+                    <li><a href="resources/First-Order Methods in Optimization.pdf">First-Order Methods in Optimization</a></li>
+                    <li><a href="resources/Optimization for Data Analysis.pdf">Optimization for Data Analysis</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2>Finance PDFs</h2>
+                <ul>
+                    <li><a href="pdf/全球半导体产业框架与投资机遇研究报告.pdf">全球半导体产业框架与投资机遇研究报告</a></li>
+                    <li><a href="pdf/消费趋势报告.pdf">消费趋势报告</a></li>
+                </ul>
+            </li>
+            <li>
+                <h2>Learning PDFs</h2>
+                <ul>
+                    <li><a href="pdf/定位.pdf">定位</a></li>
+                    <li><a href="pdf/德国：一个国家的记忆.pdf">德国：一个国家的记忆</a></li>
+                    <li><a href="pdf/深度学习推荐系统.pdf">深度学习推荐系统</a></li>
+                    <li><a href="pdf/ProbabilisticNumerics.pdf">ProbabilisticNumerics</a></li>
+                    <li><a href="pdf/最优化.pdf">最优化</a></li>
+                    <li><a href="pdf/并行计算导论.pdf">并行计算导论</a></li>
+                    <li><a href="pdf/算法心得.pdf">算法心得</a></li>
+                    <li><a href="pdf/Numerical Linear Algebra  ROLF RANNACHER.pdf">Numerical Linear Algebra  ROLF RANNACHER</a></li>
+                </ul>
+            </li>
+        </ul>
+        
+    </section>
+
+    <section id="courses">
+        <h1>courses</h1>
+
+
+
+        <div class="container">
+            <div class="row">
+                <!-- Bootstrap Card for Course 1-->
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">苏杰的产品创新课</h2>
+                            <a href="study_html/95-苏杰的产品创新课.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">设计模式之美</h2>
+                            <a href="study_html/98-设计模式之美.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">深度学习推荐系统实战</h2>
+                            <a href="study_html/157-深度学习推荐系统实战.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">成为AI产品经理</h2>
+                            <a href="study_html/171-成为AI产品经理.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">科技参考</h2>
+                            <a href="study_html/293丨《卓克科技参考2》（卓克）.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">大厂广告产品心法</h2>
+                            <a href="study_html/236-大厂广告产品心法.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">《熊逸讲透资治通鉴2》</h2>
+                            <a href="study_html/262丨《熊逸讲透资治通鉴2》（熊逸）.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">《年度得到沈祖芸全球教育报告》</h2>
+                            <a href="study_html/289丨《年度得到沈祖芸全球教育报告》（沈祖芸）.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">《年度得到孙亚飞材料科学前沿报告》</h2>
+                            <a href="study_html/290丨《年度得到孙亚飞材料科学前沿报告》（孙亚飞）.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">《飞书组织数字化工具9讲》</h2>
+                            <a href="study_html/291丨《飞书组织数字化工具9讲》（谢欣）.html" class="btn btn-primary">Come On</a>
+                            <h5 class="card-title">《王志纲年度报告2021》</h2>
+                            <a href="study_html/292丨《王志纲年度报告2021》（王志纲）.html" class="btn btn-primary">Come On</a>            
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more cards for other courses -->
+            </div>
+        </div>
+    </section>
+
+    <section id="games">
+        <h1>games</h1>
+        <ul>
+            <li>
+                <h2>贪吃蛇游戏</h2>
+                <a href="games/snake_game.html">Come On</a>
+            </li>
+            <li>
+                <h2>俄罗斯方块游戏</h2>
+                <a href="games/russian_game.html">Come On</a>
+            </li>
+        </ul>
+        
+    </section>
+
+    <section id="contact">
+        <h2>Contact Me</h2>
+        <p>If you would like to reach out to me, you can do so via the following channels:</p>
+        <ul>
+            <li>GitHub: <a href="https://github.com/1998x-stack" target="_blank">My GitHub</a></li>
+        </ul>
+    </section>
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> 
 </body>
 </html>
