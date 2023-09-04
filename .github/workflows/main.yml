@@ -1,8 +1,8 @@
 name: Update News Link
 
-on:
-  schedule:
-    - cron: '0 */1 * * *'  # this means every 1 hours
+# on:
+#   schedule:
+#     - cron: '0 */1 * * *'  # this means every 1 hours
 
 jobs:
   update:
@@ -20,12 +20,11 @@ jobs:
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install beautifulsoup4 requests fake-headers
+        pip install beautifulsoup4 requests fake-headers pandas Flask
 
     # - name: Update Link
     #   run: |
-    #     python .github/scripts/update_link.py
-    #     python update_link.py
+    #     python app.py
 
     # - name: Commit and push if it's updated
     #   run: |

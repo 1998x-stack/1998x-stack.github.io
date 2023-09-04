@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product {
+            display: flex;
+            border-bottom: 1px solid #e5e5e5;
+            padding: 15px 0;
+            align-items: center;
+        }
+
+        .product:last-child {
+            border-bottom: none;
+        }
+
+        img.logo {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .details {
+            flex: 1;
+        }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .description {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .install-btn {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .links {
+            display: flex;
+            align-items: center;
+        }
+
+        a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #2196F3;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Product 1 -->
+        <div class="product">
+            <img class="logo" src="https://ab-judge.s3.amazonaws.com/logo.png" alt="A/B JUDGE Logo">
+            <div class="details">
+                <div class="title">A/B JUDGE</div>
+                <div class="description">Judge whether the A/B test results are superior or not.</div>
+                <div class="links">
+                    <a href="https://ab-judge-chatgpt-plugin.fooqoo56.com/term-of-use.html">Website</a>
+                    <a href="mailto:fooqoofooqoo56@gmail.com">Email</a>
+                    <button class="install-btn">Install</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="product">
+            <img class="logo" src="https://shopmate-o5kx.onrender.com/static/logo.png" alt="Aardvark AI Logo">
+            <div class="details">
+                <div class="title">Aardvark AI</div>
+                <div class="description">Search for Products on Google Shopping in Real-Time, No Ads, Only Trusted Stores.</div>
+                <div class="links">
+                    <a href="https://shopmate-o5kx.onrender.com/static/legal.html">Website</a>
+                    <a href="mailto:sagar@hey.com">Email</a>
+                    <button class="install-btn">Install</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
