@@ -1,0 +1,115 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-overview</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>优化器概述及其发展</h3>
+<p>优化器在深度学习中起着关键作用，它们用于调整模型的参数以最小化损失函数。优化器的选择直接影响模型的收敛速度和最终性能。以下是几种常见的优化器及其发展概述：</p>
+<h3>一、梯度下降优化器（Gradient Descent Optimizers）</h3>
+<h4>1. 批量梯度下降（Batch Gradient Descent）</h4>
+<ul>
+<li><strong>描述</strong>：每次迭代使用整个训练集来计算梯度并更新模型参数。</li>
+<li><strong>优点</strong>：梯度估计精确。</li>
+<li><strong>缺点</strong>：计算成本高，内存需求大，更新速度慢。</li>
+</ul>
+<h4>2. 随机梯度下降（Stochastic Gradient Descent, SGD）</h4>
+<ul>
+<li><strong>描述</strong>：每次迭代只使用一个样本来计算梯度和更新参数。</li>
+<li><strong>优点</strong>：计算速度快，内存需求低。</li>
+<li><strong>缺点</strong>：梯度估计不稳定，收敛速度慢。</li>
+</ul>
+<h4>3. 小批量梯度下降（Mini-Batch Gradient Descent）</h4>
+<ul>
+<li><strong>描述</strong>：每次迭代使用一小部分训练样本（mini-batch）来计算梯度和更新参数。</li>
+<li><strong>优点</strong>：在速度和稳定性之间取得平衡，是深度学习中最常用的方法。</li>
+<li><strong>缺点</strong>：需要选择合适的批量大小。</li>
+</ul>
+<h3>二、自适应学习率优化器（Adaptive Learning Rate Optimizers）</h3>
+<h4>1. Adagrad</h4>
+<ul>
+<li><strong>描述</strong>：为每个参数设置不同的学习率，较大的梯度对应较小的学习率。</li>
+<li><strong>公式</strong>：$$ \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{G_t + \epsilon}} \nabla_\theta J(\theta) $$</li>
+<li><strong>优点</strong>：对稀疏数据和特征特别有效。</li>
+<li><strong>缺点</strong>：学习率随着时间推移不断减小，可能导致训练过早停止。</li>
+</ul>
+<h4>2. RMSprop</h4>
+<ul>
+<li><strong>描述</strong>：通过对历史梯度的平方进行指数加权移动平均来调整学习率。</li>
+<li><strong>公式</strong>：$$ \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{E[g^2]<em>t + \epsilon}} \nabla</em>\theta J(\theta) $$</li>
+<li><strong>优点</strong>：解决了Adagrad学习率不断减小的问题，适合处理非平稳目标。</li>
+<li><strong>缺点</strong>：需要调整超参数。</li>
+</ul>
+<h4>3. Adam（Adaptive Moment Estimation）</h4>
+<ul>
+<li><strong>描述</strong>：结合了Adagrad和RMSprop的优点，同时估计一阶和二阶矩（动量和梯度平方的移动平均）。</li>
+<li><strong>公式</strong>：
+$$ m_t = \beta_1 m_{t-1} + (1 - \beta_1) \nabla_\theta J(\theta) $$
+$$ v_t = \beta_2 v_{t-1} + (1 - \beta_2) (\nabla_\theta J(\theta))^2 $$
+$$ \theta_{t+1} = \theta_t - \frac{\eta}{\sqrt{v_t} + \epsilon} m_t $$</li>
+<li><strong>优点</strong>：收敛速度快，适用于大规模数据和高维空间。</li>
+<li><strong>缺点</strong>：超参数调整较复杂。</li>
+</ul>
+<h3>三、动量优化器（Momentum Optimizers）</h3>
+<h4>1. 动量（Momentum）</h4>
+<ul>
+<li><strong>描述</strong>：在梯度下降过程中引入动量，模拟物体的惯性，加速收敛。</li>
+<li><strong>公式</strong>：
+$$ v_t = \gamma v_{t-1} + \eta \nabla_\theta J(\theta) $$
+$$ \theta_{t+1} = \theta_t - v_t $$</li>
+<li><strong>优点</strong>：加速收敛，减少震荡。</li>
+<li><strong>缺点</strong>：需要调整动量超参数。</li>
+</ul>
+<h4>2. Nesterov动量（Nesterov Accelerated Gradient, NAG）</h4>
+<ul>
+<li><strong>描述</strong>：在动量方法的基础上，通过计算预期位置的梯度来更新参数。</li>
+<li><strong>公式</strong>：
+$$ \theta' = \theta_t - \gamma v_{t-1} $$
+$$ v_t = \gamma v_{t-1} + \eta \nabla_\theta J(\theta') $$
+$$ \theta_{t+1} = \theta_t - v_t $$</li>
+<li><strong>优点</strong>：比标准动量方法有更好的收敛性。</li>
+<li><strong>缺点</strong>：实现稍复杂。</li>
+</ul>
+<h3>发展综述</h3>
+<p>优化器的发展经历了从最早的标准梯度下降方法，到引入动量的加速梯度下降，再到自适应学习率的优化器（如Adagrad、RMSprop和Adam）的发展。每种优化器都有其独特的优点和适用场景，选择合适的优化器需要根据具体的任务和数据特点进行综合考虑。</p>
+<h4>近期发展</h4>
+<ol>
+<li>
+<p><strong>AdaBound</strong>：</p>
+<ul>
+<li>结合Adam和SGD的优点，初始阶段类似Adam，自适应学习率，后期阶段逐渐逼近SGD，具有较好的泛化性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>RAdam（Rectified Adam）</strong>：</p>
+<ul>
+<li>针对Adam在早期训练阶段的不稳定性进行改进，引入自适应学习率的修正机制，提高了模型的稳定性和泛化能力。</li>
+</ul>
+</li>
+</ol>
+<h3>参考资料</h3>
+<ol>
+<li><a href="https://arxiv.org/abs/1412.6980">Kingma, D. P., &amp; Ba, J. (2014). &quot;Adam: A Method for Stochastic Optimization.&quot;</a></li>
+<li><a href="https://jmlr.org/papers/volume12/duchi11a/duchi11a.pdf">Duchi, J., Hazan, E., &amp; Singer, Y. (2011). &quot;Adaptive Subgradient Methods for Online Learning and Stochastic Optimization.&quot;</a></li>
+<li><a href="https://www.cs.toronto.edu/~tijmen/csc321/slides/lecture_slides_lec6.pdf">Tieleman, T., &amp; Hinton, G. (2012). &quot;Lecture 6.5-rmsprop: Divide the Gradient by a Running Average of Its Recent Magnitude.&quot;</a></li>
+<li><a href="https://arxiv.org/abs/1711.05101">Loshchilov, I., &amp; Hutter, F. (2017). &quot;Fixing Weight Decay Regularization in Adam.&quot;</a></li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

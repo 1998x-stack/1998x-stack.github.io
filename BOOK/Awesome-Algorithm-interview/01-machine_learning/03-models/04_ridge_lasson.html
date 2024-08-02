@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>ridge lasson</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>简述ridge和lasson的区别和联系</p>
+</blockquote>
+<h3>Ridge回归与Lasso回归的区别与联系</h3>
+<p>Ridge回归和Lasso回归都是线性回归模型的正则化方法，用于处理多重共线性问题并防止模型过拟合。它们通过在损失函数中加入惩罚项，约束模型的复杂度，从而提高泛化能力。两者的主要区别在于惩罚项的形式和对回归系数的影响。</p>
+<h4>1. Ridge回归（岭回归）</h4>
+<p><strong>定义</strong>：
+Ridge回归在损失函数中加入了L2正则化项，即回归系数的平方和。</p>
+<p><strong>损失函数</strong>：
+$$ L(\mathbf{w}) = \sum_{i=1}^{m} (y_i - \mathbf{w}^T \mathbf{x}<em j="1">i)^2 + \lambda \sum</em>^{n} w_j^2 $$</p>
+<p>其中，$ \lambda $ 是正则化参数，控制正则化项的强度。$ \mathbf{w} $ 是回归系数向量，$ y_i $ 是目标值，$ \mathbf{x}_i $ 是输入特征。</p>
+<p><strong>特性</strong>：</p>
+<ul>
+<li><strong>收缩回归系数</strong>：Ridge回归通过对回归系数施加L2惩罚，使得回归系数向0收缩，但不会变为0。</li>
+<li><strong>适用于多重共线性</strong>：Ridge回归在存在多重共线性时效果较好，因为它可以减少回归系数的方差。</li>
+</ul>
+<h4>2. Lasso回归</h4>
+<p><strong>定义</strong>：
+Lasso回归在损失函数中加入了L1正则化项，即回归系数的绝对值和。</p>
+<p><strong>损失函数</strong>：
+$$ L(\mathbf{w}) = \sum_{i=1}^{m} (y_i - \mathbf{w}^T \mathbf{x}<em j="1">i)^2 + \lambda \sum</em>^{n} |w_j| $$</p>
+<p><strong>特性</strong>：</p>
+<ul>
+<li><strong>特征选择</strong>：Lasso回归通过对回归系数施加L1惩罚，可以将一些回归系数缩为0，从而实现特征选择。</li>
+<li><strong>稀疏模型</strong>：Lasso回归倾向于生成稀疏模型，仅保留对预测最重要的特征。</li>
+</ul>
+<h4>3. 区别</h4>
+<ol>
+<li>
+<p><strong>正则化项</strong>：</p>
+<ul>
+<li>Ridge回归使用L2正则化项（平方和）。</li>
+<li>Lasso回归使用L1正则化项（绝对值和）。</li>
+</ul>
+</li>
+<li>
+<p><strong>系数收缩</strong>：</p>
+<ul>
+<li>Ridge回归使所有回归系数向0收缩，但不会变为0。</li>
+<li>Lasso回归可以将一些回归系数缩为0，实现特征选择。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li>Ridge回归适用于所有特征都对预测有贡献的情况。</li>
+<li>Lasso回归适用于希望实现特征选择的情况。</li>
+</ul>
+</li>
+</ol>
+<h4>4. 联系</h4>
+<ol>
+<li><strong>防止过拟合</strong>：两者都通过正则化项防止模型过拟合，提高泛化能力。</li>
+<li><strong>调参</strong>：两者都引入正则化参数 $ \lambda $，需要通过交叉验证等方法选择最优参数。</li>
+<li><strong>线性模型</strong>：两者都是在线性回归模型的基础上引入正则化项。</li>
+</ol>
+<h3>数学推导与解法</h3>
+<ol>
+<li>
+<p><strong>Ridge回归</strong>：</p>
+<ul>
+<li>通过最小化带L2正则化项的损失函数，求解回归系数。</li>
+<li>解析解为：
+$$ \mathbf{w} = (\mathbf{X}^T \mathbf{X} + \lambda \mathbf{I})^{-1} \mathbf{X}^T \mathbf{y} $$</li>
+<li>其中，$ \mathbf{X} $ 是输入特征矩阵，$ \mathbf{I} $ 是单位矩阵。</li>
+</ul>
+</li>
+<li>
+<p><strong>Lasso回归</strong>：</p>
+<ul>
+<li>通过最小化带L1正则化项的损失函数，求解回归系数。</li>
+<li>由于L1正则化项的不可微性，Lasso回归通常采用坐标下降法等迭代优化算法求解。</li>
+</ul>
+</li>
+</ol>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>Pattern Recognition and Machine Learning by Christopher M. Bishop</strong>：</p>
+<ul>
+<li>提供了Ridge回归和Lasso回归的详细理论和推导。</li>
+<li><a href="https://www.springer.com/gp/book/9780387310732">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>The Elements of Statistical Learning by Trevor Hastie, Robert Tibshirani, and Jerome Friedman</strong>：</p>
+<ul>
+<li>介绍了Ridge回归、Lasso回归及其他机器学习算法。</li>
+<li><a href="https://web.stanford.edu/~hastie/ElemStatLearn/">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Introduction to Statistical Learning by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani</strong>：</p>
+<ul>
+<li>提供了Ridge回归和Lasso回归的实际应用和案例分析。</li>
+<li><a href="http://faculty.marshall.usc.edu/gareth-james/ISL/">书籍链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

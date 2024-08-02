@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-gpu cpu</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>PyTorch中将Tensor从GPU转移到CPU</h2>
+<p>在使用PyTorch进行深度学习任务时，有时需要将GPU上的Tensor转移到CPU上，以便进行后续处理或分析。PyTorch提供了简单的方法来实现这一点。</p>
+<h3>将Tensor从GPU转移到CPU的步骤</h3>
+<p>假设我们已经有一个在GPU上的Tensor，下面是将其转移到CPU上的步骤：</p>
+<ol>
+<li>
+<p><strong>创建在GPU上的Tensor</strong>：</p>
+<pre><code class="language-python">import torch
+
+# 创建一个在GPU上的Tensor
+device = torch.device(&quot;cuda&quot;)
+tensor_gpu = torch.randn(3, 3, device=device)
+</code></pre>
+</li>
+<li>
+<p><strong>将Tensor转移到CPU上</strong>：</p>
+<pre><code class="language-python"># 将Tensor从GPU转移到CPU上
+tensor_cpu = tensor_gpu.to(&quot;cpu&quot;)
+</code></pre>
+</li>
+<li>
+<p><strong>查看结果</strong>：</p>
+<pre><code class="language-python">print(tensor_cpu)
+</code></pre>
+</li>
+</ol>
+<h3>具体示例</h3>
+<p>下面是一个完整的示例代码：</p>
+<pre><code class="language-python">import torch
+
+# 创建一个在GPU上的Tensor
+device = torch.device(&quot;cuda&quot;)
+tensor_gpu = torch.randn(3, 3, device=device)
+print(&quot;Tensor on GPU:&quot;)
+print(tensor_gpu)
+
+# 将Tensor从GPU转移到CPU上
+tensor_cpu = tensor_gpu.to(&quot;cpu&quot;)
+print(&quot;\nTensor on CPU:&quot;)
+print(tensor_cpu)
+</code></pre>
+<h3>注意事项</h3>
+<ol>
+<li>
+<p><strong>设备检测</strong>：</p>
+<ul>
+<li>在将Tensor转移到GPU之前，确保系统上有可用的GPU。</li>
+<li>可以使用 <code>torch.cuda.is_available()</code> 来检测GPU是否可用。</li>
+</ul>
+</li>
+<li>
+<p><strong>性能影响</strong>：</p>
+<ul>
+<li>频繁的设备切换会影响程序的性能，应尽量减少不必要的设备转移操作。</li>
+</ul>
+</li>
+</ol>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://pytorch.org/docs/stable/tensors.html">PyTorch Documentation</a></li>
+<li><a href="https://pytorch.org/tutorials/beginner/blitz/tensor_tutorial.html#operations-on-tensors">PyTorch Tensor Device Operations</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

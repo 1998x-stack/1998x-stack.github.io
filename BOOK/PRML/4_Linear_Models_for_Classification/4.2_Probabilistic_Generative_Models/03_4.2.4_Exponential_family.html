@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.2.4 Exponential family</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_4.2.4_Exponential_family</h1>
+<pre><code>Lecture: 4_Linear_Models_for_Classification/4.2_Probabilistic_Generative_Models
+Content: 03_4.2.4_Exponential_family
+</code></pre>
+<h2>详解PRML中的第4.2.4节：指数族分布</h2>
+<p>《模式识别与机器学习》（Pattern Recognition and Machine Learning, PRML）是由Christopher M. Bishop所著的一本经典教材，其中第4章涵盖了线性分类模型的内容。在第4.2节，作者介绍了概率生成模型（Probabilistic Generative Models）。具体来说，第4.2.4节探讨了指数族分布。以下是对这一节内容的详细分析。</p>
+<h3>指数族分布的背景</h3>
+<p>在概率和统计领域，指数族分布（Exponential Family Distribution）是一类具有广泛应用的分布族。它们包括许多常见的概率分布，如正态分布、伯努利分布、多项式分布和泊松分布等。指数族分布的一个显著特点是其概率密度函数或概率质量函数可以表示为一个特定的形式。</p>
+<h3>指数族分布的形式</h3>
+<p>一个随机变量 $ x $ 属于指数族分布，当且仅当其概率密度函数或概率质量函数可以写成如下形式：</p>
+<p>$$ p(x|\eta) = h(x)g(\eta) \exp(\eta^T u(x)) $$</p>
+<p>其中：</p>
+<ul>
+<li>$ \eta $ 是自然参数（Natural Parameter）。</li>
+<li>$ u(x) $ 是充分统计量（Sufficient Statistic）。</li>
+<li>$ h(x) $ 是基准测度（Base Measure）。</li>
+<li>$ g(\eta) $ 是标准化因子（Normalization Factor），保证概率分布的积分为1。</li>
+</ul>
+<h3>常见分布的指数族形式</h3>
+<ol>
+<li>
+<p><strong>伯努利分布</strong>：
+伯努利分布是最简单的离散分布，用于描述只有两种结果的随机变量，如掷硬币的正反面。其概率质量函数为：</p>
+<p>$$ p(x|\mu) = \mu^x (1 - \mu)^{1-x} $$</p>
+<p>我们可以将其写成指数族分布的形式：</p>
+<p>$$ p(x|\eta) = \exp(\eta x - \log(1 + \exp(\eta))) $$</p>
+<p>其中，$ \eta = \log(\frac{\mu}{1-\mu}) $。</p>
+</li>
+<li>
+<p><strong>高斯分布</strong>：
+高斯分布是一种连续分布，用于描述很多自然现象的变量。其概率密度函数为：</p>
+<p>$$ p(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp(-\frac{(x - \mu)^2}{2\sigma^2}) $$</p>
+<p>我们可以将其写成指数族分布的形式：</p>
+<p>$$ p(x|\eta) = \exp(\eta_1 x + \eta_2 x^2 + \eta_3) $$</p>
+<p>其中，$ \eta_1 = \frac{\mu}{\sigma^2} $，$ \eta_2 = -\frac{1}{2\sigma^2} $，$ \eta_3 = -\frac{\mu^2}{2\sigma^2} - \log(\sqrt{2\pi\sigma^2}) $。</p>
+</li>
+</ol>
+<h3>指数族分布的性质</h3>
+<ol>
+<li>
+<p><strong>充分统计量</strong>：
+在指数族分布中，充分统计量 $ u(x) $ 提供了关于数据的所有信息。这意味着，给定充分统计量，数据的其他部分对参数估计没有额外的信息。</p>
+</li>
+<li>
+<p><strong>共轭先验分布</strong>：
+对于属于指数族的分布，其共轭先验分布也属于指数族。这一性质使得贝叶斯推断变得更加简便。例如，伯努利分布的共轭先验是Beta分布，而高斯分布的共轭先验是另一个高斯分布。</p>
+</li>
+<li>
+<p><strong>简化的最大似然估计</strong>：
+在指数族分布中，最大似然估计可以通过充分统计量的样本均值来简化。这是因为对数似然函数的梯度只依赖于充分统计量。</p>
+</li>
+</ol>
+<h3>实例分析</h3>
+<ol>
+<li>
+<p><strong>泊松分布</strong>：
+泊松分布描述单位时间内事件发生的次数，其概率质量函数为：</p>
+<p>$$ p(x|\lambda) = \frac{\lambda^x \exp(-\lambda)}{x!} $$</p>
+<p>可以写成指数族分布的形式：</p>
+<p>$$ p(x|\eta) = \exp(\eta x - \exp(\eta) - \log(x!)) $$</p>
+<p>其中，$ \eta = \log(\lambda) $。</p>
+</li>
+<li>
+<p><strong>多项式分布</strong>：
+多项式分布描述多次独立试验的结果，其概率质量函数为：</p>
+<p>$$ p(x|n, \pi) = \frac{n!}{x_1! x_2! \cdots x_k!} \pi_1^{x_1} \pi_2^{x_2} \cdots \pi_k^{x_k} $$</p>
+<p>可以写成指数族分布的形式：</p>
+<p>$$ p(x|\eta) = \exp(\sum_{i=1}^k x_i \eta_i - \log Z(\eta)) $$</p>
+<p>其中，$ \eta_i = \log(\pi_i) $，$ Z(\eta) = \frac{n!}{x_1! x_2! \cdots x_k!} \exp(\sum_{i=1}^k \eta_i) $。</p>
+</li>
+</ol>
+<h3>结论</h3>
+<p>通过以上分析可以看出，指数族分布在概率和统计中具有重要的地位。它们不仅涵盖了许多常见的概率分布，而且在贝叶斯推断、最大似然估计和充分统计量等方面具有独特的优势。掌握指数族分布的理论和应用有助于我们在实际问题中选择合适的模型和方法，提高分析和预测的准确性。</p>
+<hr>
+<h3>1. 伯努利分布的共轭先验是Beta分布</h3>
+<h4>伯努利分布</h4>
+<p>伯努利分布用于表示单次试验的两个可能结果，其概率质量函数为：</p>
+<p>$$ p(x|\theta) = \theta^x (1 - \theta)^{1 - x} $$</p>
+<p>其中，$x \in {0, 1}$ 表示试验的结果，$\theta$ 是事件发生的概率。</p>
+<h4>Beta分布</h4>
+<p>Beta分布是定义在区间 $[0, 1]$ 上的连续概率分布，其概率密度函数为：</p>
+<p>$$ p(\theta|\alpha, \beta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} $$</p>
+<p>其中，$\alpha$ 和 $\beta$ 是形状参数，$B(\alpha, \beta)$ 是Beta函数，用于标准化分布。</p>
+<h4>推导过程</h4>
+<p>我们希望证明，Beta分布是伯努利分布的共轭先验分布。具体步骤如下：</p>
+<ol>
+<li>
+<p><strong>定义似然函数</strong></p>
+<p>对于伯努利分布，给定 $N$ 个独立同分布的观测数据 ${x_1, x_2, ..., x_N}$，似然函数为：</p>
+<p>$$ p(x|\theta) = \prod_{i=1}^{N} \theta^{x_i} (1 - \theta)^{1 - x_i} $$</p>
+</li>
+<li>
+<p><strong>定义先验分布</strong></p>
+<p>先验分布为Beta分布：</p>
+<p>$$ p(\theta|\alpha, \beta) = \frac{\theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}{B(\alpha, \beta)} $$</p>
+</li>
+<li>
+<p><strong>计算后验分布</strong></p>
+<p>根据贝叶斯定理，后验分布为：</p>
+<p>$$ p(\theta|x) \propto p(x|\theta) p(\theta) $$</p>
+<p>将似然函数和先验分布代入：</p>
+<p>$$ p(\theta|x) \propto \left(\prod_{i=1}^{N} \theta^{x_i} (1 - \theta)^{1 - x_i}\right) \theta^{\alpha - 1} (1 - \theta)^{\beta - 1} $$</p>
+<p>将幂指数合并：</p>
+<p>$$ p(\theta|x) \propto \theta^{\sum_{i=1}^{N} x_i + \alpha - 1} (1 - \theta)^{N - \sum_{i=1}^{N} x_i + \beta - 1} $$</p>
+</li>
+<li>
+<p><strong>识别后验分布的形式</strong></p>
+<p>可以看到，后验分布的形式与Beta分布相同，其中：</p>
+<p>$$ \theta | x \sim \text{Beta}(\sum_{i=1}^{N} x_i + \alpha, N - \sum_{i=1}^{N} x_i + \beta) $$</p>
+</li>
+</ol>
+<p>因此，Beta分布是伯努利分布的共轭先验分布。</p>
+<h3>2. 高斯分布的共轭先验是另一个高斯分布</h3>
+<h4>高斯分布</h4>
+<p>高斯分布（正态分布）的概率密度函数为：</p>
+<p>$$ p(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right) $$</p>
+<p>其中，$\mu$ 是均值，$\sigma^2$ 是方差。</p>
+<h4>推导过程</h4>
+<p>我们希望证明，对于均值 $\mu$ 的未知情况，高斯分布的共轭先验分布也是高斯分布。具体步骤如下：</p>
+<ol>
+<li>
+<p><strong>定义似然函数</strong></p>
+<p>给定 $N$ 个独立同分布的观测数据 ${x_1, x_2, ..., x_N}$，且假设方差 $\sigma^2$ 已知，似然函数为：</p>
+<p>$$ p(x|\mu) = \prod_{i=1}^{N} \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right) $$</p>
+</li>
+<li>
+<p><strong>定义先验分布</strong></p>
+<p>先验分布为高斯分布：</p>
+<p>$$ p(\mu|\mu_0, \sigma_0^2) = \frac{1}{\sqrt{2\pi\sigma_0^2}} \exp\left(-\frac{(\mu - \mu_0)^2}{2\sigma_0^2}\right) $$</p>
+</li>
+<li>
+<p><strong>计算后验分布</strong></p>
+<p>根据贝叶斯定理，后验分布为：</p>
+<p>$$ p(\mu|x) \propto p(x|\mu) p(\mu) $$</p>
+<p>将似然函数和先验分布代入：</p>
+<p>$$ p(\mu|x) \propto \left(\prod_{i=1}^{N} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)\right) \exp\left(-\frac{(\mu - \mu_0)^2}{2\sigma_0^2}\right) $$</p>
+<p>取对数后进行简化：</p>
+<p>$$ \ln p(\mu|x) = -\frac{1}{2\sigma^2} \sum_{i=1}^{N} (x_i - \mu)^2 - \frac{1}{2\sigma_0^2} (\mu - \mu_0)^2 + \text{const} $$</p>
+<p>展开并合并平方项：</p>
+<p>$$ \ln p(\mu|x) = -\frac{1}{2\sigma^2} \left( N\mu^2 - 2\mu \sum_{i=1}^{N} x_i + \sum_{i=1}^{N} x_i^2 \right) - \frac{1}{2\sigma_0^2} (\mu^2 - 2\mu\mu_0 + \mu_0^2) + \text{const} $$</p>
+<p>合并同类项得到一个二次型：</p>
+<p>$$ \ln p(\mu|x) = -\frac{1}{2} \left( \left( \frac{N}{\sigma^2} + \frac{1}{\sigma_0^2} \right) \mu^2 - 2\left( \frac{\sum_{i=1}^{N} x_i}{\sigma^2} + \frac{\mu_0}{\sigma_0^2} \right)\mu \right) + \text{const} $$</p>
+<p>可以看到，这实际上是一个高斯分布的对数形式。</p>
+</li>
+<li>
+<p><strong>识别后验分布的形式</strong></p>
+<p>后验分布的均值和方差分别为：</p>
+<p>$$ \sigma_n^2 = \left( \frac{N}{\sigma^2} + \frac{1}{\sigma_0^2} \right)^{-1} $$</p>
+<p>$$ \mu_n = \sigma_n^2 \left( \frac{\sum_{i=1}^{N} x_i}{\sigma^2} + \frac{\mu_0}{\sigma_0^2} \right) $$</p>
+</li>
+</ol>
+<p>因此，高斯分布的共轭先验分布也是高斯分布。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_4.2.4_Exponential_family
+
+"""
+Lecture: 4_Linear_Models_for_Classification/4.2_Probabilistic_Generative_Models
+Content: 03_4.2.4_Exponential_family
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

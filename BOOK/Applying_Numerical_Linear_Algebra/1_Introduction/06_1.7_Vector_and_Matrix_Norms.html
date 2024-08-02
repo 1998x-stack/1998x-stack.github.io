@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.7 Vector and Matrix Norms</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>06_1.7_Vector_and_Matrix_Norms</h1>
+<pre><code>Lecture: /1_Introduction
+Content: 06_1.7_Vector_and_Matrix_Norms
+</code></pre>
+<h3>06_1.7 向量和矩阵范数 (Vector and Matrix Norms)</h3>
+<h4>引言</h4>
+<p>在数值线性代数中，范数是用于测量向量和矩阵大小的重要工具。通过范数，可以量化误差、分析算法的稳定性和收敛性。本章节将详细探讨向量范数和矩阵范数的定义、性质以及它们在实际计算中的应用。</p>
+<h4>向量范数</h4>
+<p>向量范数是定义在向量空间上的一种函数，它满足以下条件：</p>
+<ol>
+<li><strong>非负性</strong>：对于任何向量 $ x $，有 $ |x| \geq 0 $，且当且仅当 $ x = 0 $ 时 $ |x| = 0 $。</li>
+<li><strong>齐次性</strong>：对于任何标量 $ \alpha $ 和向量 $ x $，有 $ |\alpha x| = |\alpha| |x| $。</li>
+<li><strong>三角不等式</strong>：对于任何向量 $ x $ 和 $ y $，有 $ |x + y| \leq |x| + |y| $。</li>
+</ol>
+<p>常见的向量范数包括：</p>
+<ul>
+<li><strong>p-范数</strong>：定义为 $ |x|<em i="1">p = \left( \sum</em>^{n} |x_i|^p \right)^{1/p} $，其中 $ 1 \leq p &lt; \infty $。</li>
+<li><strong>无穷范数</strong>：定义为 $ |x|_\infty = \max_i |x_i| $。</li>
+</ul>
+<h4>矩阵范数</h4>
+<p>矩阵范数是定义在矩阵空间上的一种函数，它满足以下条件：</p>
+<ol>
+<li><strong>非负性</strong>：对于任何矩阵 $ A $，有 $ |A| \geq 0 $，且当且仅当 $ A = 0 $ 时 $ |A| = 0 $。</li>
+<li><strong>齐次性</strong>：对于任何标量 $ \alpha $ 和矩阵 $ A $，有 $ |\alpha A| = |\alpha| |A| $。</li>
+<li><strong>次可加性</strong>：对于任何矩阵 $ A $ 和 $ B $，有 $ |A + B| \leq |A| + |B| $。</li>
+</ol>
+<p>常见的矩阵范数包括：</p>
+<ul>
+<li><strong>最大行和范数</strong>：定义为 $ |A|<em j="">\infty = \max_i \sum</em> |a_{ij}| $。</li>
+<li><strong>最大列和范数</strong>：定义为 $ |A|<em i="">1 = \max_j \sum</em> |a_{ij}| $。</li>
+<li><strong>Frobenius范数</strong>：定义为 $ |A|<em i,j="">F = \left( \sum</em> |a_{ij}|^2 \right)^{1/2} $。</li>
+</ul>
+<h4>诱导范数</h4>
+<p>诱导范数也称为运算范数或从属矩阵范数，它由向量范数诱导而来。对于一个 $ m \times n $ 的矩阵 $ A $ 和向量范数 $ |\cdot|_p $，诱导范数定义为：</p>
+<p>$$
+|A|<em>p = \max</em>{x \neq 0} \frac{|Ax|_p}{|x|_p}
+$$</p>
+<p>常见的诱导范数包括：</p>
+<ul>
+<li><strong>谱范数</strong>（2-范数）：定义为 $ |A|<em>2 = \sqrt{\lambda</em>{\max}(A^* A)} $，其中 $ \lambda_{\max} $ 表示最大特征值。</li>
+</ul>
+<h4>矩阵范数的性质</h4>
+<ul>
+<li><strong>次可加性</strong>：对于任何矩阵 $ A $ 和 $ B $，有 $ |A + B| \leq |A| + |B| $。</li>
+<li><strong>一致性</strong>：对于任何向量 $ x $ 和对应的向量范数 $ |\cdot|_p $，有 $ |Ax|_p \leq |A|_p |x|_p $。</li>
+<li><strong>乘积不等式</strong>：对于任何矩阵 $ A $ 和 $ B $，有 $ |AB| \leq |A| |B| $。</li>
+</ul>
+<h4>矩阵的特殊类型</h4>
+<ul>
+<li><strong>正交矩阵</strong>：一个实方阵 $ Q $ 满足 $ Q^T Q = Q Q^T = I $ 则称其为正交矩阵。对于正交矩阵，所有行（或列）都是单位向量且两两正交。</li>
+<li><strong>酉矩阵</strong>：一个复方阵 $ U $ 满足 $ U^* U = U U^* = I $ 则称其为酉矩阵。类似于正交矩阵，酉矩阵在复数域上具有类似的性质。</li>
+</ul>
+<h4>范数的实际应用</h4>
+<ul>
+<li><strong>误差分析</strong>：在数值计算中，范数用于度量计算误差。通过范数，可以界定误差的上界，从而评估算法的稳定性和精度。</li>
+<li><strong>条件数</strong>：矩阵的条件数是衡量线性系统灵敏度的重要指标。条件数定义为矩阵范数与其逆矩阵范数的乘积：
+$$
+\kappa(A) = |A| |A^{-1}|
+$$
+条件数越大，系统越敏感，解的误差越大。</li>
+<li><strong>最小二乘问题</strong>：在最小二乘问题中，通过范数可以定义和求解优化目标，从而找到误差最小的解。</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code># 06_1.7_Vector_and_Matrix_Norms
+
+"""
+Lecture: /1_Introduction
+Content: 06_1.7_Vector_and_Matrix_Norms
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,217 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.1 河内塔</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_1.1_河内塔</h1>
+<pre><code>Lecture: /第_1_章_递归问题
+Content: 00_1.1_河内塔
+</code></pre>
+<h3>00_1.1_河内塔</h3>
+<h4>章节内容概述</h4>
+<p>本节讲述的是“河内塔”问题，这是一种经典的递归问题。河内塔问题最早由法国数学家爱德华·卢卡斯于1883年提出。该问题描述如下：给定三个柱子和若干不同大小的圆盘，初始时所有圆盘按照大小顺序从上到下叠放在第一个柱子上，目标是将所有圆盘移动到第三个柱子上，但每次只能移动一个圆盘，并且在移动过程中不能将大圆盘放在小圆盘上面。</p>
+<h4>详细分析</h4>
+<ol>
+<li>
+<p><strong>问题描述和基本规则</strong></p>
+<ul>
+<li>给定三个柱子：A, B, C。</li>
+<li>N个圆盘，初始时所有圆盘按大小顺序从上到下叠放在柱子A上。</li>
+<li>目标是将所有圆盘移动到柱子C上。</li>
+<li>每次只能移动一个圆盘。</li>
+<li>不能将大圆盘放在小圆盘上。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归思想</strong></p>
+<ul>
+<li>递归的核心在于将大问题分解为小问题，并且小问题的解决方式与大问题相同。</li>
+<li>对于河内塔问题，可以采用以下递归步骤：
+<ol>
+<li>将前N-1个圆盘从A柱移动到B柱。</li>
+<li>将第N个（最大的）圆盘从A柱移动到C柱。</li>
+<li>最后将N-1个圆盘从B柱移动到C柱。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>递归关系和公式</strong></p>
+<ul>
+<li>假设T(n)表示移动n个圆盘所需的最小步数。</li>
+<li>当n=1时，只需一步，故T(1)=1。</li>
+<li>当n&gt;1时，按照上述递归步骤：
+<ul>
+<li>先将n-1个圆盘从A移动到B需要T(n-1)步。</li>
+<li>将第n个圆盘从A移动到C需要1步。</li>
+<li>再将n-1个圆盘从B移动到C需要T(n-1)步。</li>
+</ul>
+</li>
+<li>因此，T(n) = 2T(n-1) + 1。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归公式的推导和验证</strong></p>
+<ul>
+<li>根据递归公式，我们可以验证其正确性：
+<ul>
+<li>T(2) = 2T(1) + 1 = 2 * 1 + 1 = 3。</li>
+<li>T(3) = 2T(2) + 1 = 2 * 3 + 1 = 7。</li>
+</ul>
+</li>
+<li>通过数学归纳法，可以证明该递归公式对所有n≥1的情况都成立。</li>
+</ul>
+</li>
+<li>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>递归公式T(n) = 2T(n-1) + 1是一个指数级的增长。</li>
+<li>通过展开递归公式，可以得到T(n) = 2^n - 1。</li>
+<li>因此，移动n个圆盘所需的步数是2的n次方减1，时间复杂度为O(2^n)。</li>
+</ul>
+</li>
+<li>
+<p><strong>河内塔问题的意义</strong></p>
+<ul>
+<li>该问题不仅仅是一个数学游戏，更是递归算法的经典案例。</li>
+<li>通过解决河内塔问题，可以加深对递归思想和算法设计的理解。</li>
+<li>递归方法在许多计算机科学问题中都有广泛应用，如树的遍历、图的搜索等。</li>
+</ul>
+</li>
+</ol>
+<h4>扩展讨论</h4>
+<ol>
+<li>
+<p><strong>历史背景与文化意义</strong></p>
+<ul>
+<li>河内塔问题源于古老的传说，被认为是一种宗教仪式和智力游戏。</li>
+<li>在不同文化中，有类似的智力游戏和数学问题，这显示了数学的普遍性和趣味性。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归算法的其他应用</strong></p>
+<ul>
+<li>递归在计算机科学中的重要性不言而喻。许多问题，如汉诺塔、斐波那契数列、快速排序、合并排序等，都可以通过递归方法高效解决。</li>
+<li>递归方法在编程语言中也有具体的体现，如函数调用、回溯算法等。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归与动态规划的关系</strong></p>
+<ul>
+<li>虽然河内塔问题主要使用递归方法，但有些递归问题可以通过动态规划来优化。</li>
+<li>动态规划通过保存中间结果，避免重复计算，从而提高算法效率。</li>
+</ul>
+</li>
+</ol>
+<h4>结论</h4>
+<p>“河内塔”问题不仅是一个经典的数学游戏，更是递归算法的生动例子。通过该问题，可以深入理解递归的思想和方法，培养解决复杂问题的能力。在实际应用中，递归方法具有广泛的应用价值，是计算机科学和算法设计中不可或缺的工具。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_1.1_河内塔
+
+"""
+Lecture: /第_1_章_递归问题
+Content: 00_1.1_河内塔
+"""
+
+from typing import List, Tuple, Dict
+
+class TowerOfHanoi:
+    def __init__(self, num_disks: int):
+        """初始化河内塔问题。
+
+        Args:
+            num_disks (int): 圆盘数量。
+        """
+        self.num_disks = num_disks
+        self.actions: List[str] = []
+        self.status: Dict[str, List[int]] = {
+            'A': list(range(num_disks, 0, -1)),
+            'B': [],
+            'C': []
+        }
+
+    def solve(self) -> None:
+        """解决河内塔问题，并记录移动步骤和状态。"""
+        self._move_disks(self.num_disks, 'A', 'C', 'B')
+
+    def _move_disks(self, n: int, source: str, target: str, auxiliary: str) -> None:
+        """递归地移动圆盘。
+
+        Args:
+            n (int): 移动的圆盘数量。
+            source (str): 源柱子。
+            target (str): 目标柱子。
+            auxiliary (str): 辅助柱子。
+        """
+        if n == 1:
+            self._move_single_disk(source, target)
+        else:
+            self._move_disks(n - 1, source, auxiliary, target)
+            self._move_single_disk(source, target)
+            self._move_disks(n - 1, auxiliary, target, source)
+
+    def _move_single_disk(self, source: str, target: str) -> None:
+        """移动一个圆盘，并记录动作和状态。
+
+        Args:
+            source (str): 源柱子。
+            target (str): 目标柱子。
+        """
+        disk = self.status[source].pop()
+        self.status[target].append(disk)
+        self.actions.append(f"Move disk {disk} from {source} to {target}")
+        print("## This is the {}th action".format(len(self.actions)))
+        print(f"### Move disk {disk} from {source} to {target}")
+        self._print_status()
+
+    def _print_status(self) -> None:
+        """打印当前状态。"""
+        print("Status:")
+        for peg in ['A', 'B', 'C']:
+            print(f"{peg}: {self.status[peg]}")
+        print("-" * 20)
+
+    def get_actions(self) -> List[str]:
+        """获取移动步骤列表。
+
+        Returns:
+            List[str]: 移动步骤列表。
+        """
+        return self.actions
+
+    def get_status(self) -> Dict[str, List[int]]:
+        """获取当前状态。
+
+        Returns:
+            Dict[str, List[int]]: 当前状态。
+        """
+        return self.status
+
+
+def main() -> None:
+    """主函数，用于执行河内塔问题的解决过程。"""
+    num_disks = 4  # 可以根据需要修改圆盘数量
+    hanoi = TowerOfHanoi(num_disks)
+    hanoi.solve()
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

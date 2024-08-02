@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.10.4 DRN的在线学习方法——竞争梯度下降算法</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_3.10.4 DRN的在线学习方法——竞争梯度下降算法</h1>
+<pre><code>Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.10 强化学习与推荐系统的结合
+Content: 03_3.10.4 DRN的在线学习方法——竞争梯度下降算法
+</code></pre>
+<h3>3.10.4 DRN的在线学习方法——竞争梯度下降算法详细解析</h3>
+<h4>1. 引言</h4>
+<p>DRN（Deep Reinforcement Network，深度强化学习网络）的在线学习方法主要通过竞争梯度下降算法（Dueling Bandit Gradient Descent Algorithm）来实现。该算法通过引入随机扰动和实时用户反馈，动态调整模型参数，使推荐系统能够快速适应用户兴趣的变化。图3-29展示了DRN在线学习方法的流程图。</p>
+<h4>2. 竞争梯度下降算法流程</h4>
+<p>竞争梯度下降算法的主要步骤如下：</p>
+<h5>2.1 随机扰动生成探索网络</h5>
+<ol>
+<li><strong>当前网络Q</strong>：对于已经训练好的当前网络Q，对其模型参数W添加一个较小的随机扰动ΔW，得到新的模型参数W'，对应的网络称为探索网络。
+<ul>
+<li>随机扰动公式如（式3-19）所示：
+$$ W' = W + α \cdot \text{rand}(-1, 1) $$
+其中，α是探索因子，决定探索力度的大小，rand(-1, 1)是一个在[-1, 1]之间的随机数。</li>
+</ul>
+</li>
+</ol>
+<h5>2.2 生成推荐列表并推送</h5>
+<ol start="2">
+<li><strong>推荐列表生成</strong>：对于当前网络Q和探索网络，分别生成推荐列表L和L'。使用交错法（Interleaving）将两个推荐列表组合成一个推荐列表后推送给用户。
+<ul>
+<li>交错法将两个列表的推荐内容交替排列，确保用户在同一推荐列表中看到来自不同网络的推荐内容，从而能够比较其效果。</li>
+</ul>
+</li>
+</ol>
+<h5>2.3 实时用户反馈</h5>
+<ol start="3">
+<li><strong>用户反馈收集</strong>：实时收集用户对推荐内容的反馈。如果探索网络生成内容的效果好于当前网络Q，则用探索网络替代当前网络，进入下一轮迭代；反之则保留当前网络。
+<ul>
+<li>用户反馈主要包括点击行为、浏览时间等，系统根据这些反馈评估推荐效果。</li>
+</ul>
+</li>
+</ol>
+<h4>3. 算法优点</h4>
+<p>竞争梯度下降算法通过不断引入随机扰动和实时反馈调整模型参数，具有以下优点：</p>
+<ul>
+<li><strong>快速适应</strong>：能够迅速响应用户兴趣的变化，提高推荐准确性。</li>
+<li><strong>实时更新</strong>：每次推荐后立即进行模型微调，保持模型的最新状态。</li>
+<li><strong>高效探索</strong>：通过引入随机扰动，算法能够探索新的推荐策略，避免陷入局部最优。</li>
+</ul>
+<h4>4. 应用示例</h4>
+<h5>4.1 微更新操作</h5>
+<p>在t1→t2阶段，系统利用初始化模型进行一段时间的推送服务，积累用户点击数据。t2时间点，利用积累的数据进行模型微更新，具体步骤如下：</p>
+<ol>
+<li><strong>扰动生成</strong>：对当前网络Q添加随机扰动，生成探索网络。</li>
+<li><strong>推荐列表生成</strong>：分别生成当前网络和探索网络的推荐列表，并交错推送给用户。</li>
+<li><strong>反馈评估</strong>：收集用户对推荐列表的反馈，评估探索网络和当前网络的效果。如果探索网络效果更好，则更新模型参数；否则保留当前网络。</li>
+</ol>
+<h5>4.2 主更新操作</h5>
+<p>在t3→t4阶段，系统继续推送推荐内容，积累更多的用户反馈数据。t4时间点，利用积累的数据进行模型主更新，具体步骤如下：</p>
+<ol>
+<li><strong>数据集成</strong>：整合t1→t4阶段的所有用户数据，包括点击数据和用户活跃度数据。</li>
+<li><strong>全面训练</strong>：利用整合的数据重新训练模型，确保模型能够充分适应最新的用户行为和兴趣变化。</li>
+<li><strong>模型替换</strong>：用重新训练的模型替代当前模型，进入下一轮推送服务。</li>
+</ol>
+<h4>5. 竞争梯度下降算法的挑战</h4>
+<p>尽管竞争梯度下降算法具有显著优势，但在实际应用中也面临一些挑战：</p>
+<ul>
+<li><strong>计算资源</strong>：频繁的模型更新和实时反馈处理需要大量计算资源，可能对系统性能产生影响。</li>
+<li><strong>反馈延迟</strong>：实时收集和处理用户反馈需要一定时间，可能导致推荐结果的滞后性。</li>
+<li><strong>探索与利用平衡</strong>：如何在探索新策略和利用现有策略之间找到平衡，是一个关键问题。</li>
+</ul>
+<h4>6. 结论</h4>
+<p>竞争梯度下降算法通过引入随机扰动和实时用户反馈，动态调整模型参数，使DRN能够快速适应用户兴趣的变化，提高推荐系统的实时性和准确性。尽管面临一些挑战，但该算法在推荐系统中的应用展示了其巨大的潜力和优势。未来，随着技术的不断进步，竞争梯度下降算法有望在更多推荐场景中得到广泛应用     。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_3.10.4 DRN的在线学习方法——竞争梯度下降算法
+
+"""
+Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.10 强化学习与推荐系统的结合
+Content: 03_3.10.4 DRN的在线学习方法——竞争梯度下降算法
+"""
+
+import numpy as np
+import random
+from collections import deque
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import matplotlib.pyplot as plt
+from typing import List, Tuple
+
+# 定义深度Q网络模型
+class DQNetwork(nn.Module):
+    def __init__(self, state_size: int, action_size: int):
+        super(DQNetwork, self).__init__()
+        self.fc1 = nn.Linear(state_size, 128)
+        self.fc2 = nn.Linear(128, 128)
+        self.fc3 = nn.Linear(128, action_size)
+    
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        x = self.fc3(x)
+        return x
+
+# 定义深度强化学习推荐模型类
+class DQNAgent:
+    def __init__(self, state_size: int, action_size: int):
+        self.state_size = state_size
+        self.action_size = action_size
+        self.memory = deque(maxlen=2000)
+        self.gamma = 0.95
+        self.epsilon = 1.0
+        self.epsilon_min = 0.01
+        self.epsilon_decay = 0.995
+        self.learning_rate = 0.001
+        self.model = DQNetwork(state_size, action_size)
+        self.target_model = DQNetwork(state_size, action_size)
+        self.update_target_model()
+        self.optimizer = optim.Adam(self.model.parameters(), lr=self.learning_rate)
+        self.criterion = nn.MSELoss()
+
+    def update_target_model(self):
+        """将目标模型的权重更新为评估模型的权重"""
+        self.target_model.load_state_dict(self.model.state_dict())
+
+    def remember(self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool):
+        """将经验存储到回放缓冲区"""
+        self.memory.append((state, action, reward, next_state, done))
+
+    def act(self, state: np.ndarray) -> int:
+        """根据当前策略选择动作"""
+        if np.random.rand() <= self.epsilon:
+            return random.randrange(self.action_size)
+        state = torch.FloatTensor(state)
+        act_values = self.model(state)
+        return torch.argmax(act_values).item()
+
+    def replay(self, batch_size: int):
+        """从经验回放缓冲区中采样并训练模型"""
+        if len(self.memory) < batch_size:
+            return
+        minibatch = random.sample(self.memory, batch_size)
+        for state, action, reward, next_state, done in minibatch:
+            state = torch.FloatTensor(state)
+            next_state = torch.FloatTensor(next_state)
+            target = self.model(state).clone().detach()
+            if done:
+                target[action] = reward
+            else:
+                t = self.target_model(next_state).detach()
+                target[action] = reward + self.gamma * torch.max(t)
+            self.optimizer.zero_grad()
+            output = self.model(state)
+            loss = self.criterion(output, target)
+            loss.backward()
+            self.optimizer.step()
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
+
+    def load(self, name: str):
+        """加载模型权重"""
+        self.model.load_state_dict(torch.load(name))
+
+    def save(self, name: str):
+        """保存模型权重"""
+        torch.save(self.model.state_dict(), name)
+
+# 数据处理和环境模拟
+def preprocess_data(user_features: np.ndarray, context_features: np.ndarray) -> np.ndarray:
+    """数据预处理，生成状态向量"""
+    state = np.concatenate((user_features, context_features))
+    return state
+
+def simulate_environment(state: np.ndarray, action: int) -> Tuple[np.ndarray, float, bool]:
+    """模拟环境反馈"""
+    next_state = state + np.random.randn(len(state)) * 0.1
+    reward = random.choice([1, 0])
+    done = random.choice([True, False])
+    return next_state, reward, done
+
+# 竞争梯度下降算法
+def dueling_bandit_gradient_descent(agent: DQNAgent, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool):
+    """竞争梯度下降算法"""
+    current_params = [param.clone() for param in agent.model.parameters()]
+    perturbation = [torch.randn_like(param) * 0.1 for param in agent.model.parameters()]
+    new_params = [param + delta for param, delta in zip(current_params, perturbation)]
+    
+    for param, new_param in zip(agent.model.parameters(), new_params):
+        param.data.copy_(new_param.data)
+    
+    original_state_action_values = agent.model(torch.FloatTensor(state))
+    perturbed_state_action_values = agent.model(torch.FloatTensor(state))
+    
+    original_reward = original_state_action_values[action].item()
+    perturbed_reward = perturbed_state_action_values[action].item()
+    
+    if perturbed_reward > original_reward:
+        agent.remember(state, action, reward, next_state, done)
+        agent.replay(32)
+    else:
+        for param, original_param in zip(agent.model.parameters(), current_params):
+            param.data.copy_(original_param.data)
+
+# 示例使用
+if __name__ == "__main__":
+    EPISODES = 1000
+    state_size = 8
+    action_size = 4
+    batch_size = 32
+
+    agent = DQNAgent(state_size, action_size)
+    cumulative_rewards = []
+
+    for e in range(EPISODES):
+        # t1→t2阶段：利用初始化模型进行推荐推送，积累用户点击数据
+        user_features = np.random.rand(4)
+        context_features = np.random.rand(4)
+        state = preprocess_data(user_features, context_features)
+        state = np.reshape(state, [1, state_size])
+        total_reward = 0
+        for time in range(500):
+            action = agent.act(state)
+            next_state, reward, done = simulate_environment(state, action)
+            next_state = np.reshape(next_state, [1, state_size])
+            # t2时间点：利用积累的数据进行模型微更新
+            dueling_bandit_gradient_descent(agent, state, action, reward, next_state, done)
+            state = next_state
+            total_reward += reward
+            if done:
+                agent.update_target_model()
+                print(f"episode: {e}/{EPISODES}, score: {time}, total reward: {total_reward}, e: {agent.epsilon:.2}")
+                break
+        cumulative_rewards.append(total_reward)
+        if e % 10 == 0:
+            agent.save(f"dqn_model_{e}.pth")
+
+    plt.plot(cumulative_rewards)
+    plt.xlabel('Episode')
+    plt.ylabel('Cumulative Reward')
+    plt.title('Cumulative Rewards over Episodes')
+    plt.show()</code></pre>
+  </div>
+</body>
+</html>
+  

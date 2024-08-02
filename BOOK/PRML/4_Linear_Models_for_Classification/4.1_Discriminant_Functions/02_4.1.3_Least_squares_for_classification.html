@@ -1,0 +1,153 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.1.3 Least squares for classification</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_4.1.3_Least_squares_for_classification</h1>
+<pre><code>Lecture: 4_Linear_Models_for_Classification/4.1_Discriminant_Functions
+Content: 02_4.1.3_Least_squares_for_classification
+</code></pre>
+<h3>4.1.3 分类的最小二乘法</h3>
+<p>在《模式识别与机器学习》（PRML）一书的第4章中，Bishop博士详细介绍了线性分类模型的概念。第4.1节专注于判别函数，并在4.1.3节中讨论了分类问题中的最小二乘法。以下是对4.1.3节内容的详细分析。</p>
+<h4>最小二乘法应用于分类</h4>
+<p>在第3章中，我们讨论了参数的线性函数模型，并了解到通过最小化平方误差函数可以得到参数值的简单闭式解。因此，有理由尝试将相同的形式应用于分类问题。</p>
+<p>考虑一个具有 $ K $ 类的分类问题，目标向量 $ t $ 采用 1-of-K 二进制编码方案。在这种情况下，使用最小二乘法的一个理由是它可以近似给定输入向量的目标值的条件期望 $ E[t|x] $。对于二进制编码方案，这个条件期望由后验类别概率向量给出。然而，由于线性模型的灵活性有限，这些概率通常近似得很差，甚至可能超出 (0, 1) 的范围。</p>
+<p>每个类 $ C_k $ 由其线性模型描述，如下所示：</p>
+<p>$$ y_k(x) = \mathbf{w}<em k0="">k^T \mathbf{x} + w</em> $$</p>
+<p>其中 $ k = 1, \ldots, K $。我们可以使用向量表示将这些模型方便地组合在一起：</p>
+<p>$$ y(x) = \tilde{\mathbf{W}}^T \tilde{\mathbf{x}} $$</p>
+<p>其中 $ \tilde{\mathbf{W}} $ 是一个矩阵，其第 $ k $ 列包含 $ D+1 $ 维向量 $ \tilde{\mathbf{w}}<em k0="">k = (w</em>, \mathbf{w}_k^T)^T $， $ \tilde{\mathbf{x}} $ 是相应的扩展输入向量 $ (1, \mathbf{x}^T)^T $。</p>
+<h4>最小化平方误差函数</h4>
+<p>我们通过最小化平方误差函数来确定参数矩阵 $ \tilde{\mathbf{W}} $，如同在第3章中对回归所做的那样。考虑一个训练数据集 $ { \mathbf{x}_n, \mathbf{t}_n } $，其中 $ n = 1, \ldots, N $。定义矩阵 $ \mathbf{T} $，其第 $ n $ 行是向量 $ \mathbf{t}_n^T $，以及矩阵 $ \tilde{\mathbf{X}} $，其第 $ n $ 行是 $ \tilde{\mathbf{x}}_n^T $。平方误差函数可以写成：</p>
+<p>$$ E_D(\tilde{\mathbf{W}}) = \frac{1}{2} \mathrm{Tr} \left{ (\tilde{\mathbf{X}} \tilde{\mathbf{W}} - \mathbf{T})^T (\tilde{\mathbf{X}} \tilde{\mathbf{W}} - \mathbf{T}) \right} $$</p>
+<p>对 $ \tilde{\mathbf{W}} $ 求导并重排，可以得到 $ \tilde{\mathbf{W}} $ 的解形式：</p>
+<p>$$ \tilde{\mathbf{W}} = (\tilde{\mathbf{X}}^T \tilde{\mathbf{X}})^{-1} \tilde{\mathbf{X}}^T \mathbf{T} = \tilde{\mathbf{X}}^{\dagger} \mathbf{T} $$</p>
+<p>其中 $ \tilde{\mathbf{X}}^{\dagger} $ 是矩阵 $ \tilde{\mathbf{X}} $ 的伪逆。由此我们得到判别函数的形式：</p>
+<p>$$ y(x) = \tilde{\mathbf{W}}^T \tilde{\mathbf{x}} = \mathbf{T}^T (\tilde{\mathbf{X}}^{\dagger})^T \tilde{\mathbf{x}} $$</p>
+<h4>最小二乘法的缺陷</h4>
+<p>尽管最小二乘法给出了判别函数参数的精确闭式解，但它作为判别函数存在一些严重的问题。首先，最小二乘解对异常值缺乏鲁棒性，这在分类应用中也同样适用。此外，平方误差函数惩罚“过于正确”的预测，即那些在决策边界正确一侧距离较远的预测点，这可能导致分类边界的位置显著变化，如图4.4所示。</p>
+<p>最小二乘法的问题不仅仅是缺乏鲁棒性，还包括其在处理多类分类问题时表现不佳。图4.5展示了一个合成数据集，其中三类数据在二维输入空间（$ x_1, x_2 $）中分布良好，线性决策边界可以很好地分开这些类。然而，最小二乘解给出了糟糕的结果，只有很小的输入空间区域被分配给绿色类。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_4.1.3_Least_squares_for_classification
+
+"""
+Lecture: 4_Linear_Models_for_Classification/4.1_Discriminant_Functions
+Content: 02_4.1.3_Least_squares_for_classification
+"""
+
+import numpy as np
+from numpy.linalg import pinv
+from typing import Tuple
+
+class LeastSquaresClassifier:
+    """最小二乘分类器用于多类分类问题的类。
+    
+    该类实现了通过最小化平方误差来拟合线性判别函数 y_k(x) = w_k^T x + w_k0。
+    """
+    
+    def __init__(self):
+        self.weights = None
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
+        """拟合最小二乘分类器。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        y (np.ndarray): 标签数据，形状为 (n_samples,)
+        """
+        n_samples, n_features = X.shape
+        X_with_bias = np.hstack([np.ones((n_samples, 1)), X])
+        n_classes = len(np.unique(y))
+        
+        # 将标签转换为 1-of-K 编码
+        T = np.zeros((n_samples, n_classes))
+        for i in range(n_samples):
+            T[i, y[i]] = 1
+        
+        # 计算权重矩阵
+        self.weights = pinv(X_with_bias).dot(T)
+    
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """预测新数据的类别。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        
+        返回:
+        np.ndarray: 预测的类别，形状为 (n_samples,)
+        """
+        X_with_bias = np.hstack([np.ones((X.shape[0], 1)), X])
+        scores = X_with_bias.dot(self.weights)
+        return np.argmax(scores, axis=1)
+    
+    def decision_function(self, X: np.ndarray) -> np.ndarray:
+        """计算判别函数的值。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        
+        返回:
+        np.ndarray: 判别函数的值，形状为 (n_samples, n_classes)
+        """
+        X_with_bias = np.hstack([np.ones((X.shape[0], 1)), X])
+        return X_with_bias.dot(self.weights)
+    
+    def score(self, X: np.ndarray, y: np.ndarray) -> float:
+        """计算模型的准确率。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        y (np.ndarray): 标签数据，形状为 (n_samples,)
+        
+        返回:
+        float: 准确率
+        """
+        predictions = self.predict(X)
+        return np.mean(predictions == y)
+
+# 数据生成和模型测试
+def generate_data(n_samples: int = 100, n_classes: int = 3) -> Tuple[np.ndarray, np.ndarray]:
+    """生成多类分类问题的模拟数据。
+    
+    参数:
+    n_samples (int): 样本数量
+    n_classes (int): 类别数量
+    
+    返回:
+    Tuple[np.ndarray, np.ndarray]: 输入数据和标签
+    """
+    np.random.seed(0)
+    X = np.random.randn(n_samples, 2)
+    y = np.random.randint(n_classes, size=n_samples)
+    return X, y
+
+def main():
+    """主函数，用于测试最小二乘分类器。
+    """
+    X, y = generate_data(200, 3)
+    lsc = LeastSquaresClassifier()
+    lsc.fit(X, y)
+    accuracy = lsc.score(X, y)
+    print(f"模型的准确率为: {accuracy * 100:.2f}%")
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

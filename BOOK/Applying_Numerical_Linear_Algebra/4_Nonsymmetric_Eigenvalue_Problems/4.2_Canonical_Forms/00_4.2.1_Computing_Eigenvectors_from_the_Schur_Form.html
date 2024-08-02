@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.2.1 Computing Eigenvectors from the Schur Form</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_4.2.1_Computing_Eigenvectors_from_the_Schur_Form</h1>
+<pre><code>Lecture: 4_Nonsymmetric_Eigenvalue_Problems/4.2_Canonical_Forms
+Content: 00_4.2.1_Computing_Eigenvectors_from_the_Schur_Form
+</code></pre>
+<h3>计算Schur形式的特征向量（极其详细）</h3>
+<h4>引言</h4>
+<p>Schur分解是求解特征值问题的一种有效方法，特别是对于非对称矩阵。通过将矩阵转换为Schur形式，我们可以简化特征值和特征向量的计算过程。Schur形式是一个上三角矩阵，其中对角线元素是特征值。计算Schur形式的特征向量需要解决一系列三角系统，这使得计算过程更加简洁和高效。</p>
+<h4>Schur分解的定义</h4>
+<p>对于任意方阵 $ A $，存在一个单位正交矩阵 $ Q $，使得 $ Q^<em>AQ = T $，其中 $ T $ 是上三角矩阵。此时，矩阵 $ T $ 的对角线元素即为矩阵 $ A $ 的特征值。形式上表示为：
+$$ A = QTQ^</em> $$</p>
+<h4>Schur形式中的特征向量计算</h4>
+<p>假设我们已经将矩阵 $ A $ 转换为Schur形式 $ T $，即 $ Q^*AQ = T $。为了计算特征向量，我们需要解决方程 $ Tx = \lambda x $，其中 $ \lambda $ 是特征值，$ x $ 是特征向量。具体步骤如下：</p>
+<ol>
+<li>
+<p><strong>矩阵划分</strong>
+将上三角矩阵 $ T $ 划分为三个块：
+$$
+T = \begin{bmatrix}
+T_{11} &amp; T_{12} &amp; T_{13} \
+0 &amp; \lambda &amp; T_{23} \
+0 &amp; 0 &amp; T_{33}
+\end{bmatrix}
+$$
+其中，$ T_{11} $ 是 $(i-1) \times (i-1)$ 矩阵，$ T_{22} = \lambda $ 是 $ 1 \times 1 $ 矩阵，$ T_{33} $ 是 $(n-i) \times (n-i)$ 矩阵。</p>
+</li>
+<li bmatrix="">
+<h1><strong>构建方程</strong>
+写出矩阵方程 $ (T - \lambda I)x = 0 $：
+$$
+\begin{bmatrix}
+T_{11} - \lambda I &amp; T_{12} &amp; T_{13} \
+0 &amp; 0 &amp; T_{23} \
+0 &amp; 0 &amp; T_{33} - \lambda I
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \
+x_2 \
+x_3
+\end</h1>
+<p>\begin{bmatrix}
+0 \
+0 \
+0
+\end{bmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>求解三角系统</strong>
+由于 $ \lambda $ 是简单的，$ T_{11} - \lambda I $ 和 $ T_{33} - \lambda I $ 都是非奇异的，因此 $ (T_{33} - \lambda I)x_3 = 0 $ 意味着 $ x_3 = 0 $。接下来，解 $ (T_{11} - \lambda I)x_1 = -T_{12}x_2 $：</p>
+<ul>
+<li>选择 $ x_2 = 1 $</li>
+<li>计算 $ x_1 = -(T_{11} - \lambda I)^{-1}T_{12} $</li>
+</ul>
+<p>最终特征向量为：
+$$
+x = \begin{bmatrix}
+(T_{11} - \lambda I)^{-1}T_{12} \
+1 \
+0
+\end{bmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>实Schur形式中的复特征向量</strong>
+对于实Schur形式，计算复特征向量需要处理复数算术。实Schur形式是拟三角矩阵，其中复特征值以2x2块形式存在。尽管计算过程较复杂，但通过适当的数值方法（如LAPACK中的strevc子程序），可以实现有效的计算。</p>
+</li>
+</ol>
+<h4>例子解析</h4>
+<p>考虑一个3x3矩阵 $ A $，通过Schur分解得到其上三角矩阵 $ T $ 和单位正交矩阵 $ Q $：
+$$ A = QTQ^* $$</p>
+<p>假设矩阵 $ T $ 为：
+$$
+T = \begin{bmatrix}
+2 &amp; -1 &amp; 0 \
+0 &amp; 3 &amp; 4 \
+0 &amp; 0 &amp; 5
+\end{bmatrix}
+$$</p>
+<p>我们选择特征值 $ \lambda = 3 $ 来计算特征向量。</p>
+<ol>
+<li bmatrix="">
+<h1><strong>构建方程</strong>
+$$
+(T - 3I)x =
+\begin{bmatrix}
+-1 &amp; -1 &amp; 0 \
+0 &amp; 0 &amp; 4 \
+0 &amp; 0 &amp; 2
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \
+x_2 \
+x_3
+\end</h1>
+<p>\begin{bmatrix}
+0 \
+0 \
+0
+\end{bmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>求解三角系统</strong></p>
+<ul>
+<li>对于 $ (T_{33} - \lambda I)x_3 = 0 $，即 $ 2x_3 = 0 $，得到 $ x_3 = 0 $</li>
+<li>对于 $ (T_{11} - \lambda I)x_1 = -T_{12}x_2 $，即 $ -1x_1 - x_2 = 0 $，得到 $ x_1 = -x_2 $</li>
+</ul>
+</li>
+<li>
+<p><strong>确定特征向量</strong>
+选择 $ x_2 = 1 $，得到特征向量：
+$$
+x = \begin{bmatrix}
+-1 \
+1 \
+0
+\end{bmatrix}
+$$</p>
+</li>
+</ol>
+<p>因此，特征向量为 $ Qx $。</p>
+<h3>结论</h3>
+<p>通过Schur分解，可以将矩阵转换为上三角形式，从而简化特征值和特征向量的计算。通过求解一系列三角系统，我们可以有效地计算特征向量。尽管处理实Schur形式中的复特征向量较复杂，但通过适当的数值方法，可以实现准确计算。这种方法不仅提高了计算效率，还增强了数值稳定性，使其成为求解特征值问题的有效工具。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_4.2.1_Computing_Eigenvectors_from_the_Schur_Form
+
+"""
+Lecture: 4_Nonsymmetric_Eigenvalue_Problems/4.2_Canonical_Forms
+Content: 00_4.2.1_Computing_Eigenvectors_from_the_Schur_Form
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

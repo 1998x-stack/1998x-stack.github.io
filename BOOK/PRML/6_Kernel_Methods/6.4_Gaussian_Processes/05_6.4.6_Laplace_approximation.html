@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>6.4.6 Laplace approximation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>05_6.4.6_Laplace_approximation</h1>
+<pre><code>Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 05_6.4.6_Laplace_approximation
+</code></pre>
+<h2>详细分析第6.4.6节：拉普拉斯近似</h2>
+<h3>引言</h3>
+<p>拉普拉斯近似是一种用于逼近复杂概率分布的方法，尤其在贝叶斯推断中被广泛应用。在高斯过程（Gaussian Processes, GPs）和其他非线性模型中，后验分布通常是非高斯的，拉普拉斯近似通过将后验分布近似为高斯分布，从而简化计算和推断。第6.4.6节详细介绍了拉普拉斯近似的原理和应用。</p>
+<h3>拉普拉斯近似的基本原理</h3>
+<p>拉普拉斯近似通过在后验分布的模式（即最大后验点，MAP）处进行二阶泰勒展开，将后验分布近似为高斯分布。具体步骤如下：</p>
+<ol>
+<li><strong>找到后验分布的模式</strong> $ w_{MAP} $：即最大化后验概率密度函数。</li>
+<li><strong>计算Hessian矩阵</strong> $ H $：这是对数后验概率密度函数的二阶导数矩阵。</li>
+<li><strong>构建高斯近似</strong> $ q(w) $：以 $ w_{MAP} $ 为均值，Hessian矩阵的逆为协方差矩阵。</li>
+</ol>
+<h4>数学表示</h4>
+<p>后验分布 $ p(w|D) $ 可以表示为：
+$$ p(w|D) \propto p(D|w) p(w) $$
+其中，$ p(D|w) $ 是似然函数，$ p(w) $ 是先验分布。</p>
+<p>最大化后验对数，可以得到 $ w_{MAP} $：
+$$ w_{MAP} = \arg\max \ln p(w|D) = \arg\max \left( \ln p(D|w) + \ln p(w) \right) $$</p>
+<p>计算Hessian矩阵：
+$$ H = -\nabla\nabla \ln p(w|D) |<em>{w=w</em>{MAP}} $$</p>
+<p>构建高斯近似：
+$$ q(w) = \mathcal{N}(w_{MAP}, H^{-1}) $$</p>
+<h3>应用场景</h3>
+<h4>高斯过程回归</h4>
+<p>在高斯过程回归中，拉普拉斯近似用于逼近后验分布。给定训练数据集 $ {(x_n, y_n)}_{n=1}^{N} $，后验分布通常是非高斯的。通过拉普拉斯近似，可以将其近似为高斯分布，简化预测和不确定性估计的计算。</p>
+<h4>二分类问题</h4>
+<p>对于二分类问题，目标变量 $ y $ 取值为 ${0, 1}$。引入潜在函数 $ f(x) $，并通过sigmoid函数将其映射到类别概率。拉普拉斯近似用于逼近潜在函数的后验分布。</p>
+<h3>实例分析</h3>
+<p>假设我们有一个一维回归问题，输入变量为 $ x $，目标变量为 $ y $。生成数据如下：
+$$ x_i \sim \mathcal{U}(0, 10) $$
+$$ y_i = \sin(x_i) + \epsilon_i $$
+其中，$ \epsilon_i \sim \mathcal{N}(0, 0.1) $。</p>
+<h4>数据可视化</h4>
+<p>绘制输入 $ x $ 和目标 $ y $ 的散点图。</p>
+<h4>模型训练</h4>
+<ol>
+<li><strong>构建核矩阵</strong> $ K $。</li>
+<li><strong>找到后验分布的模式</strong> $ f_{MAP} $。</li>
+<li><strong>计算Hessian矩阵</strong> $ H $。</li>
+<li><strong>构建高斯近似</strong> $ q(f|X, y) $。</li>
+</ol>
+<h4>预测</h4>
+<p>对于新的输入 $ x_* $，预测分布为：
+$$ p(y_<em>|x_</em>, X, y) \approx \int \sigma(f_<em>) q(f_</em>) df_* $$
+其中，$ f_* $ 是新的输入点的潜在函数值。该积分可以通过数值方法或蒙特卡罗采样近似计算。</p>
+<h3>优势与局限</h3>
+<h4>优势</h4>
+<ul>
+<li><strong>计算简化</strong>：通过高斯近似简化了复杂后验分布的计算。</li>
+<li><strong>通用性</strong>：适用于多种贝叶斯模型和应用场景。</li>
+</ul>
+<h4>局限</h4>
+<ul>
+<li><strong>精度限制</strong>：对于高度非线性的后验分布，拉普拉斯近似的精度可能不够。</li>
+<li><strong>计算成本</strong>：Hessian矩阵的计算和求逆可能会带来较高的计算成本。</li>
+</ul>
+<h3>小结</h3>
+<p>拉普拉斯近似提供了一种有效的方法来逼近复杂的后验分布，使得贝叶斯推断在实际应用中变得更加可行。它在高斯过程回归、分类问题等多个领域都有广泛的应用。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 05_6.4.6_Laplace_approximation
+
+"""
+Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 05_6.4.6_Laplace_approximation
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

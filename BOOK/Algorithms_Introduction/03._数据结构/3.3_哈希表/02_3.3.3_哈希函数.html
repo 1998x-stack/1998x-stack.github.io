@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3.3 哈希函数</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_3.3.3_哈希函数</h1>
+<pre><code>Lecture: 03._数据结构/3.3_哈希表
+Content: 02_3.3.3_哈希函数
+</code></pre>
+<h3>3.3.3 哈希函数</h3>
+<h4>哈希函数的定义与重要性</h4>
+<p>哈希函数是哈希表中最关键的部分，它将输入的键值映射到一个较小的整数范围内，从而确定该键值在哈希表中的位置。理想的哈希函数应当尽可能均匀地分布输入值，以减少冲突的发生。</p>
+<h4>哈希函数的性质</h4>
+<p>一个好的哈希函数应满足以下几个条件：</p>
+<ol>
+<li><strong>均匀分布</strong>：哈希函数应能将输入的键均匀地分布在所有可能的输出值上，从而最大限度地减少冲突。</li>
+<li><strong>确定性</strong>：对于相同的输入，哈希函数每次都应返回相同的输出。</li>
+<li><strong>高效计算</strong>：哈希函数的计算应尽可能快速，以保证哈希表操作的整体效率。</li>
+</ol>
+<h4>常见的哈希函数设计方法</h4>
+<h5>1. 除法散列法（Division Method）</h5>
+<p>除法散列法通过将键值 $ k $ 对哈希表大小 $ m $ 取模来计算哈希值，即 $ h(k) = k \mod m $。这种方法的优点在于计算简单，缺点是当 $ m $ 选择不当时，可能会导致较多的冲突。</p>
+<h5>2. 乘法散列法（Multiplication Method）</h5>
+<p>乘法散列法通过以下步骤计算哈希值：</p>
+<ol>
+<li>将键值 $ k $ 乘以常数 $ A $（$ 0 &lt; A &lt; 1 $），取其小数部分；</li>
+<li>将结果乘以哈希表大小 $ m $，取整。</li>
+</ol>
+<p>具体公式为 $ h(k) = \lfloor m (kA \mod 1) \rfloor $。这种方法对 $ m $ 的选择不敏感，可以避免除法散列法中的一些问题。</p>
+<h4>通用散列法（Universal Hashing）</h4>
+<p>通用散列法是一类具有随机特性的哈希函数设计方法，通过选择一组哈希函数族中的一个函数来进行哈希映射，从而减少最坏情况下的冲突概率。其主要思想是随机化哈希函数，使得输入数据的概率分布不再影响哈希函数的表现。</p>
+<h5>1. 基于数论的方法</h5>
+<p>选择一个足够大的素数 $ p $，使得所有可能的键 $ k $ 都落在 $ 0 $ 到 $ p-1 $ 的范围内。定义哈希函数 $ h_{ab}(k) = ((ak + b) \mod p) \mod m $，其中 $ a $ 和 $ b $ 是随机选择的常数，$ p $ 是大于哈希表大小 $ m $ 的素数。</p>
+<h5>2. 乘法-移位方法（Multiply-Shift Method）</h5>
+<p>这是一种新的、更高效的通用散列方法。选择一个奇数 $ a $，定义哈希函数 $ h_a(k) = (a \cdot k \mod 2^w) \gg (w - r) $，其中 $ w $ 是字长，$ r $ 是输出哈希值的位数。这种方法在计算效率和均匀分布性方面表现优异。</p>
+<h4>密码学散列法（Cryptographic Hashing）</h4>
+<p>密码学散列函数是一类设计用于密码学应用的复杂伪随机函数，具有强大的抗碰撞能力。常见的密码学散列函数如 SHA-256，不仅在密码学领域广泛应用，也可用于构建哈希表。其主要特点是对输入的微小变化产生完全不同的输出，从而有效避免碰撞。</p>
+<h4>练习题</h4>
+<ul>
+<li><strong>练习 11.3-1</strong>：在长度为 $ n $ 的链表中搜索，每个元素包含一个键 $ k $ 以及哈希值 $ h(k) $。如何利用哈希值来加速搜索过程？</li>
+<li><strong>练习 11.3-2</strong>：描述如何使用除法法对字符字符串进行哈希处理，而不超出常数数量的存储空间。</li>
+<li><strong>练习 11.3-3</strong>：证明在某些情况下，字符串的重新排列可能导致相同的哈希值，并给出这种情况下的不良应用示例。</li>
+<li><strong>练习 11.3-4</strong>：计算特定哈希函数下的一组键的哈希值。</li>
+</ul>
+<h3>总结</h3>
+<p>哈希函数在哈希表中扮演着至关重要的角色，其设计直接影响哈希表的性能。通过选择合适的哈希函数，可以有效减少冲突，提高哈希表操作的效率。不同的哈希函数设计方法，如除法散列法、乘法散列法、通用散列法和密码学散列法，各有优缺点，需要根据具体应用场景选择合适的方法。</p>
+<p>参考文献：</p>
+<ul>
+<li>《Introduction to Algorithms》</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_3.3.3_哈希函数
+
+"""
+Lecture: 03._数据结构/3.3_哈希表
+Content: 02_3.3.3_哈希函数
+"""
+
+import numpy as np
+from typing import Any, List, Optional
+
+class HashTable:
+    """哈希表类，使用开放地址法解决碰撞。
+
+    Attributes:
+        size: 哈希表的大小。
+        table: 存储哈希表元素的数组。
+    """
+    
+    def __init__(self, size: int) -> None:
+        """初始化哈希表。
+
+        Args:
+            size: 哈希表的大小。
+        """
+        self.size = size
+        self.table = np.full(size, None)
+
+    def _hash_function(self, key: int) -> int:
+        """计算哈希值。
+
+        Args:
+            key: 键值。
+
+        Returns:
+            对应的哈希值。
+        """
+        return key % self.size
+
+    def _probe(self, key: int, i: int) -> int:
+        """线性探查函数。
+
+        Args:
+            key: 键值。
+            i: 探查次数。
+
+        Returns:
+            探查位置的索引。
+        """
+        return (self._hash_function(key) + i) % self.size
+
+    def insert(self, key: int, value: Any) -> None:
+        """插入键值对到哈希表中。
+
+        Args:
+            key: 键值。
+            value: 要插入的值。
+
+        Raises:
+            Exception: 当哈希表满时抛出异常。
+        """
+        for i in range(self.size):
+            index = self._probe(key, i)
+            if self.table[index] is None or self.table[index] == "DELETED":
+                self.table[index] = (key, value)
+                print(f"插入: 键 = {key}, 值 = {value}, 位置 = {index}")
+                return
+        raise Exception("哈希表已满，无法插入新元素。")
+
+    def search(self, key: int) -> Optional[Any]:
+        """在哈希表中查找键对应的值。
+
+        Args:
+            key: 要查找的键值。
+
+        Returns:
+            找到的值或None。
+        """
+        for i in range(self.size):
+            index = self._probe(key, i)
+            if self.table[index] is None:
+                return None
+            if self.table[index][0] == key:
+                print(f"查找: 键 = {key}, 值 = {self.table[index][1]}, 位置 = {index}")
+                return self.table[index][1]
+        return None
+
+    def delete(self, key: int) -> None:
+        """从哈希表中删除键值对。
+
+        Args:
+            key: 要删除的键值。
+        """
+        for i in range(self.size):
+            index = self._probe(key, i)
+            if self.table[index] is None:
+                return
+            if self.table[index][0] == key:
+                self.table[index] = "DELETED"
+                print(f"删除: 键 = {key}, 位置 = {index}")
+                return
+
+def main():
+    """主函数，测试哈希表的插入、查找和删除操作。"""
+    hash_table = HashTable(size=10)
+
+    # 插入测试数据
+    test_data = [(5, "apple"), (15, "banana"), (25, "cherry"), (35, "date")]
+    for key, value in test_data:
+        hash_table.insert(key, value)
+
+    # 查找测试数据
+    search_keys = [5, 15, 25, 35, 45]
+    for key in search_keys:
+        result = hash_table.search(key)
+        if result is None:
+            print(f"键 {key} 未找到。")
+        else:
+            print(f"键 {key} 对应的值是 {result}。")
+
+    # 删除测试数据
+    delete_keys = [15, 25]
+    for key in delete_keys:
+        hash_table.delete(key)
+
+    # 再次查找测试数据
+    for key in search_keys:
+        result = hash_table.search(key)
+        if result is None:
+            print(f"键 {key} 未找到。")
+        else:
+            print(f"键 {key} 对应的值是 {result}。")
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

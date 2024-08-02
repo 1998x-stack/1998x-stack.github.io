@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>10-same binary tree</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>判断二叉树是否相同？判断一棵树是不是另一棵树的子树？</p>
+</blockquote>
+<h3>判断二叉树是否相同</h3>
+<p>判断两棵二叉树是否相同，即判断它们的结构和节点值是否完全一致。可以使用递归的方法来实现。</p>
+<h4>递归方法</h4>
+<p><strong>算法步骤</strong>：</p>
+<ol>
+<li>如果两棵树都为空，则它们相同。</li>
+<li>如果一棵树为空，另一棵树不为空，则它们不同。</li>
+<li>如果两棵树的根节点值不同，则它们不同。</li>
+<li>递归判断左子树和右子树是否相同。</li>
+</ol>
+<p><strong>实现代码</strong>：</p>
+<pre><code class="language-python">class TreeNode:
+    def __init__(self, value=0, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+def is_same_tree(p, q):
+    if not p and not q:
+        return True
+    if not p or not q:
+        return False
+    if p.value != q.value:
+        return False
+    return is_same_tree(p.left, q.left) and is_same_tree(p.right, q.right)
+
+# 示例使用
+p = TreeNode(1, TreeNode(2), TreeNode(3))
+q = TreeNode(1, TreeNode(2), TreeNode(3))
+print(is_same_tree(p, q))  # 输出: True
+</code></pre>
+<h3>判断一棵树是否是另一棵树的子树</h3>
+<p>判断二叉树 <code>t</code> 是否是二叉树 <code>s</code> 的子树，可以使用递归和辅助函数的方法。</p>
+<h4>递归方法</h4>
+<p><strong>算法步骤</strong>：</p>
+<ol>
+<li>如果 <code>t</code> 为空，则 <code>t</code> 是 <code>s</code> 的子树。</li>
+<li>如果 <code>s</code> 为空，则 <code>t</code> 不是 <code>s</code> 的子树。</li>
+<li>判断 <code>s</code> 和 <code>t</code> 是否相同。</li>
+<li>递归判断 <code>t</code> 是否是 <code>s</code> 的左子树的子树。</li>
+<li>递归判断 <code>t</code> 是否是 <code>s</code> 的右子树的子树。</li>
+</ol>
+<p><strong>实现代码</strong>：</p>
+<pre><code class="language-python">def is_subtree(s, t):
+    if not t:
+        return True
+    if not s:
+        return False
+    if is_same_tree(s, t):
+        return True
+    return is_subtree(s.left, t) or is_subtree(s.right, t)
+
+# 示例使用
+s = TreeNode(3, TreeNode(4, TreeNode(1), TreeNode(2)), TreeNode(5))
+t = TreeNode(4, TreeNode(1), TreeNode(2))
+print(is_subtree(s, t))  # 输出: True
+</code></pre>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Check if two trees are identical</strong>：</p>
+<ul>
+<li>详细介绍了判断两棵二叉树是否相同的方法和实现。</li>
+<li><a href="https://www.geeksforgeeks.org/write-c-code-to-determine-if-two-trees-are-identical/">链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Problem - Same Tree</strong>：</p>
+<ul>
+<li>提供了关于判断两棵二叉树是否相同的详细描述和解决方案。</li>
+<li><a href="https://leetcode.com/problems/same-tree/">LeetCode链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>GeeksforGeeks - Check if a binary tree is subtree of another binary tree</strong>：</p>
+<ul>
+<li>详细介绍了判断一棵树是否是另一棵树的子树的方法和实现。</li>
+<li><a href="https://www.geeksforgeeks.org/check-if-a-binary-tree-is-subtree-of-another-binary-tree/">链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

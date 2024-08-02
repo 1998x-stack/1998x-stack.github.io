@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>Finding boundaries</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>详细展开 04_边界检测 (04_Hough_Transform)</h3>
+<h4>背景介绍</h4>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>解释边界检测的背景和重要性。</li>
+<li>强调其在图像处理中的作用。</li>
+</ol>
+<p><strong>解释：</strong></p>
+<p>边界检测（Finding Boundaries）是指在图像中识别并标记物体边界的过程。它在图像处理和计算机视觉中非常重要，尤其是在对象检测、图像分割和形状识别中。通过边界检测，我们可以提取图像中的重要特征，提高图像处理算法的鲁棒性和精度。</p>
+<h4>边界检测的定义和数学原理</h4>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>介绍边界检测的定义。</li>
+<li>说明其基本原理和算法步骤。</li>
+</ol>
+<p><strong>解释：</strong></p>
+<p><strong>边界检测：</strong> 边界检测算法通过识别图像中像素值变化显著的区域来确定边界。常见的边界检测方法包括Sobel算子、Canny边缘检测和Laplacian算子等。</p>
+<p><strong>Canny边缘检测：</strong> Canny边缘检测是一种多阶段算法，通过以下步骤检测边界：</p>
+<ol>
+<li>高斯平滑：使用高斯滤波器平滑图像，减少噪声。</li>
+<li>计算梯度：计算图像中每个像素的梯度强度和方向。</li>
+<li>非极大值抑制：消除梯度幅值图中的非边缘点。</li>
+<li>双阈值处理：应用双阈值检测强边缘和弱边缘。</li>
+<li>边缘连接：通过连接强边缘和弱边缘来形成最终的边缘。</li>
+</ol>
+<p>数学上，图像 $ I(x, y) $ 的梯度可以表示为：</p>
+<p>$$ G_x = \frac{\partial I}{\partial x}, \quad G_y = \frac{\partial I}{\partial y} $$</p>
+<p>梯度幅值和方向可以表示为：</p>
+<p>$$ G = \sqrt{G_x^2 + G_y^2}, \quad \theta = \arctan\left(\frac{G_y}{G_x}\right) $$</p>
+<h4>边界检测的应用</h4>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>讨论边界检测在不同图像处理任务中的应用。</li>
+<li>说明如何根据任务的特点选择合适的边界检测方法。</li>
+</ol>
+<p><strong>解释：</strong></p>
+<p>边界检测在图像处理的许多任务中有广泛的应用。例如，在对象检测中，可以通过检测对象的边界来定位对象；在图像分割中，可以通过边界检测将图像分割成不同的区域；在形状识别中，可以通过边界检测提取形状特征，从而提高识别精度。</p>
+<h3>实现边界检测的方法的代码示例</h3>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>使用 Numpy 和 Scipy 实现边界检测的方法。</li>
+<li>演示如何在实际应用中使用这些方法提高图像处理效果。</li>
+</ol>
+<p><strong>代码：</strong></p>
+<pre><code class="language-python">import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+def canny_edge_detection(image: np.ndarray, low_threshold: int, high_threshold: int) -&gt; np.ndarray:
+    ```Canny边缘检测
+    
+    Args:
+        image (np.ndarray): 输入图像
+        low_threshold (int): 低阈值
+        high_threshold (int): 高阈值
+    
+    Returns:
+        np.ndarray: 边缘检测结果图像
+    ```
+    blurred_image = cv2.GaussianBlur(image, (5, 5), 1.4)
+    edges = cv2.Canny(blurred_image, low_threshold, high_threshold)
+    return edges
+
+def plot_edge_detection(image: np.ndarray, edges: np.ndarray) -&gt; None:
+    ```显示边缘检测结果
+    
+    Args:
+        image (np.ndarray): 输入图像
+        edges (np.ndarray): 边缘检测结果图像
+    ```
+    plt.figure(figsize=(12, 6))
+    plt.subplot(121)
+    plt.imshow(image, cmap='gray')
+    plt.title(&quot;Original Image&quot;)
+    plt.subplot(122)
+    plt.imshow(edges, cmap='gray')
+    plt.title(&quot;Edge Detection&quot;)
+    plt.show()
+
+# 示例数据
+image = cv2.imread('path/to/image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# 进行边缘检测
+edges = canny_edge_detection(image, low_threshold=50, high_threshold=150)
+
+# 显示结果
+plot_edge_detection(image, edges)
+</code></pre>
+<h4>多角度分析边界检测的方法应用</h4>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>从多个角度分析边界检测的方法应用。</li>
+<li>通过自问自答方式深入探讨这些方法的不同方面。</li>
+</ol>
+<p><strong>解释：</strong></p>
+<p><strong>角度一：数据表示</strong>
+问：边界检测如何提高图像特征表示的能力？
+答：边界检测可以准确地提取图像中的边缘信息，使得图像特征表示更加精确，提高后续处理和分析的效果。</p>
+<p><strong>角度二：性能优化</strong>
+问：如何优化边界检测计算以提高计算效率？
+答：可以使用高效的滤波器和并行计算技术来加速边界检测的计算，从而提高处理大规模图像数据的效率。</p>
+<p><strong>角度三：应用领域</strong>
+问：边界检测在不同应用领域有哪些具体应用？
+答：在计算机视觉中，边界检测广泛应用于对象检测、图像分割、形状识别等任务中，是许多图像处理算法的基础操作。</p>
+<h4>总结</h4>
+<p><strong>步骤：</strong></p>
+<ol>
+<li>总结边界检测在图像处理中的重要性。</li>
+<li>强调掌握这些技术对构建高效图像处理模型的关键作用。</li>
+</ol>
+<p><strong>解释：</strong></p>
+<p>边界检测是图像处理中的重要工具，通过识别图像中的边界，可以实现多种图像处理效果。掌握边界检测技术对于构建高效、可靠的计算机视觉模型具有重要意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># Finding boundaries
+
+"""
+Lecture: 04_Hough_Transform
+Content: Finding boundaries
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

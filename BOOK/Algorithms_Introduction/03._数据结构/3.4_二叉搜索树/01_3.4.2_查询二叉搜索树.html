@@ -1,0 +1,320 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.4.2 查询二叉搜索树</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_3.4.2_查询二叉搜索树</h1>
+<pre><code>Lecture: 03._数据结构/3.4_二叉搜索树
+Content: 01_3.4.2_查询二叉搜索树
+</code></pre>
+<h3>3.4.2 查询二叉搜索树</h3>
+<h4>查询操作的概述</h4>
+<p>在二叉搜索树（BST）中，查询操作主要包括查找（Search）、最小值（Minimum）、最大值（Maximum）、前驱（Predecessor）和后继（Successor）。这些操作利用BST的性质，即左子树的所有节点值小于根节点，右子树的所有节点值大于根节点，从而能够高效地执行。</p>
+<h4>查找（Search）</h4>
+<p><strong>查找操作</strong>的目标是在BST中找到一个具有给定键值的节点。查找从根节点开始，根据要查找的键值与当前节点的键值进行比较：</p>
+<ol>
+<li>如果键值等于当前节点的键值，则查找成功。</li>
+<li>如果键值小于当前节点的键值，则递归地在左子树中查找。</li>
+<li>如果键值大于当前节点的键值，则递归地在右子树中查找。</li>
+</ol>
+<p>查找操作的时间复杂度为 $O(h)$，其中 $h$ 是树的高度。在最坏情况下，树的高度为 $O(n)$（当树退化为链表时），而在最佳情况下（完全平衡的树），高度为 $O(\log n)$。</p>
+<h4>最小值（Minimum）</h4>
+<p><strong>最小值操作</strong>用于找到BST中的最小节点，即键值最小的节点。由于BST的性质，最小节点位于树的最左下角，因此最小值操作沿着左子树一直向下遍历，直到到达最左的叶节点。</p>
+<ol>
+<li>从根节点开始。</li>
+<li>递归地访问当前节点的左子节点，直到左子节点为空为止。</li>
+</ol>
+<p>最小值操作的时间复杂度同样为 $O(h)$，其中 $h$ 是树的高度。</p>
+<h4>最大值（Maximum）</h4>
+<p><strong>最大值操作</strong>与最小值操作类似，但它用于找到BST中的最大节点，即键值最大的节点。最大值操作沿着右子树一直向下遍历，直到到达最右的叶节点。</p>
+<ol>
+<li>从根节点开始。</li>
+<li>递归地访问当前节点的右子节点，直到右子节点为空为止。</li>
+</ol>
+<p>最大值操作的时间复杂度也为 $O(h)$，其中 $h$ 是树的高度。</p>
+<h4>前驱（Predecessor）</h4>
+<p><strong>前驱操作</strong>用于找到某个节点在BST中的前驱节点，即键值小于该节点且最大的节点。前驱操作分为两种情况处理：</p>
+<ol>
+<li>如果节点的左子树不为空，则前驱节点是左子树中的最大节点。</li>
+<li>如果节点的左子树为空，则前驱节点是其祖先节点中比该节点小的最大节点，即找到第一个左孩子是该节点祖先的节点。</li>
+</ol>
+<p>前驱操作的时间复杂度为 $O(h)$。</p>
+<h4>后继（Successor）</h4>
+<p><strong>后继操作</strong>用于找到某个节点在BST中的后继节点，即键值大于该节点且最小的节点。后继操作分为两种情况处理：</p>
+<ol>
+<li>如果节点的右子树不为空，则后继节点是右子树中的最小节点。</li>
+<li>如果节点的右子树为空，则后继节点是其祖先节点中比该节点大的最小节点，即找到第一个右孩子是该节点祖先的节点。</li>
+</ol>
+<p>后继操作的时间复杂度为 $O(h)$。</p>
+<h4>查询操作的实际应用</h4>
+<p>查询操作在许多实际应用中都非常重要：</p>
+<ol>
+<li><strong>数据库系统</strong>：BST用于实现索引结构，使得能够高效地执行查找和范围查询操作。</li>
+<li><strong>文件系统</strong>：在文件系统中，BST用于组织文件目录，支持快速的文件查找操作。</li>
+<li><strong>网络路由</strong>：在网络路由中，BST用于存储路由表，支持快速的路由查找操作。</li>
+</ol>
+<h4>性能优化</h4>
+<p>为了提高BST的查询性能，通常需要保持树的平衡，即确保树的高度尽可能接近 $\log n$。常用的平衡二叉搜索树包括：</p>
+<ol>
+<li><strong>AVL树</strong>：通过在插入和删除操作后进行旋转操作，确保每个节点的两个子树高度差不超过1。</li>
+<li><strong>红黑树</strong>：通过颜色标记和旋转操作，确保树的高度为 $O(\log n)$。</li>
+</ol>
+<p>这些平衡树在保证查询操作高效性的同时，也确保了插入和删除操作的高效性。</p>
+<h3>总结</h3>
+<p>查询操作是二叉搜索树中最基本的操作之一，其高效性依赖于树的高度。通过保持树的平衡，可以显著提高查询操作的性能。理解和掌握BST的查询操作，对于实现高效的数据结构和算法具有重要意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_3.4.2_查询二叉搜索树
+
+"""
+Lecture: 03._数据结构/3.4_二叉搜索树
+Content: 01_3.4.2_查询二叉搜索树
+"""
+
+from typing import Optional, Any
+
+class TreeNode:
+    """树节点类，表示二叉搜索树的一个节点。
+    
+    Attributes:
+        key: 节点的键值。
+        value: 节点的值。
+        left: 左子节点。
+        right: 右子节点。
+    """
+    
+    def __init__(self, key: int, value: Any) -> None:
+        self.key = key
+        self.value = value
+        self.left: Optional['TreeNode'] = None
+        self.right: Optional['TreeNode'] = None
+
+
+class BinarySearchTree:
+    """二叉搜索树类，提供查找、最小值、最大值、前驱和后继操作。
+    
+    Attributes:
+        root: 树的根节点。
+    """
+    
+    def __init__(self) -> None:
+        self.root: Optional[TreeNode] = None
+
+    def insert(self, key: int, value: Any) -> None:
+        """插入键值对到二叉搜索树中。
+        
+        Args:
+            key: 键值。
+            value: 对应的值。
+        """
+        if self.root is None:
+            self.root = TreeNode(key, value)
+        else:
+            self._insert_recursive(self.root, key, value)
+    
+    def _insert_recursive(self, node: TreeNode, key: int, value: Any) -> None:
+        """递归插入节点到二叉搜索树中。
+        
+        Args:
+            node: 当前节点。
+            key: 键值。
+            value: 对应的值。
+        """
+        if key < node.key:
+            if node.left is None:
+                node.left = TreeNode(key, value)
+            else:
+                self._insert_recursive(node.left, key, value)
+        else:
+            if node.right is None:
+                node.right = TreeNode(key, value)
+            else:
+                self._insert_recursive(node.right, key, value)
+
+    def search(self, key: int) -> Optional[Any]:
+        """查找键值在二叉搜索树中的对应值。
+        
+        Args:
+            key: 要查找的键值。
+        
+        Returns:
+            找到的值或None。
+        """
+        return self._search_recursive(self.root, key)
+    
+    def _search_recursive(self, node: Optional[TreeNode], key: int) -> Optional[Any]:
+        """递归查找键值在二叉搜索树中的对应值。
+        
+        Args:
+            node: 当前节点。
+            key: 要查找的键值。
+        
+        Returns:
+            找到的值或None。
+        """
+        if node is None:
+            return None
+        if key == node.key:
+            return node.value
+        elif key < node.key:
+            return self._search_recursive(node.left, key)
+        else:
+            return self._search_recursive(node.right, key)
+    
+    def find_minimum(self) -> Optional[int]:
+        """查找二叉搜索树中的最小键值。
+        
+        Returns:
+            最小键值或None。
+        """
+        node = self._find_minimum(self.root)
+        return node.key if node else None
+    
+    def _find_minimum(self, node: Optional[TreeNode]) -> Optional[TreeNode]:
+        """递归查找二叉搜索树中的最小键值节点。
+        
+        Args:
+            node: 当前节点。
+        
+        Returns:
+            最小键值节点或None。
+        """
+        if node is None or node.left is None:
+            return node
+        return self._find_minimum(node.left)
+    
+    def find_maximum(self) -> Optional[int]:
+        """查找二叉搜索树中的最大键值。
+        
+        Returns:
+            最大键值或None。
+        """
+        node = self._find_maximum(self.root)
+        return node.key if node else None
+    
+    def _find_maximum(self, node: Optional[TreeNode]) -> Optional[TreeNode]:
+        """递归查找二叉搜索树中的最大键值节点。
+        
+        Args:
+            node: 当前节点。
+        
+        Returns:
+            最大键值节点或None。
+        """
+        if node is None or node.right is None:
+            return node
+        return self._find_maximum(node.right)
+    
+    def find_predecessor(self, key: int) -> Optional[int]:
+        """查找指定键值的前驱键值。
+        
+        Args:
+            key: 要查找前驱的键值。
+        
+        Returns:
+            前驱键值或None。
+        """
+        node = self._search_recursive(self.root, key)
+        if node is None:
+            return None
+        if node.left:
+            return self._find_maximum(node.left).key
+        predecessor = None
+        current = self.root
+        while current:
+            if key > current.key:
+                predecessor = current
+                current = current.right
+            elif key < current.key:
+                current = current.left
+            else:
+                break
+        return predecessor.key if predecessor else None
+    
+    def find_successor(self, key: int) -> Optional[int]:
+        """查找指定键值的后继键值。
+        
+        Args:
+            key: 要查找后继的键值。
+        
+        Returns:
+            后继键值或None。
+        """
+        node = self._search_recursive(self.root, key)
+        if node is None:
+            return None
+        if node.right:
+            return self._find_minimum(node.right).key
+        successor = None
+        current = self.root
+        while current:
+            if key < current.key:
+                successor = current
+                current = current.left
+            elif key > current.key:
+                current = current.right
+            else:
+                break
+        return successor.key if successor else None
+
+
+def main():
+    """主函数，测试二叉搜索树的查询操作。"""
+    bst = BinarySearchTree()
+    
+    # 插入测试数据
+    test_data = [(15, "apple"), (10, "banana"), (20, "cherry"), (8, "date"), (12, "fig"), (17, "grape"), (25, "honeydew")]
+    for key, value in test_data:
+        bst.insert(key, value)
+    
+    # 查找测试数据
+    search_keys = [15, 10, 20, 8, 12, 17, 25, 5]
+    for key in search_keys:
+        result = bst.search(key)
+        if result is None:
+            print(f"键 {key} 未找到。")
+        else:
+            print(f"键 {key} 对应的值是 {result}。")
+    
+    # 查找最小值和最大值
+    min_key = bst.find_minimum()
+    max_key = bst.find_maximum()
+    print(f"最小键值是 {min_key}。")
+    print(f"最大键值是 {max_key}。")
+    
+    # 查找前驱和后继
+    predecessor_keys = [15, 10, 8]
+    for key in predecessor_keys:
+        predecessor = bst.find_predecessor(key)
+        if predecessor is None:
+            print(f"键 {key} 没有前驱。")
+        else:
+            print(f"键 {key} 的前驱是 {predecessor}。")
+    
+    successor_keys = [15, 10, 25]
+    for key in successor_keys:
+        successor = bst.find_successor(key)
+        if successor is None:
+            print(f"键 {key} 没有后继。")
+        else:
+            print(f"键 {key} 的后继是 {successor}。")
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</body>
+</html>
+  

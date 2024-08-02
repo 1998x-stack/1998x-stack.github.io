@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.4.1 Maximum likelihood and sufficient statistics</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_2.4.1_Maximum_likelihood_and_sufficient_statistics</h1>
+<pre><code>Lecture: 2_Probability_Distributions/2.4_The_Exponential_Family
+Content: 00_2.4.1_Maximum_likelihood_and_sufficient_statistics
+</code></pre>
+<h3>PDF 探索和详细分析</h3>
+<h4>最大似然估计和充分统计量（Maximum Likelihood and Sufficient Statistics）</h4>
+<p>在2.4.1节中，讨论了如何使用最大似然估计法（Maximum Likelihood Estimation, MLE）来估计指数族分布中的参数向量 $\eta$。在此过程中，还介绍了充分统计量的概念，及其在简化数据处理和参数估计中的重要作用。</p>
+<h4>定义与背景</h4>
+<ol>
+<li>
+<p><strong>指数族分布的形式</strong>：
+一般的指数族分布可以表示为：
+$$
+p(x|\eta) = h(x) g(\eta) \exp{\eta^T u(x)}
+$$
+其中：</p>
+<ul>
+<li>$ \eta $ 是参数向量</li>
+<li>$ u(x) $ 是充分统计量</li>
+<li>$ h(x) $ 和 $ g(\eta) $ 是归一化函数</li>
+</ul>
+</li>
+<li>
+<p><strong>最大似然估计法</strong>：
+设数据集 $ X = {x_1, x_2, \ldots, x_N} $ 是独立同分布的，则其似然函数为：
+$$
+p(X|\eta) = \prod_{n=1}^{N} p(x_n|\eta) = \left(\prod_{n=1}^{N} h(x_n)\right) g(\eta)^N \exp\left{\eta^T \sum_{n=1}^{N} u(x_n)\right}
+$$
+取对数似然函数并对参数 $\eta$ 求导，得到的结果为：
+$$
+\nabla \ln p(X|\eta) = \sum_{n=1}^{N} u(x_n) - N E[u(x)]
+$$
+将其设为零，可求得最大似然估计值 $\eta_{ML}$：
+$$
+\eta_{ML} = \frac{1}{N} \sum_{n=1}^{N} u(x_n)
+$$</p>
+</li>
+<li>
+<p><strong>充分统计量的概念</strong>：
+充分统计量是数据的简洁表示，保留了所有关于参数的信息。对于指数族分布，充分统计量 $ u(x) $ 的求和即可用于参数估计，而不需要完整的数据集。例如：</p>
+<ul>
+<li>对于伯努利分布，充分统计量是样本的和。</li>
+<li>对于高斯分布，充分统计量是样本和样本平方的和。</li>
+</ul>
+</li>
+</ol>
+<h4>参数估计过程</h4>
+<ol>
+<li>
+<p><strong>初始化</strong>：
+首先选择初始参数 $\eta$，然后计算相应的初始值 $ g(\eta) $ 和充分统计量。</p>
+</li>
+<li>
+<p><strong>迭代计算</strong>：
+在每次迭代中，使用当前参数计算期望值，并根据充分统计量更新参数。</p>
+</li>
+<li>
+<p><strong>收敛判断</strong>：
+当参数的变化小于预设的阈值时，停止迭代，得到最终的参数估计值。</p>
+</li>
+</ol>
+<h4>充分统计量的性质</h4>
+<ol>
+<li>
+<p><strong>数据压缩</strong>：
+充分统计量极大地简化了数据处理过程，只需保留少量统计量，而非完整的数据集。</p>
+</li>
+<li>
+<p><strong>参数估计</strong>：
+通过充分统计量可以直接计算参数估计值，避免了复杂的计算过程。</p>
+</li>
+</ol>
+<h3>总结</h3>
+<p>最大似然估计法是参数估计的重要方法，通过计算对数似然函数并求导，可以得到参数的估计值。充分统计量在简化计算和数据处理方面发挥了重要作用，使得参数估计更加高效和便捷。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_2.4.1_Maximum_likelihood_and_sufficient_statistics
+
+"""
+Lecture: 2_Probability_Distributions/2.4_The_Exponential_Family
+Content: 00_2.4.1_Maximum_likelihood_and_sufficient_statistics
+"""
+
+import numpy as np
+from typing import Tuple, List
+
+class ExponentialFamilyMLE:
+    def __init__(self, data: np.ndarray):
+        """
+        初始化指数族分布的最大似然估计类
+        
+        参数:
+        data (np.ndarray): 数据集，每行为一个样本点
+        """
+        self.data = data
+        self.n_samples, self.n_features = data.shape
+
+    def sufficient_statistics(self) -> np.ndarray:
+        """
+        计算充分统计量
+        
+        返回:
+        np.ndarray: 充分统计量
+        """
+        return np.sum(self.data, axis=0)
+
+    def log_likelihood(self, eta: np.ndarray) -> float:
+        """
+        计算对数似然函数
+        
+        参数:
+        eta (np.ndarray): 参数向量
+        
+        返回:
+        float: 对数似然值
+        """
+        u_x = self.sufficient_statistics()
+        log_likelihood = np.dot(eta, u_x) - self.n_samples * self.g_function(eta)
+        return log_likelihood
+
+    def g_function(self, eta: np.ndarray) -> float:
+        """
+        计算g函数
+        
+        参数:
+        eta (np.ndarray): 参数向量
+        
+        返回:
+        float: g函数值
+        """
+        # 此处假设g函数为简化形式，实际应用中需根据具体分布定义g函数
+        return np.sum(np.exp(eta))
+
+    def fit(self, tol: float = 1e-6, max_iter: int = 100) -> np.ndarray:
+        """
+        使用最大似然估计法拟合模型参数
+        
+        参数:
+        tol (float): 收敛阈值
+        max_iter (int): 最大迭代次数
+        
+        返回:
+        np.ndarray: 拟合的参数向量
+        """
+        eta = np.zeros(self.n_features)
+        for _ in range(max_iter):
+            eta_new = self.sufficient_statistics() / self.n_samples
+            if np.linalg.norm(eta_new - eta) < tol:
+                break
+            eta = eta_new
+        return eta
+
+# 示例用法
+if __name__ == "__main__":
+    # 生成示例数据
+    np.random.seed(0)
+    data = np.random.rand(100, 2)
+    
+    # 创建MLE估计类
+    mle = ExponentialFamilyMLE(data)
+    
+    # 拟合模型参数
+    eta_mle = mle.fit()
+    
+    print("最大似然估计的参数:", eta_mle)</code></pre>
+  </div>
+</body>
+</html>
+  

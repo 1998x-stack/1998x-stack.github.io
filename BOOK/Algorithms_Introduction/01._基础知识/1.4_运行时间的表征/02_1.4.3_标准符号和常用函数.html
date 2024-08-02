@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.4.3 标准符号和常用函数</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_1.4.3_标准符号和常用函数</h1>
+<pre><code>Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 02_1.4.3_标准符号和常用函数
+</code></pre>
+<h3>深度分析：标准符号和常用函数</h3>
+<p>在算法分析中，理解标准符号和常用函数对于分析算法复杂度和性能至关重要。本章节详细介绍了几种重要的渐进符号以及常用的数学函数，帮助我们准确描述和比较算法的运行时间和空间需求。</p>
+<h4>标准符号</h4>
+<h5>O符号（大O符号）</h5>
+<p><strong>定义</strong>：
+对于给定的函数 $ g(n) $，我们将 $ O(g(n)) $ 定义为：
+$$ O(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ 0 \leq f(n) \leq c \cdot g(n) } $$</p>
+<p><strong>直观理解</strong>：
+O符号提供了一个函数的渐进上界，表示函数在输入规模趋于无穷大时的最大增长速率。通常用于描述算法的最坏情况复杂度。例如，f(n) = 4n^2 + 100n + 500可以表示为O(n^2)，因为当n足够大时，4n^2是主导项。</p>
+<h5>Ω符号（大Ω符号）</h5>
+<p><strong>定义</strong>：
+对于给定的函数 $ g(n) $，我们将 $ Ω(g(n)) $ 定义为：
+$$ Ω(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ f(n) \geq c \cdot g(n) } $$</p>
+<p><strong>直观理解</strong>：
+Ω符号提供了一个函数的渐进下界，表示函数在输入规模趋于无穷大时的最小增长速率。通常用于描述算法的最好情况复杂度。例如，f(n) = 4n^2 + 100n + 500可以表示为Ω(n^2)，因为当n足够大时，4n^2是主导项。</p>
+<h5>Θ符号（Theta符号）</h5>
+<p><strong>定义</strong>：
+对于给定的函数 $ g(n) $，我们将 $ Θ(g(n)) $ 定义为：
+$$ Θ(g(n)) = { f(n) \mid \text{存在正的常数} \ c_1 \ 、c_2 \ 和 \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) } $$</p>
+<p><strong>直观理解</strong>：
+Θ符号表示f(n)与g(n)在n趋于无穷大时是渐进相等的，既提供了上界也提供了下界。通常用于描述算法的平均情况复杂度。例如，f(n) = 4n^2 + 100n + 500可以表示为Θ(n^2)。</p>
+<h4>常用函数</h4>
+<h5>单调函数</h5>
+<p><strong>定义</strong>：</p>
+<ul>
+<li>单调递增函数：如果对所有的 $ m \geq n $ ，有 $ f(m) \geq f(n) $。</li>
+<li>单调递减函数：如果对所有的 $ m \geq n $ ，有 $ f(m) \leq f(n) $。</li>
+</ul>
+<p><strong>应用</strong>：
+单调函数在算法分析中非常重要。例如，在二分搜索中，利用了单调递增的性质快速缩小搜索范围。</p>
+<h5>楼层函数和天花板函数</h5>
+<p><strong>定义</strong>：</p>
+<ul>
+<li>楼层函数（floor）：对于任意实数 $ x $，记为 $ \lfloor x \rfloor $，表示不大于 $ x $ 的最大整数。</li>
+<li>天花板函数（ceiling）：对于任意实数 $ x $，记为 $ \lceil x \rceil $，表示不小于 $ x $ 的最小整数。</li>
+</ul>
+<p><strong>性质</strong>：</p>
+<ul>
+<li>楼层函数和天花板函数都是单调递增的。</li>
+<li>对于任意实数 $ x $，有 $ x - 1 &lt; \lfloor x \rfloor \leq x \leq \lceil x \rceil &lt; x + 1 $。</li>
+</ul>
+<h5>多项式</h5>
+<p><strong>定义</strong>：
+一个非负整数 $ d $ 的多项式是一个形如 $ p(n) = \sum_{i=0}^{d} a_i n^i $ 的函数，其中系数 $ a_0, a_1, \ldots, a_d $ 是常数且 $ a_d \neq 0 $。</p>
+<p><strong>性质</strong>：</p>
+<ul>
+<li>如果 $ a_d &gt; 0 $，则 $ p(n) $ 是渐进正的，且 $ p(n) = Θ(n^d) $。</li>
+<li>对于任意实常数 $ a \geq 0 $，函数 $ n^a $ 是单调递增的；对于任意实常数 $ a \leq 0 $，函数 $ n^a $ 是单调递减的。</li>
+</ul>
+<h5>指数函数</h5>
+<p><strong>定义</strong>：
+对于所有实数 $ a &gt; 0 $、$ m $ 和 $ n $，有以下恒等式：</p>
+<ul>
+<li>$ a^0 = 1 $</li>
+<li>$ a^1 = a $</li>
+<li>$ a^{-1} = 1/a $</li>
+<li>$ (a^m)^n = a^{mn} $</li>
+<li>$ a^m a^n = a^{m+n} $</li>
+</ul>
+<p><strong>性质</strong>：</p>
+<ul>
+<li>对于所有 $ n $ 和 $ a \geq 1 $，函数 $ a^n $ 随 $ n $ 单调递增。</li>
+<li>任何底数大于1的指数函数增长速率均快于任何多项式函数。例如，对于所有实常数 $ a &gt; 1 $ 和 $ b $，有 $ \lim_{n \to \infty} \frac{n^b}{a^n} = 0 $，即 $ n^b = o(a^n) $。</li>
+</ul>
+<h3>总结</h3>
+<p>理解和应用这些标准符号和常用函数对于算法分析至关重要。通过这些工具，我们能够更准确地描述和比较不同算法在大规模输入下的表现，从而选择最合适的算法来解决实际问题。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_1.4.3_标准符号和常用函数
+
+"""
+Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 02_1.4.3_标准符号和常用函数
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

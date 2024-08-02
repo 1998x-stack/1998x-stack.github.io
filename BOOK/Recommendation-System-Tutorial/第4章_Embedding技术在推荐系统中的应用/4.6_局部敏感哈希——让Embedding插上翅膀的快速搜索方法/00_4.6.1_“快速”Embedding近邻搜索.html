@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.6.1 “快速”Embedding近邻搜索</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_4.6.1 “快速”Embedding近邻搜索</h1>
+<pre><code>Lecture: 第4章 Embedding技术在推荐系统中的应用/4.6 局部敏感哈希——让Embedding插上翅膀的快速搜索方法
+Content: 00_4.6.1 “快速”Embedding近邻搜索
+</code></pre>
+<h3>4.6.1 “快速”Embedding近邻搜索</h3>
+<h4>背景与概述</h4>
+<p>在推荐系统中，Embedding技术将高维稀疏特征向量转换为低维稠密特征向量，从而提高特征表示的效率和准确性。然而，随着推荐系统中物品数量的增加，传统的相似度计算方法（如内积运算）在计算复杂度和时间消耗上变得不可接受。为了解决这一问题，快速Embedding近邻搜索技术应运而生，将相似度计算转化为高维空间中的最近邻搜索问题。</p>
+<h4>传统方法及其局限性</h4>
+<h5>kd树</h5>
+<p>kd树（k-dimensional tree）是一种常用的快速最近邻搜索方法，通过递归划分空间，将高维空间中的点组织成树结构。kd树的构建和查询时间复杂度分别为O(n log n)和O(log n)，较适合低维数据。然而，kd树在高维数据中表现不佳，搜索效率显著下降，甚至接近线性扫描。</p>
+<h5>局部敏感哈希（LSH）</h5>
+<p>LSH（Locality Sensitive Hashing）是一种更加高效和简便的最近邻搜索方法，其核心思想是将相邻的点映射到同一个“桶”中，通过在桶内或相邻桶内进行搜索来实现快速近邻搜索。LSH利用哈希函数将高维数据映射到低维空间，保持相近点在低维空间中仍然相近，从而加快搜索速度。</p>
+<h4>LSH的基本原理</h4>
+<h5>低维空间映射</h5>
+<p>LSH通过构建多个哈希函数，将高维数据映射到低维空间。例如，基于欧氏距离的LSH利用随机投影方法，将数据点投影到一维或低维空间中。假设有一个d维数据点x和y，随机投影向量a，映射公式为：
+$$ h(x) = \left\lfloor \frac{a \cdot x + b}{w} \right\rfloor $$
+其中，a为从标准正态分布中采样的随机向量，b为从[0, w)区间内均匀分布的随机数，w为窗口大小。通过上述映射，确保高维空间中相近的点在低维空间中也相近。</p>
+<h5>分桶</h5>
+<p>在低维空间中，通过固定间隔的超平面将空间分割成不同的哈希桶。例如，对于一维空间，可以将坐标轴按固定间隔分割，每个区间为一个桶。对于多维空间，可以通过多个随机超平面进行分割，形成多个桶。每个桶包含在低维空间中相近的点。</p>
+<h5>多哈希函数</h5>
+<p>为了提高准确率和召回率，LSH通常采用多个哈希函数同时进行分桶。假设有k个哈希函数，将高维数据映射到k个低维空间，生成k个哈希值。只有在所有哈希函数下都落入相同桶中的点，才被认为是相似点。通过这种方式，可以有效减少误判，提高搜索准确性。</p>
+<h4>LSH在推荐系统中的应用</h4>
+<p>在推荐系统中，LSH被广泛应用于快速搜索相似Embedding向量。以下是LSH在推荐系统中应用的具体步骤：</p>
+<ol>
+<li><strong>Embedding向量预处理</strong>：将用户和物品的高维稀疏特征向量转换为低维稠密特征向量。</li>
+<li><strong>构建哈希函数</strong>：根据实际需求选择哈希函数，将高维Embedding向量映射到低维空间。常用的哈希函数包括随机投影、P-stable分布等。</li>
+<li><strong>分桶</strong>：在低维空间中，通过固定间隔的超平面将向量空间分割成不同的桶。选择不同组的超平面，可以提高LSH的准确率或召回率。</li>
+<li><strong>多哈希函数组合</strong>：采用多个哈希函数同时进行分桶，通过多哈希函数组合，提高搜索的准确性和召回率。</li>
+<li><strong>近邻搜索</strong>：在多个哈希桶中搜索与目标向量相似的Embedding向量，通过快速相似性计算，筛选出候选物品集合。</li>
+</ol>
+<h5>示例</h5>
+<p>假设有一个包含数百万视频的推荐系统，为了提高推荐效率，系统利用LSH技术对视频Embedding向量进行快速近邻搜索。具体步骤如下：</p>
+<ol>
+<li><strong>Embedding向量预处理</strong>：通过预训练模型生成每个视频的Embedding向量。</li>
+<li><strong>构建哈希函数</strong>：选择多个随机投影哈希函数，将高维Embedding向量映射到低维空间。</li>
+<li><strong>分桶</strong>：在低维空间中，通过固定间隔的超平面将空间分割成多个桶。</li>
+<li><strong>多哈希函数组合</strong>：采用多个哈希函数同时进行分桶，生成多个哈希值。</li>
+<li><strong>近邻搜索</strong>：在多个哈希桶中搜索与用户Embedding向量相似的视频Embedding向量，筛选出候选视频集合。</li>
+</ol>
+<p>通过上述步骤，系统可以在大规模视频集合中快速找到与用户兴趣相似的视频，提高推荐准确性和效率。</p>
+<h4>优势与局限性</h4>
+<p><strong>优势</strong>：</p>
+<ol>
+<li><strong>高效性</strong>：LSH通过低维映射和分桶技术，将相似度计算的时间复杂度降低到常数级别，显著提高搜索效率。</li>
+<li><strong>灵活性</strong>：LSH可以根据实际需求选择不同的哈希函数和分桶策略，灵活适应不同的应用场景。</li>
+<li><strong>扩展性</strong>：LSH可以处理大规模高维数据，适用于推荐系统中海量用户和物品的相似性搜索。</li>
+</ol>
+<p><strong>局限性</strong>：</p>
+<ol>
+<li><strong>精度有限</strong>：LSH的搜索精度依赖于哈希函数的选择和参数设置，可能会出现误判和漏检的情况。</li>
+<li><strong>空间开销</strong>：LSH需要存储多个哈希函数和分桶结果，可能会增加系统的空间开销。</li>
+</ol>
+<h4>结论</h4>
+<p>LSH通过低维映射和分桶技术，有效解决了推荐系统中相似Embedding向量的快速搜索问题。相比于传统的相似度计算方法，LSH不仅提高了搜索效率，还具有较高的灵活性和扩展性。在实际应用中，通过优化哈希函数和分桶策略，可以进一步提高LSH的搜索精度和性能，是推荐系统中重要的技术手段。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_4.6.1 “快速”Embedding近邻搜索
+
+"""
+Lecture: 第4章 Embedding技术在推荐系统中的应用/4.6 局部敏感哈希——让Embedding插上翅膀的快速搜索方法
+Content: 00_4.6.1 “快速”Embedding近邻搜索
+"""
+
+import numpy as np
+from typing import List, Tuple, Optional
+
+class KDTreeNode:
+    """
+    kd树节点类。
+    
+    Attributes:
+        point: 数据点（坐标）。
+        left: 左子节点。
+        right: 右子节点。
+        axis: 划分维度。
+    """
+    def __init__(self, point: np.ndarray, left: Optional['KDTreeNode'] = None, right: Optional['KDTreeNode'] = None, axis: int = 0):
+        self.point = point
+        self.left = left
+        self.right = right
+        self.axis = axis
+
+class KDTree:
+    """
+    kd树类，用于构建和搜索kd树。
+    
+    Attributes:
+        root: kd树的根节点。
+    """
+    def __init__(self, data: np.ndarray):
+        """
+        初始化kd树。
+        
+        Args:
+            data: 输入数据点集（二维numpy数组）。
+        """
+        self.root = self._build_tree(data)
+    
+    def _build_tree(self, data: np.ndarray, depth: int = 0) -> Optional[KDTreeNode]:
+        """
+        递归构建kd树。
+        
+        Args:
+            data: 输入数据点集（二维numpy数组）。
+            depth: 当前树深度。
+        
+        Returns:
+            KDTreeNode: 构建的kd树节点。
+        """
+        if len(data) == 0:
+            return None
+        
+        k = data.shape[1]
+        axis = depth % k
+        data = data[data[:, axis].argsort()]
+        median_idx = len(data) // 2
+        
+        return KDTreeNode(
+            point=data[median_idx],
+            left=self._build_tree(data[:median_idx], depth + 1),
+            right=self._build_tree(data[median_idx + 1:], depth + 1),
+            axis=axis
+        )
+    
+    def _distance(self, point1: np.ndarray, point2: np.ndarray) -> float:
+        """
+        计算两个点之间的欧氏距离。
+        
+        Args:
+            point1: 第一个点（坐标）。
+            point2: 第二个点（坐标）。
+        
+        Returns:
+            float: 欧氏距离。
+        """
+        return np.sqrt(np.sum((point1 - point2) ** 2))
+    
+    def _nearest(self, root: KDTreeNode, point: np.ndarray, depth: int, best: Tuple[float, Optional[np.ndarray]]) -> Tuple[float, Optional[np.ndarray]]:
+        """
+        递归搜索kd树，寻找最近邻点。
+        
+        Args:
+            root: 当前kd树节点。
+            point: 目标点（坐标）。
+            depth: 当前树深度。
+            best: 当前最近邻点和距离。
+        
+        Returns:
+            Tuple[float, Optional[np.ndarray]]: 最短距离和最近邻点坐标。
+        """
+        if root is None:
+            return best
+        
+        k = point.shape[0]
+        axis = depth % k
+        current_distance = self._distance(root.point, point)
+        
+        if current_distance < best[0]:
+            best = (current_distance, root.point)
+        
+        diff = point[axis] - root.point[axis]
+        if diff <= 0:
+            best = self._nearest(root.left, point, depth + 1, best)
+            if diff ** 2 < best[0]:
+                best = self._nearest(root.right, point, depth + 1, best)
+        else:
+            best = self._nearest(root.right, point, depth + 1, best)
+            if diff ** 2 < best[0]:
+                best = self._nearest(root.left, point, depth + 1, best)
+        
+        return best
+    
+    def nearest_neighbor(self, point: np.ndarray) -> Tuple[float, Optional[np.ndarray]]:
+        """
+        寻找kd树中与目标点最近的邻居。
+        
+        Args:
+            point: 目标点（坐标）。
+        
+        Returns:
+            Tuple[float, Optional[np.ndarray]]: 最短距离和最近邻点坐标。
+        """
+        return self._nearest(self.root, point, 0, (float('inf'), None))
+
+# 示例数据
+data = np.array([
+    [2, 3],
+    [5, 4],
+    [9, 6],
+    [4, 7],
+    [8, 1],
+    [7, 2]
+])
+
+# 构建kd树
+kd_tree = KDTree(data)
+
+# 查找最近邻点
+point = np.array([3, 4.5])
+distance, nearest_point = kd_tree.nearest_neighbor(point)
+print(f"最近邻点: {nearest_point}, 距离: {distance}")
+
+
+
+# ------------------ 局部敏感哈希 ------------------ #
+import numpy as np
+from typing import List, Tuple, Dict, Callable
+
+class LSH:
+    """
+    局部敏感哈希（LSH）类，用于快速近邻搜索。
+    
+    Attributes:
+        k: 哈希函数的数量。
+        l: 哈希表的数量。
+        hash_tables: 哈希表列表。
+        hash_functions: 哈希函数列表。
+    """
+    
+    def __init__(self, k: int, l: int, hash_size: int, input_dim: int):
+        """
+        初始化LSH。
+        
+        Args:
+            k: 哈希函数的数量。
+            l: 哈希表的数量。
+            hash_size: 哈希值的大小。
+            input_dim: 输入向量的维度。
+        """
+        self.k = k
+        self.l = l
+        self.hash_size = hash_size
+        self.input_dim = input_dim
+        self.hash_tables = [{} for _ in range(l)]
+        self.hash_functions = [[self._generate_hash_function(hash_size, input_dim) for _ in range(k)] for _ in range(l)]
+    
+    def _generate_hash_function(self, hash_size: int, input_dim: int) -> Callable[[np.ndarray], Tuple[int]]:
+        """
+        生成一个哈希函数。
+        
+        Args:
+            hash_size: 哈希值的大小。
+            input_dim: 输入向量的维度。
+        
+        Returns:
+            Callable[[np.ndarray], Tuple[int]]: 哈希函数。
+        """
+        random_vectors = np.random.randn(hash_size, input_dim)
+        return lambda x: tuple((random_vectors @ x) > 0)
+    
+    def add(self, vec: np.ndarray, label: int):
+        """
+        将向量添加到哈希表中。
+        
+        Args:
+            vec: 输入向量。
+            label: 向量的标签。
+        """
+        for table, hash_funcs in zip(self.hash_tables, self.hash_functions):
+            hash_key = tuple(hash_func(vec) for hash_func in hash_funcs)
+            if hash_key in table:
+                table[hash_key].append(label)
+            else:
+                table[hash_key] = [label]
+    
+    def query(self, vec: np.ndarray, num_neighbors: int = 1) -> List[int]:
+        """
+        查询与输入向量最相似的邻居。
+        
+        Args:
+            vec: 输入向量。
+            num_neighbors: 邻居的数量。
+        
+        Returns:
+            List[int]: 最相似的邻居标签列表。
+        """
+        candidates = set()
+        for table, hash_funcs in zip(self.hash_tables, self.hash_functions):
+            hash_key = tuple(hash_func(vec) for hash_func in hash_funcs)
+            if hash_key in table:
+                candidates.update(table[hash_key])
+        
+        candidates = list(candidates)
+        distances = [np.linalg.norm(vec - candidate) for candidate in candidates]
+        nearest_neighbors = [candidates[idx] for idx in np.argsort(distances)[:num_neighbors]]
+        return nearest_neighbors
+
+# 示例数据
+data = np.random.rand(100, 128)  # 100个128维向量
+labels = list(range(100))
+
+# 构建LSH
+lsh = LSH(k=10, l=5, hash_size=16, input_dim=128)
+
+# 添加数据到LSH
+for vec, label in zip(data, labels):
+    lsh.add(vec, label)
+
+# 查询最近邻
+query_vec = np.random.rand(128)
+neighbors = lsh.query(query_vec, num_neighbors=5)
+print(f"查询向量的最近邻：{neighbors}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

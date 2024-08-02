@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.9.2 DIEN模型的架构</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_3.9.2 DIEN模型的架构</h1>
+<pre><code>Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.9 DIEN——序列模型与推荐系统的结合
+Content: 01_3.9.2 DIEN模型的架构
+</code></pre>
+<h3>01_3.9.2 DIEN模型的架构</h3>
+<h4>1. DIEN模型概述</h4>
+<p>DIEN（Deep Interest Evolution Network）模型是阿里巴巴在DIN（Deep Interest Network）模型基础上进行改进的一种深度学习推荐模型。DIEN模型通过引入序列模型，能够更好地模拟和捕捉用户兴趣的动态变化，其整体架构如图3-25所示，包括输入层、Embedding层、连接层、多层全连接神经网络和输出层  。</p>
+<h4>2. DIEN模型的创新点</h4>
+<p>DIEN模型的核心创新在于“兴趣进化网络”，这是模拟用户兴趣动态变化的关键部分。兴趣进化网络分为三层，从下至上依次是：</p>
+<ol>
+<li><strong>行为序列层（Behavior Layer）</strong>：将原始的ID类行为序列转换为Embedding行为序列。</li>
+<li><strong>兴趣抽取层（Interest Extractor Layer）</strong>：通过模拟用户兴趣迁移过程，抽取用户的兴趣向量。</li>
+<li><strong>兴趣进化层（Interest Evolving Layer）</strong>：在兴趣抽取层的基础上加入注意力机制，模拟与当前目标广告相关的兴趣进化过程  。</li>
+</ol>
+<h4>3. 行为序列层</h4>
+<p>行为序列层的主要作用是将用户的原始行为数据（如点击、浏览、购买等）转换为对应的Embedding向量序列。通过Embedding层，将高维稀疏的ID类特征转换为低维稠密的向量表示，便于后续神经网络处理 。</p>
+<h4>4. 兴趣抽取层</h4>
+<p>兴趣抽取层采用GRU（Gated Recurrent Unit）网络来模拟用户的兴趣迁移过程。GRU网络通过门控机制控制信息流动，能够有效解决传统RNN中的梯度消失问题，并具有更快的训练速度。具体来说，GRU通过更新门（Update Gate）和重置门（Reset Gate）来决定当前时刻的隐藏状态向量如何更新，从而抽取出用户的兴趣状态向量  。</p>
+<h4>5. 兴趣进化层</h4>
+<p>兴趣进化层在兴趣抽取层的基础上引入了注意力机制，通过AUGRU（GRU with Attentional Update Gate）结构来模拟与当前目标广告相关的兴趣进化过程。AUGRU在GRU的更新门上加入了注意力得分，使得每个时刻的隐藏状态更新更加灵活和准确。具体来说，AUGRU的注意力得分生成过程与DIN模型中的注意力激活单元类似，通过计算当前兴趣状态向量与目标广告向量的匹配得分来生成注意力权重  。</p>
+<h4>6. DIEN模型的优势</h4>
+<p>相比传统的推荐模型，DIEN模型具有以下优势：</p>
+<ol>
+<li><strong>捕捉用户兴趣的动态变化</strong>：通过序列模型和注意力机制，DIEN模型能够更好地捕捉用户兴趣的变化，提高推荐的准确性和相关性。</li>
+<li><strong>增强模型的表达能力</strong>：引入GRU和AUGRU结构，使得模型在处理用户行为序列时具有更强的表达能力。</li>
+<li><strong>提高模型的训练效率</strong>：GRU相对于LSTM参数更少，训练速度更快，同时AUGRU的注意力机制使得模型能够更加高效地更新隐藏状态  。</li>
+</ol>
+<h4>7. 总结</h4>
+<p>DIEN模型通过引入序列模型和注意力机制，实现了对用户兴趣动态变化的模拟和捕捉。其创新点在于兴趣进化网络的设计，包括行为序列层、兴趣抽取层和兴趣进化层。这一系列改进使得DIEN模型在推荐系统中具有更强的表达能力和预测精度，为推荐系统的发展提供了新的思路和方法  。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_3.9.2 DIEN模型的架构
+
+"""
+Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.9 DIEN——序列模型与推荐系统的结合
+Content: 01_3.9.2 DIEN模型的架构
+"""
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+
+class InterestExtractorLayer(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int):
+        """
+        初始化兴趣抽取层
+        :param input_dim: 输入的维度大小
+        :param hidden_dim: 隐藏层的维度大小
+        """
+        super(InterestExtractorLayer, self).__init__()
+        self.gru = nn.GRU(input_dim, hidden_dim, batch_first=True)
+
+    def forward(self, x: torch.Tensor) -> tuple:
+        """
+        前向传播函数
+        :param x: 输入的行为序列
+        :return: GRU的输出和隐藏状态
+        """
+        output, hidden = self.gru(x)
+        return output, hidden
+
+class AttentionNet(nn.Module):
+    def __init__(self, hidden_dim: int):
+        """
+        初始化注意力网络
+        :param hidden_dim: 隐藏层的维度大小
+        """
+        super(AttentionNet, self).__init__()
+        self.fc = nn.Linear(hidden_dim, 1)
+
+    def forward(self, hidden: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播函数
+        :param hidden: 用户兴趣状态向量
+        :param target: 目标广告的向量
+        :return: 注意力权重
+        """
+        # 计算注意力得分
+        scores = self.fc(hidden).squeeze(-1)
+        scores = torch.bmm(target.unsqueeze(1), scores.unsqueeze(2)).squeeze(2)
+        # 计算注意力权重
+        weights = F.softmax(scores, dim=1)
+        return weights
+
+class AUGRUCell(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int):
+        """
+        初始化AUGRU单元
+        :param input_dim: 输入的维度大小
+        :param hidden_dim: 隐藏层的维度大小
+        """
+        super(AUGRUCell, self).__init__()
+        self.hidden_dim = hidden_dim
+        self.gru_cell = nn.GRUCell(input_dim, hidden_dim)
+        self.fc = nn.Linear(hidden_dim, 1)
+
+    def forward(self, x: torch.Tensor, hidden: torch.Tensor, attn_weight: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播函数
+        :param x: 当前时间步的输入
+        :param hidden: 上一时间步的隐藏状态
+        :param attn_weight: 当前时间步的注意力权重
+        :return: 更新后的隐藏状态
+        """
+        # 计算重置门
+        reset_gate = torch.sigmoid(self.fc(hidden))
+        # 更新隐藏状态
+        updated_hidden = (1 - reset_gate) * hidden + reset_gate * self.gru_cell(x, hidden)
+        # 加权更新隐藏状态
+        updated_hidden = attn_weight * updated_hidden + (1 - attn_weight) * hidden
+        return updated_hidden
+
+class InterestEvolvingLayer(nn.Module):
+    def __init__(self, input_dim: int, hidden_dim: int):
+        """
+        初始化兴趣进化层
+        :param input_dim: 输入的维度大小
+        :param hidden_dim: 隐藏层的维度大小
+        """
+        super(InterestEvolvingLayer, self).__init__()
+        self.augru = AUGRUCell(input_dim, hidden_dim)
+
+    def forward(self, x: torch.Tensor, hidden: torch.Tensor, attn_weight: torch.Tensor) -> tuple:
+        """
+        前向传播函数
+        :param x: 输入的行为序列
+        :param hidden: 初始隐藏状态
+        :param attn_weight: 注意力权重
+        :return: 序列输出和最后一个时间步的隐藏状态
+        """
+        seq_len = x.size(1)
+        outputs = []
+        for t in range(seq_len):
+            hidden = self.augru(x[:, t, :], hidden, attn_weight[:, t])
+            outputs.append(hidden.unsqueeze(1))
+        outputs = torch.cat(outputs, dim=1)
+        return outputs, hidden
+
+class DIEN(nn.Module):
+    def __init__(self, num_features: int, embed_dim: int, hidden_dim: int):
+        """
+        初始化DIEN模型
+        :param num_features: 特征数量
+        :param embed_dim: Embedding层的维度大小
+        :param hidden_dim: 隐藏层的维度大小
+        """
+        super(DIEN, self).__init__()
+        self.embeddings = nn.Embedding(num_features, embed_dim)
+        self.interest_extractor = InterestExtractorLayer(embed_dim, hidden_dim)
+        self.attention_net = AttentionNet(hidden_dim)
+        self.interest_evolving = InterestEvolvingLayer(embed_dim, hidden_dim)
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_dim, 64),
+            nn.ReLU(),
+            nn.Linear(64, 32),
+            nn.ReLU(),
+            nn.Linear(32, 1)
+        )
+
+    def forward(self, user_hist: torch.Tensor, ad_feature: torch.Tensor) -> torch.Tensor:
+        """
+        前向传播函数
+        :param user_hist: 用户行为序列
+        :param ad_feature: 目标广告特征
+        :return: 预测输出
+        """
+        user_embed = self.embeddings(user_hist)
+        ad_embed = self.embeddings(ad_feature).unsqueeze(1)
+
+        interest_output, interest_hidden = self.interest_extractor(user_embed)
+        attn_weight = self.attention_net(interest_output, ad_embed)
+
+        evolving_output, evolving_hidden = self.interest_evolving(user_embed, interest_hidden[-1], attn_weight)
+        output = self.fc(evolving_hidden)
+        return output
+
+# 数据准备
+num_features = 10000
+embed_dim = 32
+hidden_dim = 64
+batch_size = 64
+num_epochs = 10
+seq_length = 10
+
+# 生成示例数据
+user_hist = torch.randint(0, num_features, (batch_size, seq_length))
+ad_feature = torch.randint(0, num_features, (batch_size,))
+y = torch.randn(batch_size, 1)
+
+# 初始化模型
+model = DIEN(num_features, embed_dim, hidden_dim)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.MSELoss()
+
+# 训练模型
+for epoch in range(num_epochs):
+    model.train()
+    optimizer.zero_grad()
+    outputs = model(user_hist, ad_feature)
+    loss = criterion(outputs, y)
+    loss.backward()
+    optimizer.step()
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}")
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

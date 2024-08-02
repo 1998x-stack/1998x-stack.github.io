@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.4.1 Compounding Nonnegative Integer Number of Periods</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_2.4.1_Compounding_Nonnegative_Integer_Number_of_Periods</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.4_Compound_Interest
+Content: 00_2.4.1_Compounding_Nonnegative_Integer_Number_of_Periods
+
+</code></pre>
+<h3>00_2.4.1_复利：非负整数周期</h3>
+<p><strong>讲座</strong>: 2_货币的时间价值/2.4_复利<br>
+<strong>内容</strong>: 00_2.4.1_复利：非负整数周期</p>
+<h4>一、复利的定义</h4>
+<p>复利（Compound Interest）是指在每一个计息周期结束时，将所获得的利息加入本金，然后在下一个周期内继续计算利息。复利的核心概念是“利滚利”，即不仅本金会生息，利息也会生息。</p>
+<h5>1. 复利公式</h5>
+<p>在复利计算中，未来价值（Future Value, $ F_n $）的计算公式为：
+$$ F_n = F_0 \left(1 + \frac{r}{k}\right)^n $$
+其中，$ F_0 $ 是初始本金，$ r $ 是年利率，$ k $ 是每年的复利次数，$ n $ 是复利周期数。</p>
+<h4>二、复利的计算步骤</h4>
+<p>假设初始本金为 $ F_0 $，年利率为 $ r $，复利次数为 $ k $，经过 $ n $ 个复利周期后的未来价值 $ F_n $ 的计算步骤如下：</p>
+<ol>
+<li>
+<p><strong>第一周期结束时</strong>，将 $ F_0 $ 乘以 $ \left(1 + \frac{r}{k}\right) $ 得到 $ F_1 $：
+$$ F_1 = F_0 \left(1 + \frac{r}{k}\right) $$</p>
+</li>
+<li>
+<p><strong>第二周期结束时</strong>，将 $ F_1 $ 再乘以 $ \left(1 + \frac{r}{k}\right) $ 得到 $ F_2 $：
+$$ F_2 = F_1 \left(1 + \frac{r}{k}\right) = F_0 \left(1 + \frac{r}{k}\right)^2 $$</p>
+</li>
+<li>
+<p><strong>重复上述步骤</strong>，直到第 $ n $ 个周期结束时，得到 $ F_n $：
+$$ F_n = F_0 \left(1 + \frac{r}{k}\right)^n $$</p>
+</li>
+</ol>
+<h4>三、复利周期和计息频率</h4>
+<p>计息频率 $ k $ 是指每年计息的次数。常见的计息频率包括：</p>
+<ul>
+<li><strong>年复利</strong>（k = 1）：每年计息一次</li>
+<li><strong>半年复利</strong>（k = 2）：每半年计息一次</li>
+<li><strong>季度复利</strong>（k = 4）：每季度计息一次</li>
+<li><strong>月复利</strong>（k = 12）：每月计息一次</li>
+<li><strong>日复利</strong>（k = 365）：每日计息一次</li>
+</ul>
+<h4>四、复利的应用示例</h4>
+<p>假设你借款 $1000，年利率为12%，计息频率为每月一次（k = 12）。一年后的本息总额为：
+$$ F_{12} = 1000 \left(1 + \frac{0.12}{12}\right)^{12} = 1000 \left(1 + 0.01\right)^{12} \approx 1000 \times 1.12683 = 1126.83 $$
+一年后的利息为：
+$$ 1126.83 - 1000 = 126.83 $$
+比按简单利息计算的 $120 多。</p>
+<h4>五、不同复利周期的影响</h4>
+<p>复利周期数和计息频率的不同会显著影响最终的利息总额和未来价值。以下是不同计息频率下投资 $1000，年利率7%，投资2年的计算结果：</p>
+<ul>
+<li>
+<p><strong>月复利</strong>（k = 12）：
+$$ F_{24} = 1000 \left(1 + \frac{0.07}{12}\right)^{24} = 1000 \times 1.14981 = 1149.81 $$</p>
+</li>
+<li>
+<p><strong>周复利</strong>（k = 52）：
+$$ F_{104} = 1000 \left(1 + \frac{0.07}{52}\right)^{104} = 1000 \times 1.15017 = 1150.17 $$</p>
+</li>
+<li>
+<p><strong>日复利</strong>（k = 365）：
+$$ F_{730} = 1000 \left(1 + \frac{0.07}{365}\right)^{730} = 1000 \times 1.15026 = 1150.26 $$</p>
+</li>
+</ul>
+<p>由此可见，计息频率越高，未来价值越大。</p>
+<h4>六、复利的数学模型</h4>
+<p>复利计算可以用数学模型精确描述，对于任何非负整数周期 $ n $，其未来价值公式为：
+$$ F_n = F_0 \left(1 + \frac{r}{k}\right)^n $$</p>
+<h5>1. 复利增长函数</h5>
+<p>复利增长函数 $ G(n) $ 为：
+$$ G(n) = \left(1 + \frac{r}{k}\right)^n $$
+满足以下性质：
+$$ G(0) = 1 $$
+$$ G(1) = \left(1 + \frac{r}{k}\right) $$
+$$ G(m + n) = G(m) \cdot G(n) $$</p>
+<p>通过对复利增长函数的研究，可以更好地理解复利的积累过程和计算方法。</p>
+<h4>七、总结</h4>
+<p>复利是金融和投资中极其重要的概念，通过将每个计息周期的利息加入本金，复利可以显著增加投资的最终回报。理解复利的计算方法和应用场景，有助于投资者进行科学的财务规划和决策。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_2.4.1_Compounding_Nonnegative_Integer_Number_of_Periods
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.4_Compound_Interest
+Content: 00_2.4.1_Compounding_Nonnegative_Integer_Number_of_Periods
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

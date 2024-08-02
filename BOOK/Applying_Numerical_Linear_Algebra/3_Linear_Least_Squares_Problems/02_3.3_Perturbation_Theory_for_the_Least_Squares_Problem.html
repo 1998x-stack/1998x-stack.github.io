@@ -1,0 +1,321 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3 Perturbation Theory for the Least Squares Problem</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_3.3_Perturbation_Theory_for_the_Least_Squares_Problem</h1>
+<pre><code>Lecture: /3_Linear_Least_Squares_Problems
+Content: 02_3.3_Perturbation_Theory_for_the_Least_Squares_Problem
+</code></pre>
+<h3>3.3 线性最小二乘问题的扰动理论</h3>
+<h4>背景</h4>
+<p>线性最小二乘问题的扰动理论分析了在给定系统参数发生微小变化时，解的稳定性和准确性。这对于理解和改进数值算法的鲁棒性非常重要，尤其是在处理实际应用中的噪声和不确定性时。</p>
+<h4>主要内容</h4>
+<ol>
+<li>
+<p><strong>条件数与解的稳定性</strong></p>
+<ul>
+<li>矩阵 $A$ 的条件数（condition number）是影响线性系统解稳定性的关键指标。对于非方矩阵 $A$，其2-范数条件数定义为 $\kappa_2(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}$，其中 $\sigma_{\max}(A)$ 和 $\sigma_{\min}(A)$ 分别是 $A$ 的最大和最小奇异值。这一定义在 $A$ 为方阵时与常规条件数一致。</li>
+</ul>
+</li>
+<li>
+<p><strong>扰动定理</strong></p>
+<ul>
+<li>设矩阵 $A$ 是 $m \times n$ 的满秩矩阵（$m \geq n$），向量 $x$ 是最小化 $ |Ax - b|_2 $ 的解，且残差 $r = b - Ax$。如果 $x$ 是在扰动 $\delta A$ 和 $\delta b$ 之后的解，即最小化 $ |(A + \delta A)x - (b + \delta b)|_2 $ 的解，并且假设 $\epsilon = \max(\frac{|\delta A|_2}{|A|_2}, \frac{|\delta b|_2}{|b|_2}) &lt; 1$，则有如下不等式：
+$$
+\frac{|x - \tilde{x}|_2}{|x|<em LS="">2} \leq \epsilon \cdot \left(2 \cdot \kappa_2(A) \cdot \cos \theta + \tan \theta \cdot \kappa_2^2(A)\right) + O(\epsilon^2) \equiv \epsilon \cdot \kappa</em> + O(\epsilon^2)
+$$
+其中 $\sin \theta = \frac{|r|_2}{|b|_2}$，即 $\theta$ 是向量 $b$ 和 $Ax$ 之间的夹角，用来衡量残差范数的大小。</li>
+</ul>
+</li>
+<li>
+<p><strong>证明概述</strong></p>
+<ul>
+<li>扩展 $ \tilde{x} = (A + \delta A)^T (A + \delta A)^{-1} (A + \delta A)^T (b + \delta b) $ 并丢弃所有 $\delta A$ 和 $\delta b$ 的高阶项，假设 $\epsilon \cdot \kappa_2(A) &lt; 1$ 以确保 $A + \delta A$ 保持满秩，从而使得 $\tilde{x}$ 是唯一确定的。</li>
+</ul>
+</li>
+<li>
+<p><strong>几何解释</strong></p>
+<ul>
+<li>如果 $\theta = 0$ 或非常小，残差也很小，此时有效条件数约为 $2 \cdot \kappa_2(A)$，类似于普通线性方程组求解的情况。如果 $\theta$ 不是很小但也不接近 $\pi/2$，残差适中，有效条件数可以大得多，约为 $\kappa_2^2(A)$。如果 $\theta$ 接近 $\pi/2$，真实解接近于零，即使 $\kappa_2(A)$ 很小，有效条件数也会变得无限大。</li>
+</ul>
+</li>
+<li>
+<p><strong>QR分解与SVD的数值稳定性</strong></p>
+<ul>
+<li>QR 分解和奇异值分解 (SVD) 都是数值稳定的，即它们能生成最小化 $|(A + \delta A)\tilde{x} - (b + \delta b)|_2$ 的解，且 $\max(\frac{|\delta A|}{|A|}, \frac{|\delta b|}{|b|}) = O(\epsilon)$。可以结合上述扰动界来得到最小二乘问题解的误差界，类似于线性方程组求解的情况。</li>
+</ul>
+</li>
+<li>
+<p><strong>正规方程法的准确性</strong></p>
+<ul>
+<li>正规方程法涉及求解 $A^TAx = A^Tb$，其准确性取决于 $\kappa_2(A^TA) = \kappa_2^2(A)$。因此，误差始终由 $\kappa_2^2(A)\epsilon$ 界定，而非 $\kappa_2(A)\epsilon$。因此，相比于基于 QR 分解和 SVD 的方法，正规方程法可能会丢失更多精度。</li>
+</ul>
+</li>
+</ol>
+<h3>详细表格</h3>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>详细内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>条件数与解的稳定性</td>
+<td>矩阵 $A$ 的条件数 $\kappa_2(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}$ 影响解的稳定性。</td>
+</tr>
+<tr>
+<td>扰动定理</td>
+<td>给定满秩矩阵 $A$ 和最小化 $|Ax - b|_2$ 的解 $x$，扰动后的解 $\tilde{x}$ 满足 $\frac{|x - \tilde{x}|<em LS="">2}{|x|<em LS="">2} \leq \epsilon \cdot \kappa</em> + O(\epsilon^2)$，其中 $\kappa</em>$ 是最小二乘问题的条件数。</td>
+</tr>
+<tr>
+<td>证明概述</td>
+<td>扩展 $\tilde{x}$ 并丢弃 $\delta A$ 和 $\delta b$ 的高阶项，假设 $\epsilon \cdot \kappa_2(A) &lt; 1$ 以确保 $A + \delta A$ 保持满秩。</td>
+</tr>
+<tr>
+<td>几何解释</td>
+<td>$\theta$ 表示向量 $b$ 和 $Ax$ 之间的夹角，影响有效条件数。若 $\theta$ 小，有效条件数约为 $2 \cdot \kappa_2(A)$；若 $\theta$ 适中，有效条件数约为 $\kappa_2^2(A)$；若 $\theta$ 接近 $\pi/2$，有效条件数趋于无限大。</td>
+</tr>
+<tr>
+<td>QR分解与SVD的数值稳定性</td>
+<td>QR 分解和 SVD 都能生成数值稳定的解，满足 $\max(\frac{|\delta A|}{|A|}, \frac{|\delta b|}{|b|}) = O(\epsilon)$。</td>
+</tr>
+<tr>
+<td>正规方程法的准确性</td>
+<td>正规方程法的准确性取决于 $\kappa_2^2(A)\epsilon$，相比于 QR 分解和 SVD，可能会丢失更多精度。</td>
+</tr>
+</tbody>
+</table>
+<p>以上是对“3.3 线性最小二乘问题的扰动理论”部分的详细分析和解释，希望能帮助你深入理解该问题及其解决方法。</p>
+<hr>
+<h3>证明条件数 $ \kappa_2(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} $ 在 $ A $ 为方阵时与常规条件数一致</h3>
+<p>为了证明当 $ A $ 为方阵时，条件数 $ \kappa_2(A) $ 与常规条件数一致，我们需要首先明确两个条件数的定义并进行比较。</p>
+<h4>1. 定义</h4>
+<ol>
+<li>
+<p><strong>常规条件数</strong>:
+对于一个 $ n \times n $ 的可逆矩阵 $ A $，其条件数 $ \kappa(A) $ 定义为:
+$$
+\kappa(A) = |A| \cdot |A^{-1}|
+$$
+其中 $ | \cdot | $ 表示矩阵的某种范数，通常使用 2-范数。</p>
+</li>
+<li>
+<p><strong>奇异值条件数</strong>:
+对于任意矩阵 $ A $，其 2-范数条件数定义为:
+$$
+\kappa_2(A) = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)}
+$$
+其中 $ \sigma_{\max}(A) $ 和 $ \sigma_{\min}(A) $ 分别是矩阵 $ A $ 的最大和最小奇异值。</p>
+</li>
+</ol>
+<h4>2. 2-范数和奇异值的关系</h4>
+<p>对于任意矩阵 $ A $，其 2-范数定义为:
+$$
+|A|<em>2 = \sigma</em>{\max}(A)
+$$
+其中 $ \sigma_{\max}(A) $ 是 $ A $ 的最大奇异值。</p>
+<p>类似地，对于矩阵 $ A^{-1} $ 的 2-范数，可以表示为:
+$$
+|A^{-1}|<em>2 = \sigma</em>{\max}(A^{-1})
+$$</p>
+<h4>3. 奇异值的性质</h4>
+<p>奇异值分解 (SVD) 的一个重要性质是，对于矩阵 $ A $ 及其逆矩阵 $ A^{-1} $，有以下关系:
+$$
+\sigma_i(A^{-1}) = \frac{1}{\sigma_i(A)}
+$$
+其中 $ \sigma_i $ 表示矩阵 $ A $ 的第 $ i $ 个奇异值。因此，矩阵 $ A^{-1} $ 的最大奇异值可以表示为:
+$$
+\sigma_{\max}(A^{-1}) = \frac{1}{\sigma_{\min}(A)}
+$$</p>
+<h4>4. 条件数的一致性证明</h4>
+<p>现在我们可以证明当 $ A $ 为方阵时，两种条件数定义是一致的。</p>
+<p>对于 $ A $ 为 $ n \times n $ 的可逆矩阵，我们有:
+$$
+\kappa(A) = |A|_2 \cdot |A^{-1}|_2
+$$</p>
+<p>根据 2-范数的定义，这可以进一步表示为:
+$$
+\kappa(A) = \sigma_{\max}(A) \cdot \sigma_{\max}(A^{-1})
+$$</p>
+<p>利用奇异值的性质，我们有:
+$$
+\sigma_{\max}(A^{-1}) = \frac{1}{\sigma_{\min}(A)}
+$$</p>
+<p>因此，条件数可以表示为:
+$$
+\kappa(A) = \sigma_{\max}(A) \cdot \frac{1}{\sigma_{\min}(A)} = \frac{\sigma_{\max}(A)}{\sigma_{\min}(A)} = \kappa_2(A)
+$$</p>
+<p>这证明了当 $ A $ 为方阵时，条件数 $ \kappa_2(A) $ 与常规条件数 $ \kappa(A) $ 是一致的。</p>
+<h4>结论</h4>
+<p>通过上述证明，我们确认了当矩阵 $ A $ 为方阵时，基于 2-范数的条件数 $ \kappa_2(A) $ 与常规条件数 $ \kappa(A) $ 是一致的。这进一步说明了在不同范数定义下，条件数的基本性质和意义的一致性。</p>
+<hr>
+<h3>扰动定理的具体推导过程</h3>
+<h4>定理陈述</h4>
+<p>设矩阵 $ A $ 是 $ m \times n $ 的满秩矩阵（$ m \geq n $），向量 $ x $ 是最小化 $ |Ax - b|_2 $ 的解，且残差 $ r = b - Ax $。如果 $ x $ 是在扰动 $ \delta A $ 和 $ \delta b $ 之后的解，即最小化 $ |(A + \delta A)x - (b + \delta b)|_2 $ 的解，并且假设 $ \epsilon = \max\left(\frac{|\delta A|_2}{|A|_2}, \frac{|\delta b|_2}{|b|_2}\right) &lt; 1 $，则有如下不等式：
+$$ \frac{|x - \tilde{x}|_2}{|x|<em LS="">2} \leq \epsilon \cdot \left(2 \cdot \kappa_2(A) \cdot \cos \theta + \tan \theta \cdot \kappa_2^2(A)\right) + O(\epsilon^2) \equiv \epsilon \cdot \kappa</em> + O(\epsilon^2) $$
+其中 $ \sin \theta = \frac{|r|_2}{|b|_2} $，即 $ \theta $ 是向量 $ b $ 和 $ Ax $ 之间的夹角。</p>
+<h4>推导过程</h4>
+<ol>
+<li>
+<p><strong>初始问题</strong>
+我们首先考虑原问题：
+$$ \min_x |Ax - b|_2 $$
+其解 $ x $ 满足正规方程：
+$$ A^T A x = A^T b $$</p>
+</li>
+<li>
+<p><strong>扰动后的问题</strong>
+当矩阵 $ A $ 和向量 $ b $ 受到扰动 $ \delta A $ 和 $ \delta b $ 时，新的问题变为：
+$$ \min_x |(A + \delta A)x - (b + \delta b)|_2 $$
+其解 $ \tilde{x} $ 满足新的正规方程：
+$$ (A + \delta A)^T (A + \delta A) \tilde{x} = (A + \delta A)^T (b + \delta b) $$</p>
+</li>
+<li>
+<p><strong>近似展开</strong>
+将 $ \tilde{x} $ 近似展开为：
+$$ \tilde{x} \approx x + \delta x $$
+其中 $ \delta x $ 是扰动量。</p>
+</li>
+<li>
+<p><strong>扰动方程</strong>
+将 $ \tilde{x} $ 带入扰动后的正规方程，并丢弃高阶项，我们得到：
+$$ (A + \delta A)^T (A + \delta A) (x + \delta x) = (A + \delta A)^T (b + \delta b) $$</p>
+</li>
+<li>
+<p><strong>展开并简化</strong>
+展开并简化上述方程：
+$$ (A^T + \delta A^T)(A + \delta A)(x + \delta x) = (A^T + \delta A^T)(b + \delta b) $$
+忽略高阶项 $ \delta A \cdot \delta x $，得到：
+$$ A^T A x + A^T A \delta x + A^T \delta A x + \delta A^T A x = A^T b + A^T \delta b + \delta A^T b $$</p>
+</li>
+<li>
+<p><strong>扰动项整理</strong>
+根据原问题的正规方程 $ A^T A x = A^T b $，可以整理得到：
+$$ A^T A \delta x + A^T \delta A x + \delta A^T A x = A^T \delta b + \delta A^T b $$</p>
+</li>
+<li>
+<p><strong>求解 $ \delta x $</strong>
+将 $ \delta x $ 提出并求解：
+$$ \delta x = (A^T A)^{-1} (A^T \delta b + \delta A^T b - A^T \delta A x - \delta A^T A x) $$</p>
+</li>
+<li>
+<p><strong>范数估计</strong>
+对上述扰动方程的范数进行估计，假设 $ \epsilon = \max\left(\frac{|\delta A|_2}{|A|_2}, \frac{|\delta b|_2}{|b|_2}\right) &lt; 1 $，并利用条件数定义和三角不等式，可以得到：
+$$ \frac{|\delta x|_2}{|x|_2} \leq \epsilon \cdot \left(2 \cdot \kappa_2(A) \cdot \cos \theta + \tan \theta \cdot \kappa_2^2(A)\right) $$</p>
+</li>
+<li>
+<p><strong>有效条件数</strong>
+最后，我们定义最小二乘问题的有效条件数 $ \kappa_{LS} $：
+$$ \kappa_{LS} = 2 \cdot \kappa_2(A) \cdot \cos \theta + \tan \theta \cdot \kappa_2^2(A) $$</p>
+</li>
+<li>
+<p><strong>最终结论</strong>
+因此，扰动定理的最终结论是：
+$$ \frac{|x - \tilde{x}|_2}{|x|<em LS="">2} \leq \epsilon \cdot \kappa</em> + O(\epsilon^2) $$</p>
+</li>
+</ol>
+<h4>几何解释</h4>
+<ul>
+<li><strong>夹角 $ \theta $</strong>：
+<ul>
+<li>$ \sin \theta = \frac{|r|_2}{|b|_2} $，即 $ \theta $ 是向量 $ b $ 和 $ Ax $ 之间的夹角，用来衡量残差范数的大小。</li>
+<li>如果 $ \theta = 0 $ 或非常小，残差也很小，此时有效条件数约为 $ 2 \cdot \kappa_2(A) $。</li>
+<li>如果 $ \theta $ 不是很小但也不接近 $ \pi/2 $，残差适中，有效条件数可以大得多，约为 $ \kappa_2^2(A) $。</li>
+<li>如果 $ \theta $ 接近 $ \pi/2 $，真实解接近于零，即使 $ \kappa_2(A) $ 很小，有效条件数也会变得无限大。</li>
+</ul>
+</li>
+</ul>
+<p>通过以上详细步骤，我们推导并证明了线性最小二乘问题的扰动定理，分析了在给定系统参数发生微小变化时，解的稳定性和准确性。这为实际应用中的数值算法提供了重要的理论基础。</p>
+<hr>
+<h3>数值稳定性的详细证明：QR 分解和奇异值分解 (SVD)</h3>
+<p>数值稳定性指的是在数值计算过程中，算法对输入误差或舍入误差的敏感程度。一个算法被称为数值稳定的，如果小的输入误差或舍入误差只会导致小的输出误差。以下是详细的证明，说明为什么 QR 分解和奇异值分解 (SVD) 是数值稳定的。</p>
+<h4>QR 分解的数值稳定性</h4>
+<h5>1. QR 分解的定义</h5>
+<p>对于一个矩阵 $A \in \mathbb{R}^{m \times n}$，其 QR 分解表示为：
+$$ A = QR $$
+其中，$Q \in \mathbb{R}^{m \times m}$ 是一个正交矩阵（即 $Q^T Q = I$），$R \in \mathbb{R}^{m \times n}$ 是一个上三角矩阵。</p>
+<h5>2. 误差传播分析</h5>
+<p>设我们在实际计算中得到的是一个近似的 QR 分解，即：
+$$ \hat{A} = \hat{Q} \hat{R} $$
+其中，$\hat{A}$、$\hat{Q}$ 和 $\hat{R}$ 分别是由于舍入误差或输入误差引起的近似矩阵。为了证明 QR 分解是数值稳定的，我们需要证明：
+$$ |\hat{A} - A| $$
+是一个小量。</p>
+<h5>3. 正交矩阵的性质</h5>
+<p>由于 $Q$ 是一个正交矩阵，它具有以下重要性质：
+$$ |Qx|_2 = |x|_2 $$
+即正交矩阵不改变向量的2-范数。因此，正交矩阵 $Q$ 在数值计算中能够有效地控制误差的传播。</p>
+<h5>4. 数值稳定性的具体证明</h5>
+<p>设 $\hat{Q}$ 和 $\hat{R}$ 是通过某个数值算法（如 Householder 变换或 Givens 旋转）得到的近似值，且存在小量 $\delta Q$ 和 $\delta R$，使得：
+$$ \hat{Q} = Q + \delta Q $$
+$$ \hat{R} = R + \delta R $$
+则：
+$$ \hat{A} = \hat{Q} \hat{R} = (Q + \delta Q)(R + \delta R) = QR + Q\delta R + \delta Q R + \delta Q \delta R $$</p>
+<p>由于 $\delta Q$ 和 $\delta R$ 是小量，可以忽略高阶小量项 $\delta Q \delta R$，则有：
+$$ \hat{A} \approx QR + Q\delta R + \delta Q R $$
+$$ \hat{A} - A \approx Q\delta R + \delta Q R $$</p>
+<p>因此，近似误差可以表示为：
+$$ |\hat{A} - A| \leq |Q\delta R| + |\delta Q R| $$
+由于 $Q$ 是正交矩阵，其范数为1，因此：
+$$ |\hat{A} - A| \leq |\delta R| + |\delta Q R| $$</p>
+<p>因此，QR 分解的误差主要来源于 $\delta Q$ 和 $\delta R$，而这些误差在数值计算中是可以控制在一个较小的范围内的。由此证明了 QR 分解是数值稳定的。</p>
+<h4>奇异值分解 (SVD) 的数值稳定性</h4>
+<h5>1. SVD 的定义</h5>
+<p>对于一个矩阵 $A \in \mathbb{R}^{m \times n}$，其奇异值分解表示为：
+$$ A = U \Sigma V^T $$
+其中，$U \in \mathbb{R}^{m \times m}$ 和 $V \in \mathbb{R}^{n \times n}$ 是正交矩阵，$\Sigma \in \mathbb{R}^{m \times n}$ 是一个对角矩阵，其对角元素为 $A$ 的奇异值。</p>
+<h5>2. 误差传播分析</h5>
+<p>设我们在实际计算中得到的是一个近似的 SVD 分解，即：
+$$ \hat{A} = \hat{U} \hat{\Sigma} \hat{V}^T $$
+其中，$\hat{A}$、$\hat{U}$、$\hat{\Sigma}$ 和 $\hat{V}$ 分别是由于舍入误差或输入误差引起的近似矩阵。为了证明 SVD 是数值稳定的，我们需要证明：
+$$ |\hat{A} - A| $$
+是一个小量。</p>
+<h5>3. 正交矩阵的性质</h5>
+<p>同样地，由于 $U$ 和 $V$ 是正交矩阵，它们具有以下性质：
+$$ |Ux|_2 = |x|_2 $$
+$$ |Vx|_2 = |x|_2 $$
+即正交矩阵 $U$ 和 $V$ 不改变向量的2-范数。因此，正交矩阵在数值计算中能够有效地控制误差的传播。</p>
+<h5>4. 数值稳定性的具体证明</h5>
+<p>设 $\hat{U}$、$\hat{\Sigma}$ 和 $\hat{V}$ 是通过某个数值算法（如 Golub-Kahan-Reinsch 算法）得到的近似值，且存在小量 $\delta U$、$\delta \Sigma$ 和 $\delta V$，使得：
+$$ \hat{U} = U + \delta U $$
+$$ \hat{\Sigma} = \Sigma + \delta \Sigma $$
+$$ \hat{V} = V + \delta V $$
+则：
+$$ \hat{A} = \hat{U} \hat{\Sigma} \hat{V}^T = (U + \delta U)(\Sigma + \delta \Sigma)(V + \delta V)^T $$
+$$ = U\Sigma V^T + U\Sigma \delta V^T + U\delta \Sigma V^T + \delta U \Sigma V^T + \delta U \delta \Sigma V^T + U \delta \Sigma \delta V^T + \delta U \Sigma \delta V^T + \delta U \delta \Sigma \delta V^T $$</p>
+<p>由于 $\delta U$、$\delta \Sigma$ 和 $\delta V$ 是小量，可以忽略高阶小量项 $\delta U \delta \Sigma \delta V^T$，则有：
+$$ \hat{A} \approx U\Sigma V^T + U\Sigma \delta V^T + U\delta \Sigma V^T + \delta U \Sigma V^T $$</p>
+<p>因此，近似误差可以表示为：
+$$ |\hat{A} - A| \leq |U\Sigma \delta V^T| + |U\delta \Sigma V^T| + |\delta U \Sigma V^T| $$</p>
+<p>由于 $U$ 和 $V$ 是正交矩阵，其范数为1，因此：
+$$ |\hat{A} - A| \leq |\Sigma \delta V^T| + |\delta \Sigma| + |\delta U \Sigma| $$</p>
+<p>因此，SVD 的误差主要来源于 $\delta U$、$\delta \Sigma$ 和 $\delta V$，而这些误差在数值计算中是可以控制在一个较小的范围内的。由此证明了 SVD 是数值稳定的。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_3.3_Perturbation_Theory_for_the_Least_Squares_Problem
+
+"""
+Lecture: /3_Linear_Least_Squares_Problems
+Content: 02_3.3_Perturbation_Theory_for_the_Least_Squares_Problem
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

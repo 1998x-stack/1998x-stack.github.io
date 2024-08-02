@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>附录3.A 无限阶移动平均过程的收敛结论</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>07_附录3.A 无限阶移动平均过程的收敛结论</h1>
+<pre><code>Lecture: /第3章 平稳自回归移动平均过程
+Content: 07_附录3.A 无限阶移动平均过程的收敛结论
+</code></pre>
+<h3>第3章 平稳自回归移动平均过程</h3>
+<h4>附录3.A 无限阶移动平均过程的收敛结论</h4>
+<p>在时间序列分析中，无限阶移动平均过程（Infinite Order Moving Average Process, MA(∞)）是一个重要的概念。它在理论上提供了对有限阶移动平均过程（MA(q)）的扩展，并能更好地刻画时间序列中的长程依赖特性。附录3.A详细讨论了无限阶移动平均过程的收敛结论。</p>
+<h3>无限阶移动平均过程的定义</h3>
+<p>无限阶移动平均过程可以表示为：</p>
+<p>$$ X_t = \sum_{i=0}^{\infty} \theta_i \epsilon_{t-i} $$</p>
+<p>其中：</p>
+<ul>
+<li>$ X_t $ 是时间序列在时间 $ t $ 的值。</li>
+<li>$ \theta_i $ 是移动平均系数。</li>
+<li>$ \epsilon_t $ 是均值为零、方差为 $\sigma^2$ 的白噪声序列。</li>
+</ul>
+<h3>收敛条件</h3>
+<p>为了保证无限阶移动平均过程的收敛，即保证时间序列 $ X_t $ 的值是有限的，需要对系数 $\theta_i$ 施加一定的条件。</p>
+<h4>绝对收敛条件</h4>
+<p>一个常见的收敛条件是系数 $\theta_i$ 的绝对和收敛：</p>
+<p>$$ \sum_{i=0}^{\infty} |\theta_i| &lt; \infty $$</p>
+<p>如果这个条件成立，那么无论白噪声 $\epsilon_t$ 的取值如何，求和表达式都会收敛到一个有限值。</p>
+<h3>平稳性</h3>
+<p>无限阶移动平均过程是平稳的，其平稳性体现在其均值和方差都是时间不变的。具体来说，若满足上述收敛条件，过程的均值为：</p>
+<p>$$ E(X_t) = 0 $$</p>
+<p>因为 $ \epsilon_t $ 的均值为零。</p>
+<p>方差为：</p>
+<p>$$ \text{Var}(X_t) = \sigma^2 \sum_{i=0}^{\infty} \theta_i^2 $$</p>
+<p>这也是一个有限值，只要 $\theta_i$ 的平方和收敛：</p>
+<p>$$ \sum_{i=0}^{\infty} \theta_i^2 &lt; \infty $$</p>
+<h3>自相关函数</h3>
+<p>无限阶移动平均过程的自相关函数 $\gamma(k)$ 也可以通过系数 $\theta_i$ 表示：</p>
+<p>$$ \gamma(k) = \sigma^2 \sum_{i=0}^{\infty} \theta_i \theta_{i+k} $$</p>
+<p>这表明自相关函数的形式依赖于所有滞后项的系数乘积之和。</p>
+<h3>实例分析</h3>
+<p>假设我们有一个无限阶移动平均过程，其系数 $\theta_i$ 以几何级数形式衰减：</p>
+<p>$$ \theta_i = \alpha^i $$</p>
+<p>其中 $ 0 &lt; \alpha &lt; 1 $。这种情况下，绝对收敛条件显然成立：</p>
+<p>$$ \sum_{i=0}^{\infty} |\alpha^i| = \frac{1}{1-\alpha} &lt; \infty $$</p>
+<p>这意味着该过程是收敛的。其方差为：</p>
+<p>$$ \text{Var}(X_t) = \sigma^2 \sum_{i=0}^{\infty} (\alpha^i)^2 = \sigma^2 \frac{1}{1-\alpha^2} &lt; \infty $$</p>
+<h3>总结</h3>
+<p>无限阶移动平均过程提供了一个理论框架，用于更好地描述时间序列中的长程依赖特性。通过对系数 $\theta_i$ 施加适当的收敛条件，可以确保该过程的收敛性和平稳性，从而在时间序列建模和分析中具有重要应用 。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 07_附录3.A 无限阶移动平均过程的收敛结论
+
+"""
+Lecture: /第3章 平稳自回归移动平均过程
+Content: 07_附录3.A 无限阶移动平均过程的收敛结论
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

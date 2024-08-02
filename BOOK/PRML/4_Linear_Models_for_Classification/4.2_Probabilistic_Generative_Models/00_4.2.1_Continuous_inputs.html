@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.2.1 Continuous inputs</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_4.2.1_Continuous_inputs</h1>
+<pre><code>Lecture: 4_Linear_Models_for_Classification/4.2_Probabilistic_Generative_Models
+Content: 00_4.2.1_Continuous_inputs
+</code></pre>
+<h3>深入解析PRML中的4.2.1节：连续输入</h3>
+<p>《模式识别与机器学习》（Pattern Recognition and Machine Learning, PRML）是由Christopher M. Bishop所著的一本经典教材，其中第4章涵盖了线性分类模型的内容。在第4.2节，作者介绍了概率生成模型（Probabilistic Generative Models）。具体来说，第4.2.1节探讨了连续输入的情况。以下是对这一节内容的详细分析。</p>
+<h4>概率生成模型的背景</h4>
+<p>概率生成模型是一类通过联合概率分布建模输入数据和类别标签的方法。与判别模型不同，生成模型可以直接生成数据样本，并且在处理缺失数据、异常检测和密度估计等任务中具有优势。在连续输入的情况下，我们通常假设数据服从某种连续概率分布，比如多元高斯分布。</p>
+<h4>高斯判别分析（Gaussian Discriminant Analysis, GDA）</h4>
+<p>在连续输入的情境下，常用的一种生成模型是高斯判别分析。GDA假设对于每个类别 $C_k$，输入数据 $x$ 服从一个多元高斯分布，即：</p>
+<p>$$ p(x|C_k) = \mathcal{N}(x|\mu_k, \Sigma_k) $$</p>
+<p>其中，$\mu_k$ 是类别 $C_k$ 的均值向量，$\Sigma_k$ 是协方差矩阵。根据贝叶斯定理，我们可以写出类别的后验概率：</p>
+<p>$$ p(C_k|x) = \frac{p(x|C_k)p(C_k)}{p(x)} $$</p>
+<h4>连续输入的处理方法</h4>
+<p>在实际应用中，我们需要通过最大似然估计（MLE）或贝叶斯估计来确定模型参数 $\mu_k$ 和 $\Sigma_k$。以下是具体步骤：</p>
+<ol>
+<li>
+<p><strong>计算先验概率</strong>：先验概率 $p(C_k)$ 通常由类别 $C_k$ 的样本比例来估计，即：</p>
+<p>$$ p(C_k) = \frac{N_k}{N} $$</p>
+<p>其中，$N_k$ 是类别 $C_k$ 的样本数，$N$ 是总样本数。</p>
+</li>
+<li>
+<p><strong>估计均值向量和协方差矩阵</strong>：</p>
+<ul>
+<li>
+<p><strong>均值向量</strong>：类别 $C_k$ 的均值向量 $\mu_k$ 可以通过对该类别的样本取平均值来估计：</p>
+<p>$$ \mu_k = \frac{1}{N_k} \sum_{i \in C_k} x_i $$</p>
+</li>
+<li>
+<p><strong>协方差矩阵</strong>：协方差矩阵 $\Sigma_k$ 可以通过该类别样本的协方差来估计：</p>
+<p>$$ \Sigma_k = \frac{1}{N_k} \sum_{i \in C_k} (x_i - \mu_k)(x_i - \mu_k)^T $$</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>分类决策</strong>：根据上述参数估计，我们可以计算每个类别的后验概率，并选择后验概率最大的类别作为预测类别：</p>
+<p>$$ \hat{C} = \arg\max_{k} p(C_k|x) $$</p>
+</li>
+</ol>
+<h4>生成模型与判别模型的关系</h4>
+<p>在PRML中，作者还探讨了生成模型与判别模型之间的关系。具体来说，生成模型通过建模数据分布 $p(x|C_k)$ 和先验 $p(C_k)$，然后根据贝叶斯定理推导出后验概率 $p(C_k|x)$。相比之下，判别模型直接建模后验概率 $p(C_k|x)$，例如逻辑回归（Logistic Regression）。</p>
+<h4>高斯判别分析的优势与局限</h4>
+<ul>
+<li>
+<p><strong>优势</strong>：</p>
+<ul>
+<li>能够处理缺失数据和异常检测。</li>
+<li>在样本量较小时，生成模型通常比判别模型表现更好，因为生成模型利用了数据的完整分布信息。</li>
+<li>可以用于密度估计和样本生成。</li>
+</ul>
+</li>
+<li>
+<p><strong>局限</strong>：</p>
+<ul>
+<li>当类别的协方差矩阵差异较大时，高斯判别分析的效果可能较差。</li>
+<li>对数据的分布假设较强，例如假设数据服从高斯分布，可能在实际中不完全成立。</li>
+</ul>
+</li>
+</ul>
+<h4>应用场景</h4>
+<p>高斯判别分析广泛应用于以下领域：</p>
+<ul>
+<li><strong>医学诊断</strong>：通过患者的生理指标预测疾病类别。</li>
+<li><strong>金融风控</strong>：基于客户的交易记录预测信用风险。</li>
+<li><strong>图像分类</strong>：在图像特征空间中进行类别判别。</li>
+</ul>
+<hr>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_4.2.1_Continuous_inputs
+
+"""
+Lecture: 4_Linear_Models_for_Classification/4.2_Probabilistic_Generative_Models
+Content: 00_4.2.1_Continuous_inputs
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.3.8 Periodic variables</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>07_2.3.8_Periodic_variables</h1>
+<pre><code>Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 07_2.3.8_Periodic_variables
+</code></pre>
+<h3>PDF 探索和详细分析</h3>
+<h4>周期变量（Periodic variables）</h4>
+<p>在2.3.8节中，讨论了如何处理周期变量，这类变量在一些实际应用中非常重要。高斯分布虽然在很多场景下都非常有用，但在处理周期变量时并不合适。周期变量的一个常见例子是某个地理位置的风向测量，或者是24小时内的时间分布。</p>
+<h4>定义与背景</h4>
+<ol>
+<li>
+<p><strong>周期变量的定义</strong>：
+周期变量可以用角度坐标表示，通常在 $0 \leq \theta &lt; 2\pi$ 范围内。例如，风向可以在360度内变化，而时间可以在24小时内循环。这些变量的特点是周期性，即它们在达到一个最大值后会重置为最小值并重新开始。例如，风向在360度后会回到0度，时间在24小时后会回到0小时。</p>
+</li>
+<li>
+<p><strong>常规方法的局限性</strong>：
+如果使用常规的高斯分布来处理周期变量，会导致结果严重依赖于原点的选择。例如，假设有两个观测值 $\theta_1 = 1^\circ$ 和 $\theta_2 = 359^\circ$，如果选择原点为0度，则样本均值为180度，标准差为179度。而如果选择原点为180度，则均值为0度，标准差为1度。这显然是不合理的，因此需要一种特殊的方法来处理周期变量。</p>
+</li>
+</ol>
+<h4>处理周期变量的方法</h4>
+<ol>
+<li>
+<p><strong>单位圆上的表示</strong>：
+可以将周期变量表示为单位圆上的点，并使用二维单位向量 $ x_n $ 来表示每个观测值 $\theta_n$。这些向量的模长为1，即 $ |x_n| = 1 $。这样，均值可以通过向量的平均值来计算，并转换为对应的角度。</p>
+<p>计算步骤如下：
+$$
+\bar{x} = \frac{1}{N} \sum_{n=1}^{N} x_n
+$$
+其中，$\bar{x}$ 是所有向量的平均值。然后，通过求平均向量对应的角度来找到均值 $\theta$：
+$$
+\theta = \tan^{-1} \left( \frac{\sum_{n=1}^{N} \sin \theta_n}{\sum_{n=1}^{N} \cos \theta_n} \right)
+$$</p>
+</li>
+<li>
+<p><strong>von Mises 分布</strong>：
+为了更好地处理周期变量，可以使用von Mises分布，它是一种高斯分布的周期性推广。von Mises分布的概率密度函数为：
+$$
+p(\theta|\theta_0, m) = \frac{1}{2\pi I_0(m)} \exp {m \cos(\theta - \theta_0)}
+$$
+其中，$ I_0(m) $ 是第一类零阶贝塞尔函数，$ \theta_0 $ 是分布的均值，$ m $ 是浓度参数，类似于高斯分布中的精度（方差的倒数）。</p>
+<p>von Mises分布的特点是：</p>
+<ul>
+<li>具有周期性，即 $ p(\theta + 2\pi) = p(\theta) $。</li>
+<li>当 $ m $ 较大时，分布在均值 $\theta_0$ 附近高度集中，类似于高斯分布。</li>
+</ul>
+</li>
+<li>
+<p><strong>多峰分布</strong>：
+虽然von Mises分布通常是单峰的，但通过混合多个von Mises分布，可以构建多峰分布，从而处理更复杂的周期变量数据。例如，风向在某些季节可能有两个主要方向，这时可以使用两个von Mises分布的混合来建模。</p>
+</li>
+</ol>
+<h3>总结</h3>
+<p>处理周期变量时，传统的高斯分布方法会导致结果严重依赖于坐标原点的选择。通过将周期变量表示为单位圆上的点，并使用von Mises分布，可以更合理地处理周期性数据。这种方法不仅可以提供无偏的均值估计，还可以通过混合多个von Mises分布来处理多峰数据。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 07_2.3.8_Periodic_variables
+
+"""
+Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 07_2.3.8_Periodic_variables
+"""
+
+import numpy as np
+from scipy.special import i0
+from typing import List
+
+class PeriodicVariable:
+    def __init__(self, theta: List[float]):
+        """
+        初始化周期变量类
+        
+        参数:
+        theta (List[float]): 周期变量的观测值列表（以弧度表示）
+        """
+        self.theta = np.array(theta)
+        self.n = len(theta)
+    
+    def mean_direction(self) -> float:
+        """
+        计算周期变量的平均方向
+        
+        返回:
+        float: 平均方向（以弧度表示）
+        """
+        sin_sum = np.sum(np.sin(self.theta))
+        cos_sum = np.sum(np.cos(self.theta))
+        mean_theta = np.arctan2(sin_sum, cos_sum)
+        return mean_theta
+    
+    def resultant_length(self) -> float:
+        """
+        计算周期变量的合向量长度
+        
+        返回:
+        float: 合向量长度
+        """
+        sin_sum = np.sum(np.sin(self.theta))
+        cos_sum = np.sum(np.cos(self.theta))
+        R = np.sqrt(sin_sum**2 + cos_sum**2) / self.n
+        return R
+
+class VonMisesDistribution:
+    def __init__(self, mu: float, kappa: float):
+        """
+        初始化von Mises分布类
+        
+        参数:
+        mu (float): 分布的均值方向（以弧度表示）
+        kappa (float): 分布的浓度参数
+        """
+        self.mu = mu
+        self.kappa = kappa
+    
+    def pdf(self, theta: float) -> float:
+        """
+        计算von Mises分布的概率密度函数值
+        
+        参数:
+        theta (float): 自变量值（以弧度表示）
+        
+        返回:
+        float: 概率密度函数值
+        """
+        return np.exp(self.kappa * np.cos(theta - self.mu)) / (2 * np.pi * i0(self.kappa))
+
+# 示例用法
+if __name__ == "__main__":
+    # 示例数据：风向观测值（以弧度表示）
+    theta_samples = [0.1, 0.2, 0.3, 6.1, 6.2, 6.3]  # 注意这里以弧度表示
+    periodic_var = PeriodicVariable(theta_samples)
+    
+    mean_dir = periodic_var.mean_direction()
+    resultant_len = periodic_var.resultant_length()
+    
+    print(f"平均方向: {mean_dir} 弧度")
+    print(f"合向量长度: {resultant_len}")
+    
+    # 示例von Mises分布
+    vm_dist = VonMisesDistribution(mu=np.pi, kappa=2)
+    theta_test = np.linspace(-np.pi, np.pi, 100)
+    pdf_values = [vm_dist.pdf(theta) for theta in theta_test]
+    
+    print(f"von Mises分布的PDF值: {pdf_values[:10]}...")  # 仅打印前10个值以简化输出</code></pre>
+  </div>
+</body>
+</html>
+  

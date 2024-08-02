@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03-Trie</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>trie树</p>
+</blockquote>
+<p>Trie树（也称为前缀树或字典树）是一种树形数据结构，用于存储键集合，其中键通常是字符串。Trie树特别适合处理字符串查找操作，如前缀匹配。以下是关于Trie树的详细展开和实现步骤：</p>
+<h3>Trie树的特点</h3>
+<ol>
+<li>
+<p><strong>节点结构</strong>：</p>
+<ul>
+<li>每个节点代表一个字符。</li>
+<li>根节点为空字符。</li>
+<li>每个节点包含一个子节点字典，子节点字典的键是字符，值是Trie树的子节点。</li>
+<li>每个节点有一个布尔标志，表示是否是一个单词的结尾。</li>
+</ul>
+</li>
+<li>
+<p><strong>操作</strong>：</p>
+<ul>
+<li><strong>插入</strong>：将一个单词插入到Trie树中。</li>
+<li><strong>查找</strong>：查找一个单词是否在Trie树中。</li>
+<li><strong>前缀查找</strong>：查找所有以某个前缀开头的单词。</li>
+</ul>
+</li>
+</ol>
+<h3>Trie树的实现步骤</h3>
+<h4>步骤一：定义Trie节点类</h4>
+<pre><code class="language-python">class TrieNode:
+    def __init__(self):
+        self.children = {}  # 孩子节点字典
+        self.is_end_of_word = False  # 是否是单词结尾
+</code></pre>
+<h4>步骤二：定义Trie树类</h4>
+<pre><code class="language-python">class Trie:
+    def __init__(self):
+        self.root = TrieNode()  # 根节点
+
+    def insert(self, word: str) -&gt; None:
+        ```插入单词```
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+
+    def search(self, word: str) -&gt; bool:
+        ```查找单词```
+        node = self._find_node(word)
+        return node is not None and node.is_end_of_word
+
+    def starts_with(self, prefix: str) -&gt; bool:
+        ```查找前缀```
+        return self._find_node(prefix) is not None
+
+    def _find_node(self, prefix: str) -&gt; TrieNode:
+        ```辅助函数：查找前缀节点```
+        node = self.root
+        for char in prefix:
+            if char not in node.children:
+                return None
+            node = node.children[char]
+        return node
+</code></pre>
+<h3>Trie树操作示例</h3>
+<pre><code class="language-python"># 创建Trie树
+trie = Trie()
+# 插入单词
+trie.insert(&quot;apple&quot;)
+trie.insert(&quot;app&quot;)
+trie.insert(&quot;application&quot;)
+
+# 查找单词
+print(trie.search(&quot;apple&quot;))  # 输出: True
+print(trie.search(&quot;app&quot;))    # 输出: True
+print(trie.search(&quot;appl&quot;))   # 输出: False
+
+# 查找前缀
+print(trie.starts_with(&quot;app&quot;))  # 输出: True
+print(trie.starts_with(&quot;apl&quot;))  # 输出: False
+</code></pre>
+<h3>代码详细解释</h3>
+<ol>
+<li>
+<p><strong>TrieNode类</strong>：</p>
+<ul>
+<li><code>self.children</code>：字典，用于存储子节点，键是字符，值是TrieNode对象。</li>
+<li><code>self.is_end_of_word</code>：布尔变量，表示该节点是否是一个单词的结尾。</li>
+</ul>
+</li>
+<li>
+<p><strong>Trie类</strong>：</p>
+<ul>
+<li><code>self.root</code>：根节点，初始化为空的TrieNode。</li>
+<li><code>insert</code>方法：逐字符插入单词，如果字符不存在，则创建新节点。最后一个字符的节点标记为单词结尾。</li>
+<li><code>search</code>方法：查找单词是否存在，利用<code>_find_node</code>方法找到最后一个字符的节点，并检查<code>is_end_of_word</code>标志。</li>
+<li><code>starts_with</code>方法：检查前缀是否存在，只需利用<code>_find_node</code>方法查找到前缀的最后一个字符的节点即可。</li>
+<li><code>_find_node</code>方法：辅助方法，逐字符查找前缀，返回最后一个字符的节点。</li>
+</ul>
+</li>
+</ol>
+<h3>进一步扩展</h3>
+<p>可以在Trie树的基础上实现更多功能，如：</p>
+<ul>
+<li><strong>删除单词</strong>：实现删除功能，需要处理子节点的清理。</li>
+<li><strong>统计前缀数量</strong>：统计以某个前缀开头的单词数量。</li>
+<li><strong>自动补全</strong>：实现自动补全功能，返回所有以某个前缀开头的单词列表。</li>
+</ul>
+<h4>删除单词</h4>
+<pre><code class="language-python">def delete(self, word: str) -&gt; None:
+    ```删除单词```
+    def _delete(node: TrieNode, word: str, depth: int) -&gt; bool:
+        if depth == len(word):
+            if not node.is_end_of_word:
+                return False
+            node.is_end_of_word = False
+            return len(node.children) == 0
+        char = word[depth]
+        if char not in node.children:
+            return False
+        should_delete_child = _delete(node.children[char], word, depth + 1)
+        if should_delete_child:
+            del node.children[char]
+            return len(node.children) == 0
+        return False
+    _delete(self.root, word, 0)
+</code></pre>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

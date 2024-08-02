@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.4.2 计数排序</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_2.4.2_计数排序</h1>
+<pre><code>Lecture: 02._排序和顺序统计/2.4_线性时间排序
+Content: 01_2.4.2_计数排序
+</code></pre>
+<h3>2.4.2 计数排序</h3>
+<p>计数排序（Counting Sort）是一种线性时间复杂度的非比较排序算法，适用于已知范围内的整数排序。与基于比较的排序算法（如快速排序、归并排序）不同，计数排序不通过比较元素间的大小来排序，而是通过计数各元素出现的次数来实现排序。以下是对计数排序的详细分析。</p>
+<h4>基本思想</h4>
+<p>计数排序通过以下步骤实现排序：</p>
+<ol>
+<li><strong>计数阶段</strong>：统计每个元素在输入数组中的出现次数。</li>
+<li><strong>累积计数阶段</strong>：计算每个元素在排序后数组中的位置。</li>
+<li><strong>排序阶段</strong>：根据累积计数结果，将元素放置到排序后数组的正确位置。</li>
+</ol>
+<h4>详细步骤</h4>
+<ol>
+<li>
+<p><strong>计数阶段</strong>：</p>
+<ul>
+<li>创建一个计数数组<code>C</code>，其大小为输入数组中的最大值加一（即范围内所有可能的整数数量）。</li>
+<li>初始化计数数组<code>C</code>的所有元素为0。</li>
+<li>遍历输入数组，对于每个元素<code>A[j]</code>，增加计数数组中对应元素的值，即<code>C[A[j]] += 1</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>累积计数阶段</strong>：</p>
+<ul>
+<li>修改计数数组<code>C</code>，使其包含小于或等于各元素的累积计数。具体地，对于每个<code>i</code>，<code>C[i]</code>表示小于或等于<code>i</code>的元素数量。</li>
+<li>从<code>C[1]</code>开始，累加前一个元素的计数值，即<code>C[i] += C[i-1]</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>排序阶段</strong>：</p>
+<ul>
+<li>创建一个输出数组<code>B</code>，其大小与输入数组相同。</li>
+<li>逆序遍历输入数组<code>A</code>，将每个元素<code>A[j]</code>放置到输出数组<code>B</code>的正确位置。具体地，<code>B[C[A[j]] - 1] = A[j]</code>，然后减少计数数组中对应元素的值，即<code>C[A[j]] -= 1</code>。</li>
+</ul>
+</li>
+</ol>
+<h4>伪代码</h4>
+<pre><code>COUNTING-SORT(A, B, k)
+1. let C[0..k] be a new array
+2. for i = 0 to k
+3.     C[i] = 0
+4. for j = 1 to A.length
+5.     C[A[j]] += 1
+6. for i = 1 to k
+7.     C[i] += C[i - 1]
+8. for j = A.length downto 1
+9.     B[C[A[j]]] = A[j]
+10.    C[A[j]] -= 1
+</code></pre>
+<h4>时间复杂度分析</h4>
+<p>计数排序的时间复杂度为<code>O(n + k)</code>，其中<code>n</code>是输入数组的长度，<code>k</code>是输入数组中元素的取值范围。当<code>k = O(n)</code>时，计数排序的时间复杂度为<code>O(n)</code>。因此，计数排序在处理具有较小取值范围的整数数组时非常高效。</p>
+<ol>
+<li><strong>初始化计数数组</strong>：<code>O(k)</code>时间复杂度。</li>
+<li><strong>计数阶段</strong>：遍历输入数组，时间复杂度为<code>O(n)</code>。</li>
+<li><strong>累积计数阶段</strong>：遍历计数数组，时间复杂度为<code>O(k)</code>。</li>
+<li><strong>排序阶段</strong>：逆序遍历输入数组，时间复杂度为<code>O(n)</code>。</li>
+</ol>
+<p>综合上述步骤，总的时间复杂度为<code>O(n + k)</code>。</p>
+<h4>空间复杂度分析</h4>
+<p>计数排序需要额外的空间来存储计数数组<code>C</code>和输出数组<code>B</code>。因此，空间复杂度为<code>O(n + k)</code>。</p>
+<h4>稳定性</h4>
+<p>计数排序是一种稳定排序算法。稳定性意味着相同元素在排序后的相对顺序保持不变。这在某些应用中非常重要，例如当需要对带有附加信息的记录进行多关键字排序时。</p>
+<h4>适用性</h4>
+<p>计数排序适用于以下情况：</p>
+<ol>
+<li><strong>整数排序</strong>：输入数组中的元素为整数且取值范围已知且较小。</li>
+<li><strong>线性时间排序</strong>：需要在线性时间内完成排序。</li>
+</ol>
+<h4>示例</h4>
+<p>假设有一个数组<code>A = [6, 0, 2, 0, 1, 3, 4, 6, 1, 3, 2]</code>，我们使用计数排序对其进行排序。以下是具体操作步骤：</p>
+<ol>
+<li>
+<p><strong>计数阶段</strong>：</p>
+<ul>
+<li>初始化计数数组<code>C</code>为<code>[0, 0, 0, 0, 0, 0, 0]</code>。</li>
+<li>遍历输入数组，得到计数数组<code>C</code>为<code>[2, 2, 2, 2, 1, 0, 2]</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>累积计数阶段</strong>：</p>
+<ul>
+<li>修改计数数组<code>C</code>为<code>[2, 4, 6, 8, 9, 9, 11]</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>排序阶段</strong>：</p>
+<ul>
+<li>创建输出数组<code>B</code>为<code>[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]</code>。</li>
+<li>逆序遍历输入数组，得到排序后的数组<code>B</code>为<code>[0, 0, 1, 1, 2, 2, 3, 3, 4, 6, 6]</code>。</li>
+</ul>
+</li>
+</ol>
+<h4>总结</h4>
+<p>计数排序是一种高效的线性时间排序算法，特别适用于整数排序。在适当的应用场景下，计数排序的时间复杂度和空间复杂度都非常理想。理解计数排序的工作原理和适用范围，对于优化特定类型数据的排序性能具有重要意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_2.4.2_计数排序
+
+"""
+Lecture: 02._排序和顺序统计/2.4_线性时间排序
+Content: 01_2.4.2_计数排序
+"""
+
+import numpy as np
+from typing import List
+
+def counting_sort(arr: List[int]) -> List[int]:
+    """
+    计数排序算法
+
+    Args:
+        arr (List[int]): 需要排序的整数数组
+
+    Returns:
+        List[int]: 排序后的整数数组
+    """
+    if not arr:
+        return []
+
+    # 找到数组中的最大值和最小值
+    max_val = max(arr)
+    min_val = min(arr)
+
+    # 初始化计数数组
+    count_range = max_val - min_val + 1
+    count = np.zeros(count_range, dtype=int)
+
+    # 计算每个元素的出现次数
+    for num in arr:
+        count[num - min_val] += 1
+
+    # 累积计数数组
+    for i in range(1, count_range):
+        count[i] += count[i - 1]
+
+    # 初始化输出数组
+    output = np.zeros(len(arr), dtype=int)
+
+    # 根据累积计数数组将元素放置到正确位置
+    for num in reversed(arr):
+        output[count[num - min_val] - 1] = num
+        count[num - min_val] -= 1
+
+    return output.tolist()
+
+def main():
+    """
+    主函数，演示计数排序的使用
+    """
+    data = [15, 3, 17, 10, 84, 19, 6, 22, 9]
+    print("原始数组:", data)
+    sorted_data = counting_sort(data)
+    print("排序后的数组:", sorted_data)
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

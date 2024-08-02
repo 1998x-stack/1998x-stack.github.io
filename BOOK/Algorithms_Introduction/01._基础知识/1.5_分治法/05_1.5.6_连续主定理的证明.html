@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.5.6 连续主定理的证明</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>05_1.5.6_连续主定理的证明</h1>
+<pre><code>Lecture: 01._基础知识/1.5_分治法
+Content: 05_1.5.6_连续主定理的证明
+</code></pre>
+<h3>05_1.5.6_连续主定理的证明 深度解析</h3>
+<h4>1. 引言</h4>
+<p>主方法（Master Method）是一种广泛应用于解决递归方程的方法，它通过比较递归关系中的项来确定其渐近时间复杂度。然而，经典的主方法主要适用于离散情况（即整数规模的问题）。对于某些算法，特别是处理实数或连续数据的算法，连续主定理（Continuous Master Theorem）提供了一个更广泛和灵活的工具。</p>
+<h4>2. 连续主定理的基本原理</h4>
+<p>连续主定理通过将递归关系扩展到实数域，从而提供对递归关系行为的更深入理解。连续主定理的证明过程涉及递归树和几何级数的求和，确保能够处理没有明确基准的连续规模递归关系。</p>
+<h5>定理描述</h5>
+<p>设常数 $a &gt; 0$ 和 $b &gt; 1$，函数 $f(n)$ 定义且在足够大的正实数上非负。定义算法递归关系 $T(n)$ 为：</p>
+<p>$$
+T(n) = aT\left(\frac{n}{b}\right) + f(n)
+$$</p>
+<p>连续主定理的渐近行为可以描述如下：</p>
+<ol>
+<li>如果存在常数 $\epsilon &gt; 0$，使得 $f(n) = O(n^{\log_b a - \epsilon})$，则 $T(n) = \Theta(n^{\log_b a})$。</li>
+<li>如果存在常数 $k \geq 0$，使得 $f(n) = \Theta(n^{\log_b a} \log^k n)$，则 $T(n) = \Theta(n^{\log_b a} \log^{k+1} n)$。</li>
+<li>如果存在常数 $\epsilon &gt; 0$，使得 $f(n) = \Omega(n^{\log_b a + \epsilon})$，并且 $f(n)$ 满足正则性条件 $af(n/b) \leq cf(n)$ 对于某个常数 $c &lt; 1$ 且足够大的 $n$ 成立，则 $T(n) = \Theta(f(n))$。</li>
+</ol>
+<h4>3. 证明过程</h4>
+<p>连续主定理的证明涉及两个主要引理和递归树的展开。以下是详细的证明过程。</p>
+<h5>引理1</h5>
+<p><strong>引理4.2</strong>：使用一个阈值常数 $n_0 = 1$ 的简化主递归，通过递归树将简化主递归的解减少到求和问题。</p>
+<p>$$
+T(n) = aT\left(\frac{n}{b}\right) + f(n)
+$$</p>
+<p>构建递归树并计算每层的成本，最终总成本表示为：</p>
+<p>$$
+T(n) = f(n) + af\left(\frac{n}{b}\right) + a^2f\left(\frac{n}{b^2}\right) + \ldots + a^{\log_b n} f(1)
+$$</p>
+<h5>引理2</h5>
+<p><strong>引理4.3</strong>：提供几何级数的渐近界，与主定理的三种情况相对应。</p>
+<p>$$
+g(n) = \sum_{j=0}^{\log_b n} a^j f\left(\frac{n}{b^j}\right)
+$$</p>
+<p>对于上述递归关系的求和，分为三种情况处理：</p>
+<ol>
+<li>如果 $f(n) = O(n^{\log_b a - \epsilon})$，则该求和是收敛的，且 $g(n) = O(n^{\log_b a})$。</li>
+<li>如果 $f(n) = \Theta(n^{\log_b a} \log^k n)$，则该求和结果为 $g(n) = \Theta(n^{\log_b a} \log^{k+1} n)$。</li>
+<li>如果 $f(n) = \Omega(n^{\log_b a + \epsilon})$，且满足正则性条件，则该求和结果为 $g(n) = \Theta(f(n))$。</li>
+</ol>
+<h5>最终证明</h5>
+<p>通过将引理1和引理2结合，证明连续主定理。具体过程如下：</p>
+<ol>
+<li><strong>第一种情况</strong>：证明 $f(n) = O(n^{\log_b a - \epsilon})$ 的情况下，递归关系的总成本主要由顶部的常数部分主导，因此 $T(n) = \Theta(n^{\log_b a})$。</li>
+<li><strong>第二种情况</strong>：证明 $f(n) = \Theta(n^{\log_b a} \log^k n)$ 的情况下，递归关系的总成本通过每层递归成本的叠加，得到 $T(n) = \Theta(n^{\log_b a} \log^{k+1} n)$。</li>
+<li><strong>第三种情况</strong>：证明 $f(n) = \Omega(n^{\log_b a + \epsilon})$ 且满足正则性条件时，递归关系的总成本主要由底部部分主导，因此 $T(n) = \Theta(f(n))$。</li>
+</ol>
+<h4>4. 应用场景</h4>
+<p>连续主定理适用于各种处理连续数据或实数域的递归算法，特别是在如下场景中：</p>
+<ul>
+<li><strong>数值计算</strong>：例如，处理大规模矩阵运算、积分计算等。</li>
+<li><strong>动态规划</strong>：分析连续状态空间的动态规划问题。</li>
+<li><strong>机器学习</strong>：处理连续特征空间的算法。</li>
+</ul>
+<h4>5. 优缺点分析</h4>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>灵活性强</strong>：适用于处理连续数据的递归关系，扩展了经典主方法的适用范围。</li>
+<li><strong>渐近性强</strong>：通过几何级数求和，能够精确分析递归关系的渐近复杂度。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>复杂性高</strong>：证明过程涉及较复杂的数学推导和几何级数求和。</li>
+<li><strong>适用条件严格</strong>：需要满足特定的正则性条件和函数增长速率条件。</li>
+</ul>
+<h4>6. 总结</h4>
+<p>连续主定理为处理连续数据的递归关系提供了强有力的工具。通过将递归关系扩展到实数域，我们能够更加灵活地分析和解决复杂的递归问题。深入理解连续主定理的原理和应用步骤，可以在实际算法设计和分析中更加高效地处理复杂的递归关系。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 05_1.5.6_连续主定理的证明
+
+"""
+Lecture: 01._基础知识/1.5_分治法
+Content: 05_1.5.6_连续主定理的证明
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-matrix</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>一、矩阵基础</h3>
+<h4>1. Gauss-Jordan 消元法</h4>
+<p>Gauss-Jordan 消元法是一种用于求解线性方程组和矩阵求逆的算法。其基本步骤如下：</p>
+<ol>
+<li><strong>将矩阵化为增广矩阵</strong>：如果要解方程组 $A\mathbf{x} = \mathbf{b}$，首先将其写成增广矩阵 $[A|\mathbf{b}]$。</li>
+<li><strong>通过行变换将矩阵化为行最简形式</strong>：使用初等行变换（行交换、行乘以非零常数、某一行加上另一行的倍数）将矩阵转换为行最简形式，即左侧为单位矩阵。</li>
+<li><strong>解得结果</strong>：从增广矩阵的右侧读取解。</li>
+</ol>
+<p>例如，求解方程组：
+$ \begin{cases}
+2x + y = 5 \
+4x - 6y = -2
+\end{cases} $</p>
+<p>增广矩阵为：
+$ \left[\begin{array}{cc|c}
+2 &amp; 1 &amp; 5 \
+4 &amp; -6 &amp; -2
+\end{array}\right] $</p>
+<p>通过行变换可以化简为：
+$ \left[\begin{array}{cc|c}
+1 &amp; 0 &amp; 1 \
+0 &amp; 1 &amp; 3
+\end{array}\right] $</p>
+<p>解得 $x = 1$, $y = 3$。</p>
+<h4>2. 奇异值分解（SVD）</h4>
+<p>SVD 是一种将矩阵分解为三个矩阵乘积的方法，即：
+$ A = U\Sigma V^T $
+其中，$U$ 和 $V$ 是正交矩阵，$\Sigma$ 是对角矩阵，其对角线元素为矩阵 $A$ 的奇异值。</p>
+<p>SVD 在数据降维、信号处理和推荐系统中有广泛应用。例如，在图像压缩中，可以使用 SVD 将图像矩阵分解，然后保留最大的奇异值对应的分量，丢弃小的奇异值对应的分量，从而实现图像压缩。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

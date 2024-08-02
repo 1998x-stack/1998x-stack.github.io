@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.6 自协方差生成函数</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>05_3.6 自协方差生成函数</h1>
+<pre><code>Lecture: /第3章 平稳自回归移动平均过程
+Content: 05_3.6 自协方差生成函数
+</code></pre>
+<h3>第3章 平稳自回归移动平均过程</h3>
+<h4>3.6 自协方差生成函数</h4>
+<p>自协方差生成函数（Autocovariance Generating Function，ACGF）是时间序列分析中的一个重要工具，它用于描述时间序列的自协方差特性。第3章第3.6节详细介绍了自协方差生成函数的定义、性质及其在实际中的应用。</p>
+<h4>自协方差生成函数的定义</h4>
+<p>自协方差生成函数是一种表示时间序列自协方差结构的数学工具。对于一个平稳时间序列 ${X_t}$，其自协方差函数 $\gamma(k)$ 定义为：
+$$ \gamma(k) = \text{Cov}(X_t, X_{t+k}) $$</p>
+<p>自协方差生成函数 $ G(z) $ 定义为自协方差函数的z变换，即：
+$$ G(z) = \sum_{k=-\infty}^{\infty} \gamma(k) z^k $$</p>
+<p>其中，$ z $ 是复数变量，$\gamma(k)$ 是时间序列的自协方差函数。</p>
+<h4>自协方差生成函数的性质</h4>
+<p>自协方差生成函数具有以下几个重要性质：</p>
+<ol>
+<li>
+<p><strong>对称性</strong>：
+$$ G(z) = G\left(\frac{1}{z}\right) $$
+这是由于自协方差函数 $\gamma(k)$ 的对称性，即 $\gamma(k) = \gamma(-k)$。</p>
+</li>
+<li>
+<p><strong>正定性</strong>：
+自协方差生成函数的系数 $\gamma(k)$ 构成的矩阵是正定的，这反映了时间序列的平稳性。</p>
+</li>
+<li>
+<p><strong>幂级数展开</strong>：
+自协方差生成函数可以表示为幂级数展开形式：
+$$ G(z) = \gamma(0) + \sum_{k=1}^{\infty} \gamma(k) (z^k + z^{-k}) $$
+这种形式展示了自协方差生成函数的结构特性。</p>
+</li>
+</ol>
+<h4>自协方差生成函数的应用</h4>
+<p>自协方差生成函数在时间序列分析中有广泛的应用，特别是在分析和建模平稳时间序列时具有重要作用。以下是几个典型的应用场景：</p>
+<ol>
+<li>
+<p><strong>模型识别和估计</strong>：
+自协方差生成函数可以用于识别和估计ARMA模型的参数。通过分析时间序列的自协方差生成函数，可以更好地理解其动态特性，并构建合适的时间序列模型。</p>
+</li>
+<li>
+<p><strong>频谱分析</strong>：
+自协方差生成函数与频谱密度函数有密切关系。对于平稳时间序列，其频谱密度函数 $ f(\lambda) $ 可以通过自协方差生成函数得到：
+$$ f(\lambda) = \frac{1}{2\pi} G(e^{-i\lambda}) $$
+这种关系有助于在频域中分析时间序列的特性。</p>
+</li>
+<li>
+<p><strong>平稳性检验</strong>：
+通过自协方差生成函数，可以检验时间序列的平稳性。若自协方差生成函数满足一定条件，则时间序列是平稳的。这对于时间序列建模和预测具有重要意义。</p>
+</li>
+</ol>
+<h3>实例分析</h3>
+<p>假设我们有一个AR(1)模型：
+$$ X_t = \phi X_{t-1} + \epsilon_t $$</p>
+<p>其自协方差函数为：
+$$ \gamma(k) = \frac{\sigma^2 \phi^k}{1 - \phi^2} $$</p>
+<p>对应的自协方差生成函数为：
+$$ G(z) = \frac{\sigma^2}{1 - \phi z} $$</p>
+<p>通过这种表示方式，可以清晰地看到AR(1)模型的自协方差特性。</p>
+<h3>总结</h3>
+<p>自协方差生成函数是时间序列分析中的一个重要工具，通过其定义和性质，可以有效地分析和建模平稳时间序列。理解和掌握自协方差生成函数的应用，有助于更准确地分析时间序列的动态特性，并为实际问题的解决提供科学依据。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 05_3.6 自协方差生成函数
+
+"""
+Lecture: /第3章 平稳自回归移动平均过程
+Content: 05_3.6 自协方差生成函数
+"""
+
+import numpy as np
+from typing import List
+
+class AutocovarianceGeneratingFunction:
+    """
+    自协方差生成函数 (ACGF) 类，用于计算和分析时间序列的自协方差生成函数。
+
+    Attributes:
+        autocovariances (List[float]): 时间序列的自协方差函数值列表
+    """
+
+    def __init__(self, autocovariances: List[float]):
+        """
+        初始化自协方差生成函数。
+
+        Args:
+            autocovariances (List[float]): 时间序列的自协方差函数值列表
+        """
+        self.autocovariances = np.array(autocovariances)
+    
+    def compute_acgf(self, z: complex) -> complex:
+        """
+        计算自协方差生成函数的值。
+
+        Args:
+            z (complex): 复数变量
+
+        Returns:
+            complex: 自协方差生成函数在 z 处的值
+        """
+        acgf_value = np.sum(self.autocovariances * np.array([z**k for k in range(-len(self.autocovariances) + 1, len(self.autocovariances))]))
+        return acgf_value
+
+    def compute_acgf_series(self, z_values: List[complex]) -> List[complex]:
+        """
+        计算一系列 z 值对应的自协方差生成函数的值。
+
+        Args:
+            z_values (List[complex]): 复数变量列表
+
+        Returns:
+            List[complex]: 自协方差生成函数在 z_values 处的值列表
+        """
+        return [self.compute_acgf(z) for z in z_values]
+
+def main():
+    """
+    主函数，演示自协方差生成函数的使用。
+    """
+    # 示例自协方差函数值列表
+    autocovariances = [1, 0.75, 0.5, 0.25, 0]
+    
+    # 创建自协方差生成函数对象
+    acgf = AutocovarianceGeneratingFunction(autocovariances)
+    
+    # 计算并打印自协方差生成函数在一些复数点的值
+    z_values = [0.5 + 0.5j, 1 + 0j, -0.5 + 0.5j]
+    acgf_values = acgf.compute_acgf_series(z_values)
+    
+    for z, value in zip(z_values, acgf_values):
+        print(f"ACGF at z = {z}: {value}")
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</body>
+</html>
+  

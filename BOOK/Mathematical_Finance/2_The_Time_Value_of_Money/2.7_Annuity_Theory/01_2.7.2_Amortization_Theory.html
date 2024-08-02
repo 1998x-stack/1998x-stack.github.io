@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.7.2 Amortization Theory</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_2.7.2_Amortization_Theory</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 01_2.7.2_Amortization_Theory
+
+</code></pre>
+<h3>01_2.7.2_摊销理论 (Amortization Theory)</h3>
+<h4>概述</h4>
+<p>摊销（Amortization）是指在一定期限内，通过定期支付偿还贷款本金和利息的过程。摊销理论在财务管理中起着至关重要的作用，尤其是在贷款和抵押贷款的管理方面。通过摊销计划，借款人可以逐期还款，最终完全偿还贷款，同时贷款人也能获得固定的利息收入。</p>
+<h4>摊销过程</h4>
+<p>摊销过程涉及到以下几个关键因素：</p>
+<ul>
+<li><strong>本金（Principal）</strong>：最初借款的金额。</li>
+<li><strong>利率（Interest Rate）</strong>：贷款的年利率或每期利率。</li>
+<li><strong>还款期数（Number of Periods）</strong>：贷款偿还的总期数。</li>
+<li><strong>每期还款额（Periodic Payment）</strong>：每期偿还的金额，包括本金和利息。</li>
+</ul>
+<p>在每期还款中，部分金额用于支付利息，剩余部分用于偿还本金。随着时间的推移，利息部分逐渐减少，而本金偿还部分逐渐增加。</p>
+<h4>摊销表（Amortization Schedule）</h4>
+<p>摊销表详细列出了每期的还款情况，包括每期支付的总额、利息部分、本金部分和剩余本金。摊销表的结构如下：</p>
+<table>
+<thead>
+<tr>
+<th>期数</th>
+<th>总还款额</th>
+<th>利息部分</th>
+<th>本金部分</th>
+<th>剩余本金</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>PMT</td>
+<td>INT_1</td>
+<td>PRIN_1</td>
+<td>BAL_1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>PMT</td>
+<td>INT_2</td>
+<td>PRIN_2</td>
+<td>BAL_2</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr>
+<td>n</td>
+<td>PMT</td>
+<td>INT_n</td>
+<td>PRIN_n</td>
+<td>BAL_n</td>
+</tr>
+</tbody>
+</table>
+<p>其中：</p>
+<ul>
+<li>PMT：每期的总还款额。</li>
+<li>INT_t：第 t 期的利息部分。</li>
+<li>PRIN_t：第 t 期的本金部分。</li>
+<li>BAL_t：第 t 期末的剩余本金。</li>
+</ul>
+<h4>计算公式</h4>
+<p>每期还款额（PMT）的计算公式为：
+$$ PMT = \frac{P \cdot r \cdot (1 + r)^n}{(1 + r)^n - 1} $$
+其中：</p>
+<ul>
+<li>$ P $ 是贷款本金；</li>
+<li>$ r $ 是每期利率；</li>
+<li>$ n $ 是总期数。</li>
+</ul>
+<p>每期利息部分和本金部分的计算公式为：</p>
+<ul>
+<li>利息部分：
+$$ INT_t = BAL_{t-1} \cdot r $$</li>
+<li>本金部分：
+$$ PRIN_t = PMT - INT_t $$</li>
+<li>剩余本金：
+$$ BAL_t = BAL_{t-1} - PRIN_t $$</li>
+</ul>
+<h4>实际应用</h4>
+<p>摊销理论在实际应用中非常广泛，包括但不限于以下场景：</p>
+<ol>
+<li><strong>抵押贷款</strong>：帮助购房者制定还款计划，了解每期还款的构成。</li>
+<li><strong>汽车贷款</strong>：通过摊销表了解每期的还款情况。</li>
+<li><strong>商业贷款</strong>：企业通过摊销计划管理债务，优化现金流。</li>
+<li><strong>债券摊销</strong>：债券发行人和投资者通过摊销计算债券的利息支付和本金偿还。</li>
+</ol>
+<h4>举例说明</h4>
+<p>假设一笔$100,000的贷款，年利率为5%，分20年按月还款。计算每月还款额，并列出前几期的摊销表。</p>
+<p>计算每月还款额：
+$$ PMT = \frac{100000 \cdot 0.004167 \cdot (1 + 0.004167)^{240}}{(1 + 0.004167)^{240} - 1} \approx 659.96 $$</p>
+<p>摊销表：</p>
+<table>
+<thead>
+<tr>
+<th>期数</th>
+<th>总还款额</th>
+<th>利息部分</th>
+<th>本金部分</th>
+<th>剩余本金</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>659.96</td>
+<td>416.67</td>
+<td>243.29</td>
+<td>99756.71</td>
+</tr>
+<tr>
+<td>2</td>
+<td>659.96</td>
+<td>414.82</td>
+<td>245.14</td>
+<td>99511.57</td>
+</tr>
+<tr>
+<td>3</td>
+<td>659.96</td>
+<td>412.97</td>
+<td>247.00</td>
+<td>99264.57</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<h4>结论</h4>
+<p>摊销理论通过详细的计算和计划，使得贷款的偿还过程更加透明和可预测。借款人可以提前了解每期的还款情况，合理安排财务；贷款人则可以通过摊销表了解未来的现金流，确保资金的安全回收。掌握摊销理论，对于个人和企业的财务管理都有重要的意义。</p>
+<h3>总结</h3>
+<p>摊销理论在财务管理中的重要性不言而喻。通过深入理解摊销过程和计算方法，可以更好地管理贷款和债务，优化资金使用效率。无论是个人贷款还是企业融资，合理的摊销计划都是实现财务目标的关键工具。在实际应用中，摊销表提供了详细的还款计划，使得借款人和贷款人都能清晰地了解每期的支付和剩余本金情况，从而作出更明智的财务决策。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_2.7.2_Amortization_Theory
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 01_2.7.2_Amortization_Theory
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03-gbdt</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>GBDT的原理？和Xgboost的区别联系？</p>
+</blockquote>
+<h3>GBDT的原理</h3>
+<p>**梯度提升决策树（Gradient Boosting Decision Trees, GBDT）**是一种集成学习方法，通过构建多个决策树模型来提高整体预测性能。其基本思想是通过逐步添加新的决策树来纠正前一个模型的错误，每一步都优化损失函数，最终形成一个强大的预测模型。</p>
+<h4>1. GBDT的基本流程</h4>
+<ol>
+<li>
+<p><strong>初始化模型</strong>：</p>
+<ul>
+<li>用一个常数模型初始化，如用训练数据的平均值初始化。</li>
+<li>$ f_0(x) = \arg\min_{\gamma} \sum_{i=1}^{n} L(y_i, \gamma) $</li>
+</ul>
+</li>
+<li>
+<p><strong>逐步添加树模型</strong>：</p>
+<ul>
+<li>对于每个后续模型，首先计算前一个模型的残差，这些残差表示模型当前的误差。</li>
+<li>训练一个新的决策树模型来拟合这些残差。</li>
+<li>更新模型，将新树的预测结果加到当前模型中，调整权重参数以最小化损失函数。</li>
+<li>公式为：
+$$
+f_{m}(x) = f_{m-1}(x) + \gamma_m h_m(x)
+$$
+其中，$ \gamma_m $ 是步长， $ h_m(x) $ 是第 $ m $ 棵树。</li>
+</ul>
+</li>
+<li>
+<p><strong>重复过程</strong>：</p>
+<ul>
+<li>重复上述过程，逐步改进模型，直到达到预定的树数量或其他停止条件。</li>
+</ul>
+</li>
+</ol>
+<h4>2. GBDT的损失函数</h4>
+<ul>
+<li>GBDT可以使用不同的损失函数来处理回归和分类任务。例如，回归任务中常用的损失函数是均方误差（MSE），而分类任务中常用的损失函数是对数损失（Log Loss）。</li>
+</ul>
+<h3>XGBoost与GBDT的区别和联系</h3>
+<p><strong>XGBoost</strong>是GBDT的一种高效实现，通过一系列优化技术提高了模型训练速度和性能，同时增加了模型的灵活性和可扩展性。</p>
+<h4>1. XGBoost的优化技术</h4>
+<ol>
+<li>
+<p><strong>正则化</strong>：</p>
+<ul>
+<li>XGBoost在损失函数中加入了正则化项，以控制模型的复杂度，防止过拟合。</li>
+<li>正则化项包括树的叶子节点数和叶子节点权重的平方和。</li>
+</ul>
+</li>
+<li>
+<p><strong>并行处理</strong>：</p>
+<ul>
+<li>XGBoost通过并行计算实现了快速的节点分裂，显著提高了训练速度。</li>
+</ul>
+</li>
+<li>
+<p><strong>分裂节点的贪心算法</strong>：</p>
+<ul>
+<li>XGBoost采用了精确贪心算法（Exact Greedy Algorithm）和近似贪心算法（Approximate Greedy Algorithm）进行节点分裂，分别适用于内存足够和内存有限的情况。</li>
+</ul>
+</li>
+<li>
+<p><strong>缓存优化</strong>：</p>
+<ul>
+<li>XGBoost通过有效的缓存访问和数据压缩技术，减少了内存占用，提高了计算效率。</li>
+</ul>
+</li>
+<li>
+<p><strong>树结构优化</strong>：</p>
+<ul>
+<li>XGBoost支持可变树深度，允许树结构根据数据自适应调整，增强了模型的表达能力。</li>
+</ul>
+</li>
+</ol>
+<h4>2. XGBoost与GBDT的联系</h4>
+<ul>
+<li><strong>基础原理相同</strong>：XGBoost和GBDT都基于梯度提升算法，通过逐步添加决策树模型来优化损失函数。</li>
+<li><strong>应用领域相似</strong>：两者都广泛应用于分类、回归和排序等任务，特别是在处理结构化数据时表现出色。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>&quot;A Decision-Theoretic Generalization of On-Line Learning and an Application to Boosting&quot; by Yoav Freund and Robert E. Schapire</strong>：</p>
+<ul>
+<li>介绍了Boosting的基本思想。</li>
+<li><a href="https://cseweb.ucsd.edu/~yfreund/papers/adaboost.pdf">论文链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;Greedy Function Approximation: A Gradient Boosting Machine&quot; by Jerome H. Friedman</strong>：</p>
+<ul>
+<li>详细描述了GBDT的理论基础。</li>
+<li><a href="https://projecteuclid.org/euclid.aos/1013203451">论文链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;XGBoost: A Scalable Tree Boosting System&quot; by Tianqi Chen and Carlos Guestrin</strong>：</p>
+<ul>
+<li>介绍了XGBoost的优化技术和应用。</li>
+<li><a href="https://arxiv.org/abs/1603.02754">论文链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

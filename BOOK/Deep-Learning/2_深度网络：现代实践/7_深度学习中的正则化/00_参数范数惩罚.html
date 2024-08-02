@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>参数范数惩罚</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_参数范数惩罚</h1>
+<pre><code>Lecture: 2_深度网络：现代实践/7_深度学习中的正则化
+Content: 00_参数范数惩罚
+</code></pre>
+<h3>1. 背景介绍</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>解释参数范数惩罚的背景。</li>
+<li>强调正则化在深度学习中的重要性。
+<strong>解释：</strong>
+正则化在深度学习中用于防止过拟合，通过在损失函数中添加惩罚项来限制模型的复杂度。参数范数惩罚是一种常见的正则化方法，通过惩罚模型参数的范数来控制模型的复杂度，从而提高模型的泛化能力。</li>
+</ul>
+<h3>2. 参数范数惩罚的定义</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>介绍参数范数惩罚的数学定义。</li>
+<li>说明不同类型范数惩罚的区别。
+<strong>解释：</strong>
+参数范数惩罚通过在目标函数中添加一个正则项来实现：
+$$ J̃(θ;X,y) = J(θ;X,y) + αΩ(θ) $$
+其中，$α$ 是正则化强度的超参数，$Ω(θ)$ 是参数的范数项。常见的范数惩罚包括L2范数（权重衰减）和L1范数（稀疏性正则化）。</li>
+</ul>
+<h3>3. L2 范数正则化（权重衰减）</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>介绍L2范数正则化的定义和计算方法。</li>
+<li>说明L2范数正则化在优化过程中的作用。
+<strong>解释：</strong>
+L2范数正则化，也称为权重衰减，通过向目标函数添加权重的平方和来惩罚大的权重值：
+$$ Ω(θ) = \frac{1}{2} |w|^2_2 $$
+这样可以防止模型参数变得过大，从而减少过拟合现象。L2正则化后的梯度计算为：
+$$ ∇wJ̃(w;X,y) = αw + ∇wJ(w;X,y) $$
+。</li>
+</ul>
+<h3>4. L1 范数正则化</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>介绍L1范数正则化的定义和计算方法。</li>
+<li>说明L1范数正则化如何促进参数的稀疏性。
+<strong>解释：</strong>
+L1范数正则化通过惩罚参数的绝对值和来实现：
+$$ Ω(θ) = |w|<em i="">1 = \sum</em>|w_i| $$
+L1正则化可以促使部分参数变为零，从而实现参数的稀疏性。这对于特征选择和模型解释具有重要意义。L1正则化后的梯度计算为：
+$$ ∇wJ̃(w;X,y) = αsign(w) + ∇wJ(w;X,y) $$
+。</li>
+</ul>
+<h3>5. 正则化参数的选择</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>讨论正则化强度参数 $α$ 的选择方法。</li>
+<li>说明如何通过交叉验证选择最佳的正则化参数。
+<strong>解释：</strong>
+正则化强度参数 $α$ 控制了正则化项的影响力。通过交叉验证可以选择最优的 $α$ 值。具体方法是在训练数据上进行多次训练，选择在验证数据上表现最好的 $α$ 值。</li>
+</ul>
+<h3>6. 实现参数范数惩罚的代码示例</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>使用 PyTorch 实现参数范数惩罚。</li>
+<li>演示如何在实际应用中使用正则化提高模型性能。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+import torch.optim as optim
+class SimpleNN(nn.Module):
+    def __init__(self, input_size, hidden_size, output_size):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.relu = nn.ReLU()
+        self.fc2 = nn.Linear(hidden_size, output_size)
+    
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.relu(out)
+        out = self.fc2(out)
+        return out
+# 初始化模型
+model = SimpleNN(input_size=2, hidden_size=5, output_size=1)
+# 定义损失函数和优化器
+criterion = nn.MSELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.01, weight_decay=0.01)  # L2正则化
+# 准备数据
+X = torch.tensor([[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]], dtype=torch.float32)
+y = torch.tensor([[0.0], [1.0], [1.0], [0.0]], dtype=torch.float32)
+# 训练模型
+epochs = 1000
+for epoch in range(epochs):
+    outputs = model(X)
+    loss = criterion(outputs, y)
+    
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    
+    if (epoch + 1) % 100 == 0:
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+# 评估模型
+with torch.no_grad():
+    predictions = model(X).round()
+    accuracy = (predictions == y).float().mean()
+    print(f'Accuracy: {accuracy:.4f}')
+</code></pre>
+<h3>7. 多角度分析参数范数惩罚的应用</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>从多个角度分析参数范数惩罚的应用。</li>
+<li>通过自问自答方式深入探讨参数范数惩罚的不同方面。
+<strong>解释：</strong>
+<strong>角度一：模型复杂度</strong>
+问：参数范数惩罚如何控制模型复杂度？
+答：参数范数惩罚通过限制模型参数的大小，减少模型的自由度，从而防止过拟合现象。L2正则化通过惩罚参数的平方和使权重值更小，而L1正则化通过促使部分参数变为零实现稀疏性。
+<strong>角度二：训练效率</strong>
+问：参数范数惩罚如何影响训练效率？
+答：适当的正则化可以提高模型的泛化能力，减少训练误差和验证误差之间的差距，从而提高训练效率。过强的正则化可能导致欠拟合，使模型无法充分学习数据中的模式。
+<strong>角度三：模型解释性</strong>
+问：参数范数惩罚如何影响模型的解释性？
+答：L1正则化通过稀疏化参数，使得模型更加简单和可解释。稀疏化的参数有助于特征选择，帮助识别对模型预测最重要的特征。</li>
+</ul>
+<h3>8. 总结</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>总结参数范数惩罚在深度学习中的重要性。</li>
+<li>强调掌握参数范数惩罚对构建高效深度学习模型的关键作用。
+<strong>解释：</strong>
+参数范数惩罚是深度学习中常用的正则化方法，通过限制模型参数的大小，防止过拟合现象，提高模型的泛化能力。掌握L1和L2范数正则化方法，对于构建高效、稳健的深度学习模型具有重要意义。</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_参数范数惩罚
+"""
+Lecture: 2_深度网络：现代实践/7_深度学习中的正则化
+Content: 00_参数范数惩罚
+"""
+</code></pre>
+  </div>
+</body>
+</html>
+  

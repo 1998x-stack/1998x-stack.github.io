@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>其他隐藏单元</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>07_其他隐藏单元</h1>
+<pre><code>Lecture: 2_深度网络：现代实践/6_深度前馈网络
+Content: 07_其他隐藏单元
+</code></pre>
+<h2>07_其他隐藏单元</h2>
+<h3>任务分解：</h3>
+<ol>
+<li><strong>背景介绍</strong></li>
+<li><strong>其他常见隐藏单元类型</strong></li>
+<li><strong>其他隐藏单元的优缺点</strong></li>
+<li><strong>其他隐藏单元的应用场景</strong></li>
+<li><strong>实现其他隐藏单元</strong></li>
+<li><strong>训练和评估模型</strong></li>
+<li><strong>可视化其他隐藏单元的激活函数</strong></li>
+</ol>
+<h3>1. 背景介绍</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>解释隐藏单元在神经网络中的作用。</li>
+<li>强调其他隐藏单元的重要性及其应用场景。
+<strong>解释：</strong>
+隐藏单元是神经网络的重要组成部分，用于在层与层之间传递信息。除了常见的 ReLU、Sigmoid 和 Tanh，还有其他许多隐藏单元（激活函数）被提出，以解决特定的问题或提高网络的性能。</li>
+</ul>
+<h3>2. 其他常见隐藏单元类型</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>介绍一些其他常见的隐藏单元类型及其定义：
+<ul>
+<li>Swish</li>
+<li>GELU（Gaussian Error Linear Unit）</li>
+<li>SELU（Scaled Exponential Linear Unit）</li>
+<li>Mish
+<strong>解释：</strong></li>
+</ul>
+</li>
+<li><strong>Swish</strong>：由 Google 提出的激活函数，定义为：
+$$ f(x) = x \cdot \sigma(x) $$
+其中，$ \sigma(x) $ 是 Sigmoid 函数。</li>
+<li><strong>GELU（Gaussian Error Linear Unit）</strong>：用于 Transformer 模型的激活函数，定义为：
+$$ f(x) = x \cdot \Phi(x) $$
+其中，$ \Phi(x) $ 是标准正态分布的累积分布函数。</li>
+<li><strong>SELU（Scaled Exponential Linear Unit）</strong>：由自归一化神经网络提出的激活函数，定义为：
+$$ f(x) = \lambda \begin{cases}
+x &amp; \text{if } x &gt; 0 \
+\alpha (e^x - 1) &amp; \text{if } x \leq 0
+\end{cases} $$
+其中，$ \lambda $ 和 $ \alpha $ 是常数。</li>
+<li><strong>Mish</strong>：由 Self-supervised learning 提出的激活函数，定义为：
+$$ f(x) = x \cdot \tanh(\ln(1 + e^x)) $$</li>
+</ul>
+<h3>3. 其他隐藏单元的优缺点</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>
+<p>介绍这些隐藏单元的主要优点。</p>
+</li>
+<li>
+<p>讨论这些隐藏单元的潜在缺点。
+<strong>解释：</strong></p>
+</li>
+<li>
+<p><strong>Swish 优点</strong>：</p>
+<ul>
+<li>平滑的非线性</li>
+<li>在许多任务中表现优于 ReLU</li>
+</ul>
+</li>
+<li>
+<p><strong>Swish 缺点</strong>：</p>
+<ul>
+<li>计算量稍大</li>
+</ul>
+</li>
+<li>
+<p><strong>GELU 优点</strong>：</p>
+<ul>
+<li>更平滑的激活函数</li>
+<li>提高了 Transformer 模型的性能</li>
+</ul>
+</li>
+<li>
+<p><strong>GELU 缺点</strong>：</p>
+<ul>
+<li>计算复杂度较高</li>
+</ul>
+</li>
+<li>
+<p><strong>SELU 优点</strong>：</p>
+<ul>
+<li>具有自归一化特性，有助于稳定深层神经网络的训练</li>
+</ul>
+</li>
+<li>
+<p><strong>SELU 缺点</strong>：</p>
+<ul>
+<li>需要特定的参数设置</li>
+</ul>
+</li>
+<li>
+<p><strong>Mish 优点</strong>：</p>
+<ul>
+<li>保留了 ReLU 的特性，同时具有更好的平滑性和连续性</li>
+</ul>
+</li>
+<li>
+<p><strong>Mish 缺点</strong>：</p>
+<ul>
+<li>计算复杂度较高</li>
+</ul>
+</li>
+</ul>
+<h3>4. 其他隐藏单元的应用场景</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>讨论这些隐藏单元的适用场景。</li>
+<li>说明何时选择使用这些隐藏单元。
+<strong>解释：</strong></li>
+<li><strong>Swish</strong> 适用于深层神经网络和需要平滑非线性的任务。</li>
+<li><strong>GELU</strong> 主要用于 Transformer 和其他自注意力模型中。</li>
+<li><strong>SELU</strong> 适用于需要稳定和自归一化的深层神经网络。</li>
+<li><strong>Mish</strong> 适用于各种任务，尤其是需要平滑和连续激活函数的情况。</li>
+</ul>
+<h3>5. 实现其他隐藏单元</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>使用 PyTorch 实现这些隐藏单元。</li>
+<li>演示如何在神经网络中使用这些激活函数。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+# 定义 Swish 激活函数
+class Swish(nn.Module):
+    def forward(self, x):
+        return x * torch.sigmoid(x)
+# 定义 Mish 激活函数
+class Mish(nn.Module):
+    def forward(self, x):
+        return x * torch.tanh(torch.nn.functional.softplus(x))
+# 定义神经网络模型
+class SimpleNN(nn.Module):
+    def __init__(self, activation='swish'):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 2)
+        if activation == 'swish':
+            self.activation = Swish()
+        elif activation == 'gelu':
+            self.activation = nn.GELU()
+        elif activation == 'selu':
+            self.activation = nn.SELU()
+        elif activation == 'mish':
+            self.activation = Mish()
+        self.fc2 = nn.Linear(2, 1)
+        self.output = nn.Sigmoid()  # 假设是一个二分类问题
+    def forward(self, x):
+        x = self.activation(self.fc1(x))
+        x = self.fc2(x)
+        return self.output(x)
+# 初始化模型
+model = SimpleNN(activation='mish')
+# 定义损失函数和优化器
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.1)
+# 准备数据
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
+# 训练模型
+epochs = 10000
+losses = []
+for epoch in range(epochs):
+    # 前向传播
+    outputs = model(torch.tensor(X, dtype=torch.float))
+    loss = criterion(outputs, torch.tensor(y, dtype=torch.float))
+    losses.append(loss.item())
+    
+    # 反向传播和优化
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    
+    if (epoch+1) % 1000 == 0:
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+# 评估模型
+with torch.no_grad():
+    predicted = model(torch.tensor(X, dtype=torch.float)).round()
+    accuracy = (predicted.numpy() == y).mean()
+    print(f'Accuracy: {accuracy * 100:.2f}%')
+</code></pre>
+<h3>6. 训练和评估模型</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>训练模型并记录损失。</li>
+<li>评估模型在训练数据上的准确性。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python"># 训练和评估模型的代码已包含在上一步中
+</code></pre>
+<h3>7. 可视化其他隐藏单元的激活函数</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>可视化不同激活函数的输出。</li>
+<li>展示不同激活函数在训练过程中的表现差异。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+# 可视化训练损失
+plt.plot(losses)
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Training Loss with Mish Activation Function')
+plt.show()
+</code></pre>
+<h3>结论</h3>
+<p>通过以上步骤，我们详细地介绍了其他常见隐藏单元的概念、定义、优缺点、应用场景及其实现。每一步都包含了详细的解释和代码示例，帮助理解和掌握这些隐藏单元在神经网络训练中的应用。
+这些隐藏单元包括：</p>
+<ol>
+<li><strong>Swish</strong>：平滑非线性，适用于深层神经网络。</li>
+<li><strong>GELU</strong>：主要用于 Transformer 和自注意力模型。</li>
+<li><strong>SELU</strong>：适用于需要稳定和自归一化的深层神经网络。</li>
+<li><strong>Mish</strong>：平滑和连续的激活函数，适用于各种任务。
+每种隐藏单元在不同的任务和网络结构中可能表现出不同的优势，选择合适的激活函数是优化神经网络性能的重要一步。</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 07_其他隐藏单元
+"""
+Lecture: 2_深度网络：现代实践/6_深度前馈网络
+Content: 07_其他隐藏单元
+"""
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+# 定义 Swish 激活函数
+class Swish(nn.Module):
+    def forward(self, x):
+        return x * torch.sigmoid(x)
+# 定义 Mish 激活函数
+class Mish(nn.Module):
+    def forward(self, x):
+        return x * torch.tanh(torch.nn.functional.softplus(x))
+# 定义神经网络模型
+class SimpleNN(nn.Module):
+    def __init__(self, activation='swish'):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 2)
+        if activation == 'swish':
+            self.activation = Swish()
+        elif activation == 'gelu':
+            self.activation = nn.GELU()
+        elif activation == 'selu':
+            self.activation = nn.SELU()
+        elif activation == 'mish':
+            self.activation = Mish()
+        self.fc2 = nn.Linear(2, 1)
+        self.output = nn.Sigmoid()  # 假设是一个二分类问题
+    def forward(self, x):
+        x = self.activation(self.fc1(x))
+        x = self.fc2(x)
+        return self.output(x)
+# 初始化模型
+model = SimpleNN(activation='mish')
+# 定义损失函数和优化器
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.1)
+# 准备数据
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
+# 训练模型
+epochs = 10000
+losses = []
+for epoch in range(epochs):
+    # 前向传播
+    outputs = model(torch.tensor(X, dtype=torch.float))
+    loss = criterion(outputs, torch.tensor(y, dtype=torch.float))
+    losses.append(loss.item())
+    
+    # 反向传播和优化
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    
+    if (epoch+1) % 1000 == 0:
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+# 评估模型
+with torch.no_grad():
+    predicted = model(torch.tensor(X, dtype=torch.float)).round()
+    accuracy = (predicted.numpy() == y).mean()
+    print(f'Accuracy: {accuracy * 100:.2f}%')</code></pre>
+  </div>
+</body>
+</html>
+  

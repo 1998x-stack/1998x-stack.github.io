@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>06-tree pruning</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>树模型如何剪枝？</p>
+</blockquote>
+<p>树模型的剪枝是一种用于简化模型结构和防止过拟合的技术。通过剪枝，可以移除不必要的节点和分支，从而提高模型的泛化能力。剪枝主要分为预剪枝和后剪枝两种方法。</p>
+<h3>预剪枝（Pre-pruning）</h3>
+<p>预剪枝在构建树的过程中就进行剪枝，通过设定一些条件来限制树的生长。</p>
+<h4>常用的预剪枝方法</h4>
+<ol>
+<li>
+<p><strong>最大深度（max_depth）</strong>：</p>
+<ul>
+<li>设置树的最大深度，当达到这个深度时停止分裂。</li>
+<li>优点：控制模型复杂度，计算效率高。</li>
+<li>缺点：可能会过早停止分裂，导致欠拟合。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本分裂数（min_samples_split）</strong>：</p>
+<ul>
+<li>设置一个节点必须包含的最小样本数，若样本数小于该值则不再分裂。</li>
+<li>优点：防止在样本数量较少的情况下过度分裂。</li>
+<li>缺点：需要合理选择参数值，可能会错过一些有意义的分裂。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本叶子数（min_samples_leaf）</strong>：</p>
+<ul>
+<li>设置一个叶子节点必须包含的最小样本数，若样本数小于该值则不允许形成叶子节点。</li>
+<li>优点：防止生成包含少量样本的叶子节点，减少过拟合。</li>
+<li>缺点：需要合理选择参数值。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大特征数（max_features）</strong>：</p>
+<ul>
+<li>设置每次分裂时考虑的最大特征数，限制特征选择的范围。</li>
+<li>优点：防止过拟合，提高模型的泛化能力。</li>
+<li>缺点：可能会忽略一些重要特征。</li>
+</ul>
+</li>
+</ol>
+<h3>后剪枝（Post-pruning）</h3>
+<p>后剪枝是在构建完整的决策树后进行剪枝，通过评估各个子树的效果来决定是否剪枝。</p>
+<h4>常用的后剪枝方法</h4>
+<ol>
+<li>
+<p><strong>成本复杂度剪枝（Cost Complexity Pruning 或称为误差复杂度剪枝 Error Complexity Pruning）</strong>：</p>
+<ul>
+<li>通过引入惩罚项（表示树的复杂度）来控制剪枝过程。常用的方法是通过交叉验证选择最优的剪枝系数。</li>
+<li>优点：能够有效控制模型复杂度，防止过拟合。</li>
+<li>缺点：计算复杂度较高。</li>
+</ul>
+</li>
+<li>
+<p><strong>悲观误差剪枝（Pessimistic Error Pruning）</strong>：</p>
+<ul>
+<li>基于训练误差和一个固定的惩罚项来决定是否剪枝，通常在训练数据上进行剪枝。</li>
+<li>优点：简单直接，不需要额外的验证集。</li>
+<li>缺点：可能会高估模型的误差，导致过度剪枝。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小误差剪枝（Reduced Error Pruning）</strong>：</p>
+<ul>
+<li>在验证集上评估每个节点的分裂效果，如果去除该分裂能够减少误差则进行剪枝。</li>
+<li>优点：能够根据实际的验证效果进行剪枝，效果较好。</li>
+<li>缺点：需要额外的验证集，计算复杂度较高。</li>
+</ul>
+</li>
+</ol>
+<h3>剪枝示例</h3>
+<p>以下是使用Python中的scikit-learn库进行决策树剪枝的示例：</p>
+<pre><code class="language-python">from sklearn.tree import DecisionTreeClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+
+# 加载数据集
+X, y = load_iris(return_X_y=True)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+# 训练决策树模型，不进行预剪枝
+clf = DecisionTreeClassifier(random_state=42)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+print(&quot;Accuracy without pruning:&quot;, accuracy_score(y_test, y_pred))
+
+# 进行预剪枝
+clf_pre_pruned = DecisionTreeClassifier(max_depth=3, min_samples_split=10, min_samples_leaf=5, random_state=42)
+clf_pre_pruned.fit(X_train, y_train)
+y_pred_pre_pruned = clf_pre_pruned.predict(X_test)
+print(&quot;Accuracy with pre-pruning:&quot;, accuracy_score(y_test, y_pred_pre_pruned))
+
+# 后剪枝（示例中使用成本复杂度剪枝）
+path = clf.cost_complexity_pruning_path(X_train, y_train)
+ccp_alphas, impurities = path.ccp_alphas, path.impurities
+
+# 选择最优的alpha值
+clf_pruned = DecisionTreeClassifier(random_state=42, ccp_alpha=ccp_alphas[10])
+clf_pruned.fit(X_train, y_train)
+y_pred_pruned = clf_pruned.predict(X_test)
+print(&quot;Accuracy with post-pruning:&quot;, accuracy_score(y_test, y_pred_pruned))
+</code></pre>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>&quot;Pattern Recognition and Machine Learning&quot; by Christopher M. Bishop</strong>：</p>
+<ul>
+<li>提供了树模型和剪枝技术的详细理论和推导。</li>
+<li><a href="https://www.springer.com/gp/book/9780387310732">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;The Elements of Statistical Learning&quot; by Trevor Hastie, Robert Tibshirani, and Jerome Friedman</strong>：</p>
+<ul>
+<li>详细讨论了决策树、剪枝及其他机器学习算法。</li>
+<li><a href="https://web.stanford.edu/~hastie/ElemStatLearn/">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;Introduction to Statistical Learning&quot; by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani</strong>：</p>
+<ul>
+<li>提供了树模型剪枝的实际案例和方法。</li>
+<li><a href="http://faculty.marshall.usc.edu/gareth-james/ISL/">书籍链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

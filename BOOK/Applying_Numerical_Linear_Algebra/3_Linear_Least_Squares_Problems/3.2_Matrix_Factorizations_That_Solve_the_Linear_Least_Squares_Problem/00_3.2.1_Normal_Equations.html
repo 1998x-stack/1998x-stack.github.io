@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.2.1 Normal Equations</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_3.2.1_Normal_Equations</h1>
+<pre><code>Lecture: 3_Linear_Least_Squares_Problems/3.2_Matrix_Factorizations_That_Solve_the_Linear_Least_Squares_Problem
+Content: 00_3.2.1_Normal_Equations
+</code></pre>
+<h3>3.2.1 正规方程法</h3>
+<h4>背景</h4>
+<p>在线性最小二乘问题中，我们的目标是找到一个向量 $ x $，使得矩阵 $ A $ 与向量 $ b $ 之间的距离最小化，即：
+$$ \min_x |Ax - b|_2 $$</p>
+<p>对于这个优化问题，可以通过正规方程（Normal Equations）来求解。正规方程将最小二乘问题转化为一个更容易求解的线性方程组。</p>
+<h4>推导过程</h4>
+<ol>
+<li>
+<p><strong>最小化目标函数</strong>
+我们的目标是最小化以下二次型目标函数：
+$$ f(x) = |Ax - b|_2^2 $$
+这个目标函数可以展开为：
+$$ f(x) = (Ax - b)^T (Ax - b) $$</p>
+</li>
+<li>
+<p><strong>梯度计算</strong>
+为了找到使目标函数最小的 $ x $，我们需要计算目标函数的梯度，并使其为零。首先，计算梯度：
+$$ \nabla f(x) = \nabla [(Ax - b)^T (Ax - b)] $$</p>
+</li>
+<li>
+<p><strong>梯度展开</strong>
+通过链式法则展开梯度：
+$$ \nabla f(x) = 2A^T(Ax - b) $$</p>
+</li>
+<li>
+<p><strong>设梯度为零</strong>
+为了找到最小值点，我们令梯度为零：
+$$ 2A^T(Ax - b) = 0 $$
+这简化为：
+$$ A^T A x = A^T b $$</p>
+</li>
+<li>
+<p><strong>正规方程</strong>
+上述方程即为正规方程。求解该方程可以得到最小二乘解：
+$$ x = (A^T A)^{-1} A^T b $$</p>
+</li>
+</ol>
+<h4>正规方程的性质</h4>
+<ol>
+<li>
+<p><strong>正定性</strong>
+矩阵 $ A^T A $ 是对称的，并且对于满秩矩阵 $ A $，矩阵 $ A^T A $ 还是正定的。这意味着 $ A^T A $ 存在逆矩阵。</p>
+</li>
+<li>
+<p><strong>凸性</strong>
+目标函数 $ f(x) $ 是一个严格凸函数，这意味着任何临界点都是全局最小点。因此，通过求解正规方程得到的解即为全局最小解。</p>
+</li>
+<li>
+<p><strong>解的唯一性</strong>
+当 $ A $ 满秩时，矩阵 $ A^T A $ 是正定的，从而其逆矩阵存在，因此解 $ x $ 是唯一的。</p>
+</li>
+</ol>
+<h4>实际应用</h4>
+<ol>
+<li>
+<p><strong>曲线拟合</strong>
+在数据拟合中，正规方程常用于多项式拟合和其他曲线拟合问题。例如，给定一组数据点，通过正规方程可以找到最佳拟合曲线。</p>
+</li>
+<li>
+<p><strong>统计建模</strong>
+正规方程也用于线性回归模型的参数估计。在统计学中，最小二乘法是估计线性模型参数的标准方法。</p>
+</li>
+<li>
+<p><strong>大地测量</strong>
+在大地测量中，通过测量点之间的角度和距离，使用正规方程可以提高定位的精度。</p>
+</li>
+</ol>
+<h4>正规方程的局限性</h4>
+<ol>
+<li>
+<p><strong>数值稳定性</strong>
+正规方程法的数值稳定性较差，特别是在矩阵 $ A $ 的条件数较大时。因为矩阵 $ A^T A $ 的条件数是矩阵 $ A $ 条件数的平方，这可能导致数值误差显著放大。</p>
+</li>
+<li>
+<p><strong>高计算复杂度</strong>
+计算 $ A^T A $ 和 $ A^T b $ 需要 $ O(n^2 m) $ 次浮点运算，其中 $ n $ 和 $ m $ 分别是矩阵 $ A $ 的列数和行数。然后求解方程组 $ A^T A x = A^T b $ 需要 $ O(n^3) $ 次运算。对于大型问题，这种计算代价可能过高。</p>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_3.2.1_Normal_Equations
+
+"""
+Lecture: 3_Linear_Least_Squares_Problems/3.2_Matrix_Factorizations_That_Solve_the_Linear_Least_Squares_Problem
+Content: 00_3.2.1_Normal_Equations
+"""
+
+import numpy as np
+from typing import Tuple
+
+class NormalEquationsSolver:
+    """Class to solve linear least squares problems using Normal Equations.
+
+    This class provides methods to solve Ax = b using the normal equations approach,
+    where A is the input matrix and b is the target vector.
+    """
+
+    def __init__(self, A: np.ndarray, b: np.ndarray):
+        """
+        Initialize the NormalEquationsSolver with matrix A and vector b.
+        
+        Args:
+            A (np.ndarray): The input matrix of shape (m, n).
+            b (np.ndarray): The target vector of shape (m,).
+        """
+        self.A = A
+        self.b = b
+
+    def solve(self) -> np.ndarray:
+        """
+        Solve the least squares problem using the normal equations.
+        
+        Returns:
+            np.ndarray: The solution vector x of shape (n,).
+        """
+        # 计算 A^T A 和 A^T b
+        A_T_A = self.A.T @ self.A
+        A_T_b = self.A.T @ self.b
+
+        # 解正规方程 A^T A x = A^T b
+        x = np.linalg.solve(A_T_A, A_T_b)
+        return x
+
+    def compute_residuals(self, x: np.ndarray) -> np.ndarray:
+        """
+        Compute the residuals of the least squares solution.
+        
+        Args:
+            x (np.ndarray): The solution vector of shape (n,).
+        
+        Returns:
+            np.ndarray: The residual vector of shape (m,).
+        """
+        residuals = self.b - self.A @ x
+        return residuals
+
+def main():
+    # 示例矩阵 A 和向量 b
+    A = np.array([[1, 1], [1, 2], [1, 3]], dtype=float)
+    b = np.array([1, 2, 2.5], dtype=float)
+
+    # 初始化正规方程求解器
+    solver = NormalEquationsSolver(A, b)
+    
+    # 求解正规方程
+    x = solver.solve()
+    
+    # 计算残差
+    residuals = solver.compute_residuals(x)
+    
+    # 打印结果
+    print("Solution vector x:\n", x)
+    print("Residuals:\n", residuals)
+
+if __name__ == "__main__":
+    main()</code></pre>
+  </div>
+</body>
+</html>
+  

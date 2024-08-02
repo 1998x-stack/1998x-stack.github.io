@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>20-Stateless and Stateful Training</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>无状态和有状态训练（Stateless and Stateful Training）：</h3>
+<h4>关键问题</h4>
+<ol>
+<li><strong>什么是无状态训练（Stateless Training）？它的工作原理是什么？</strong></li>
+<li><strong>什么是有状态训练（Stateful Training）？它的工作原理是什么？</strong></li>
+<li><strong>无状态训练和有状态训练的主要区别是什么？</strong></li>
+<li><strong>无状态训练和有状态训练在实际应用中的优缺点是什么？</strong></li>
+<li><strong>如何决定在特定情况下使用无状态训练还是有状态训练？</strong></li>
+</ol>
+<h4>详细回答</h4>
+<ol>
+<li>
+<p><strong>什么是无状态训练（Stateless Training）？它的工作原理是什么？</strong>
+无状态训练是一种传统的模型训练方法，首先在初始训练集上训练一个初始模型，然后在新数据到达时重新训练模型。无状态训练通常被称为无状态重新训练。这种方法使用滑动窗口的方式重新训练模型，在每个检查点间隔内从头开始重新训练模型，从而使模型能够适应最新的数据变化和特征-目标关系  。</p>
+</li>
+<li>
+<p><strong>什么是有状态训练（Stateful Training）？它的工作原理是什么？</strong>
+有状态训练是一种模型训练方法，首先在初始数据批次上训练模型，然后在新数据到达时定期更新模型（而不是重新训练）。这种方法特别适用于兼容迁移学习或自监督学习的模型。有状态训练模拟了迁移学习或自监督学习的工作流程，通过采用预训练模型进行微调，不同之处在于有状态训练是为了适应概念、特征和标签漂移  。</p>
+</li>
+<li>
+<p><strong>无状态训练和有状态训练的主要区别是什么？</strong>
+无状态训练和有状态训练的主要区别在于处理新数据的方式：</p>
+<ul>
+<li><strong>无状态训练</strong>：每当有新数据到达时，模型从头开始重新训练。这种方法适用于无法进行微调的传统机器学习系统。</li>
+<li><strong>有状态训练</strong>：模型在初始数据上训练后，通过更新或微调来适应新数据，而不是从头开始重新训练。这种方法适用于能够进行迁移学习或自监督学习的模型  。</li>
+</ul>
+</li>
+<li>
+<p><strong>无状态训练和有状态训练在实际应用中的优缺点是什么？</strong>
+<strong>无状态训练</strong>：</p>
+<ul>
+<li><strong>优点</strong>：方法简单，易于实现，适用于树模型等无法进行微调的系统。</li>
+<li><strong>缺点</strong>：重新训练耗时且计算成本高，特别是在大规模数据集上。</li>
+</ul>
+<p><strong>有状态训练</strong>：</p>
+<ul>
+<li><strong>优点</strong>：无需存储大量数据用于重新训练，可以即时更新模型，适用于数据隐私和资源限制场景。</li>
+<li><strong>缺点</strong>：需要复杂的实现和管理，适用于能够进行迁移学习或自监督学习的模型   。</li>
+</ul>
+</li>
+<li>
+<p><strong>如何决定在特定情况下使用无状态训练还是有状态训练？</strong>
+决定使用无状态训练还是有状态训练主要取决于具体应用场景和模型特性：</p>
+<ul>
+<li><strong>无状态训练</strong>适用于传统机器学习模型，如随机森林和梯度提升决策树，无法进行微调或更新的系统。</li>
+<li><strong>有状态训练</strong>适用于能够进行迁移学习或自监督学习的模型，适合需要频繁更新且数据隐私和存储资源有限的场景  。</li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

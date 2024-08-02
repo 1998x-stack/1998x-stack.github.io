@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-lstm cell</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>LSTM（长短期记忆网络）的元胞状态更新</h2>
+<p>LSTM网络是一种特殊的递归神经网络（RNN），通过引入门控机制有效地解决了长序列中的梯度消失和梯度爆炸问题。LSTM的核心在于其单元状态（cell state）的更新过程。LSTM单元由输入门、遗忘门、输出门和单元状态组成，每一个时间步的状态更新过程如下：</p>
+<h3>一、LSTM的组成部分</h3>
+<ol>
+<li><strong>输入门（Input Gate）</strong>：控制当前输入信息对单元状态的影响。</li>
+<li><strong>遗忘门（Forget Gate）</strong>：控制上一个时间步的单元状态有多少被保留到当前时间步。</li>
+<li><strong>输出门（Output Gate）</strong>：控制单元状态对当前输出的影响。</li>
+<li><strong>单元状态（Cell State）</strong>：携带着贯穿整个序列的信息，进行更新和传递。</li>
+</ol>
+<h3>二、LSTM的状态更新步骤</h3>
+<ol>
+<li>
+<p><strong>计算遗忘门 $ f_t $</strong>：</p>
+<ul>
+<li>遗忘门决定了前一时间步的单元状态 $ C_{t-1} $ 有多少被保留下来。
+$
+f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f)
+$</li>
+</ul>
+</li>
+<li>
+<p><strong>计算输入门 $ i_t $ 和候选记忆单元状态 $ \tilde{C}_t $</strong>：</p>
+<ul>
+<li>输入门控制当前输入 $ x_t $ 对当前单元状态的影响。
+$
+i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i)
+$</li>
+<li>候选记忆单元状态 $ \tilde{C}_t $ 是由当前输入和前一隐藏状态生成的。
+$
+\tilde{C}<em t-1="">t = \tanh(W_C \cdot [h</em>, x_t] + b_C)
+$</li>
+</ul>
+</li>
+<li>
+<p><strong>更新单元状态 $ C_t $</strong>：</p>
+<ul>
+<li>通过遗忘门和输入门的控制，更新当前的单元状态 $ C_t $。
+$
+C_t = f_t \odot C_{t-1} + i_t \odot \tilde{C}_t
+$</li>
+</ul>
+</li>
+<li>
+<p><strong>计算输出门 $ o_t $ 和隐藏状态 $ h_t $</strong>：</p>
+<ul>
+<li>输出门决定当前单元状态对输出的影响。
+$
+o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o)
+$</li>
+<li>隐藏状态 $ h_t $ 是当前单元状态通过输出门后的结果。
+$
+h_t = o_t \odot \tanh(C_t)
+$</li>
+</ul>
+</li>
+</ol>
+<h3>三、总结</h3>
+<p>LSTM的核心在于其通过输入门、遗忘门和输出门对单元状态进行细致的控制和更新。这一机制使得LSTM能够在长时间序列上保持稳定的梯度，有效地解决了传统RNN在处理长序列时的梯度消失和梯度爆炸问题。</p>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTM Networks</a></li>
+<li><a href="https://arxiv.org/abs/1503.04069">LSTM: A Search Space Odyssey</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Long_short-term_memory">Long Short-Term Memory (LSTM) Network</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

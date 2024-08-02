@@ -1,0 +1,230 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.3 约瑟夫问题</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_1.3_约瑟夫问题</h1>
+<pre><code>Lecture: /第_1_章_递归问题
+Content: 02_1.3_约瑟夫问题
+</code></pre>
+<h3>02_1.3 约瑟夫问题</h3>
+<h4>章节内容概述</h4>
+<p>本节讨论的是“约瑟夫问题”，这是一个经典的递归和数学归纳法问题。它的名字来源于一位名叫约瑟夫斯（Josephus）的犹太历史学家。传说他和他的同伴被罗马士兵包围，为了避免被俘虏，他们决定采用自杀的方法，但希望最后一个人能够幸存下来并逃脱。这个问题的核心在于如何通过一定的规则，找出最后幸存的位置。</p>
+<h4>详细分析</h4>
+<ol>
+<li>
+<p><strong>问题描述和基本规则</strong></p>
+<ul>
+<li>n个人围成一个圈，从第一个人开始报数，每隔k个人（即第k个）就将其杀死。</li>
+<li>重复这个过程，直到圈中只剩下最后一个人。</li>
+<li>问题是，给定n和k，找到最后一个幸存者的位置。</li>
+</ul>
+</li>
+<li>
+<p><strong>小规模实例分析</strong></p>
+<ul>
+<li>当n=1时，无论k是多少，只有一个人，所以他就是幸存者。</li>
+<li>当n=2时，k=2时，第一个人报数1，第二个人报数2，所以第二个人被杀，第一个人是幸存者。</li>
+<li>当n=3时，k=2时，三个人报数1, 2, 3，第一个人报数1，第二个人报数2被杀，然后从第三个人开始重新报数，第三个人报数1，第一个人报数2被杀，第三个人幸存。</li>
+</ul>
+<p>这些初始情况帮助我们理解更复杂的情况。</p>
+</li>
+<li>
+<p><strong>递归思想与公式推导</strong></p>
+<ul>
+<li>假设J(n, k)表示n个人，每隔k个人杀一次，最后一个幸存者的位置。</li>
+<li>基础条件：
+<ul>
+<li>当n=1时，J(1, k) = 0（因为数组索引从0开始）。</li>
+</ul>
+</li>
+<li>递归关系：
+<ul>
+<li>当n&gt;1时，可以将问题简化为子问题。</li>
+<li>第一个被杀的人的位置是(k-1) % n，剩下n-1个人，问题变成在新的起始点继续报数。</li>
+<li>因此，J(n, k) = (J(n-1, k) + k) % n。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>公式验证和推广</strong></p>
+<ul>
+<li>利用递归关系，可以验证其正确性：
+<ul>
+<li>J(2, 2) = (J(1, 2) + 2) % 2 = (0 + 2) % 2 = 0。</li>
+<li>J(3, 2) = (J(2, 2) + 2) % 3 = (0 + 2) % 3 = 2。</li>
+</ul>
+</li>
+<li>通过数学归纳法可以证明该递归公式对所有n≥1的情况都成立：
+<ul>
+<li>当n=1时，显然J(1, k)=0成立。</li>
+<li>假设J(k, k)对所有k=n-1成立，则对于k=n，有：
+<ul>
+<li>J(n, k) = (J(n-1, k) + k) % n</li>
+<li>根据归纳假设，J(n-1, k)已知成立，因此J(n, k)也成立。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>封闭形式的求解</strong></p>
+<ul>
+<li>递归公式的解法可以进一步推导出一个封闭形式：
+<ul>
+<li>利用递归关系，我们可以逐步展开递归公式，得到最终的解。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>复杂度分析</strong></p>
+<ul>
+<li>递归公式的时间复杂度为O(n)，表示随着n的增加，计算时间线性增长。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用场景与意义</strong></p>
+<ul>
+<li>约瑟夫问题不仅在数学上有趣，而且在计算机科学、密码学、游戏设计等领域都有应用。</li>
+<li>它可以帮助理解递归和循环的关系，优化算法设计。</li>
+</ul>
+</li>
+</ol>
+<h4>扩展讨论</h4>
+<ol>
+<li>
+<p><strong>历史背景与文化意义</strong></p>
+<ul>
+<li>约瑟夫问题源于古老的历史传说，被认为是一种智力游戏和数学问题。</li>
+<li>在不同文化中，有类似的智力游戏和数学问题，这显示了数学的普遍性和趣味性。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归算法的其他应用</strong></p>
+<ul>
+<li>递归在计算机科学中的重要性不言而喻。许多问题，如汉诺塔、斐波那契数列、快速排序、合并排序等，都可以通过递归方法高效解决。</li>
+<li>递归方法在编程语言中也有具体的体现，如函数调用、回溯算法等。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归与动态规划</strong></p>
+<ul>
+<li>虽然约瑟夫问题主要使用递归方法，但有些递归问题可以通过动态规划来优化。</li>
+<li>动态规划通过保存中间结果，避免重复计算，从而提高算法效率。</li>
+</ul>
+</li>
+<li>
+<p><strong>实际应用案例</strong></p>
+<ul>
+<li>在实际应用中，约瑟夫问题的思想可以用于解决调度问题、资源分配问题等。</li>
+<li>这些方法还可以用于优化数据结构、设计高效的算法。</li>
+</ul>
+</li>
+</ol>
+<h4>结论</h4>
+<p>“约瑟夫问题”通过递归和数学归纳法，展示了如何利用递归思想解决循环问题。通过研究n个人围成圈，每隔k个人杀一次，找出最后一个幸存者的位置，我们不仅理解了递归公式的推导过程，还学会了如何将递归问题转化为封闭形式。这类问题在理论研究和实际应用中都有重要意义，是学习和研究递归算法的经典案例。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_1.3_约瑟夫问题
+
+"""
+Lecture: /第_1_章_递归问题
+Content: 02_1.3_约瑟夫问题
+"""
+
+from typing import List, Tuple
+
+class JosephusProblem:
+    def __init__(self, num_people: int, step: int):
+        """初始化约瑟夫问题。
+
+        Args:
+            num_people (int): 人数。
+            step (int): 步长（每隔几个人杀一次）。
+        """
+        self.num_people = num_people
+        self.step = step
+        self.killed_people: List[int] = []
+        self.lived_people: List[int] = list(range(1, num_people + 1))
+        self.history: List[Tuple[List[int], List[int]]] = []
+
+    def solve(self) -> int:
+        """解决约瑟夫问题，返回最后一个幸存者的位置。
+
+        Returns:
+            int: 最后一个幸存者的位置（从1开始）。
+        """
+        index = 0
+        while len(self.lived_people) > 1:
+            index = (index + self.step - 1) % len(self.lived_people)
+            killed = self.lived_people.pop(index)
+            self.killed_people.append(killed)
+            self.history.append((self.killed_people.copy(), self.lived_people.copy()))
+        return self.lived_people[0]
+
+    def get_killed_people(self) -> List[int]:
+        """获取被杀死的人的列表。
+
+        Returns:
+            List[int]: 被杀死的人的列表。
+        """
+        return self.killed_people
+
+    def get_lived_people(self) -> List[int]:
+        """获取幸存者的列表。
+
+        Returns:
+            List[int]: 幸存者的列表。
+        """
+        return self.lived_people
+
+    def get_history(self) -> List[Tuple[List[int], List[int]]]:
+        """获取每一步的状态历史。
+
+        Returns:
+            List[Tuple[List[int], List[int]]]: 每一步的状态历史。
+        """
+        return self.history
+
+def main() -> None:
+    """主函数，用于执行约瑟夫问题的解决过程。"""
+    num_people = 10  # 可以根据需要修改人数
+    step = 3         # 可以根据需要修改步长
+
+    josephus_problem = JosephusProblem(num_people, step)
+    last_survivor = josephus_problem.solve()
+
+    print("每一步的状态历史：")
+    for step_num, (killed, lived) in enumerate(josephus_problem.get_history(), start=1):
+        print(f"第{step_num}步:")
+        print("  被杀死的人:", killed)
+        print("  幸存者:", lived)
+
+    print("\n最终状态：")
+    print("被杀死的人的列表：", josephus_problem.get_killed_people())
+    print("幸存者的列表：", josephus_problem.get_lived_people())
+    print(f"最后一个幸存者的位置是: {last_survivor}")
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

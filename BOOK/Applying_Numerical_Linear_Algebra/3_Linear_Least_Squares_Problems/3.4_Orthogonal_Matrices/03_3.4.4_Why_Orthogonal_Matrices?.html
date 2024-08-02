@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.4.4 Why Orthogonal Matrices?</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_3.4.4_Why_Orthogonal_Matrices?</h1>
+<pre><code>Lecture: 3_Linear_Least_Squares_Problems/3.4_Orthogonal_Matrices
+Content: 03_3.4.4_Why_Orthogonal_Matrices?
+</code></pre>
+<h3>3.4.4 为什么选择正交矩阵？</h3>
+<h4>基本概念</h4>
+<p>正交矩阵在数值线性代数中具有重要地位，主要因为它们的良好数值稳定性。正交矩阵的行向量和列向量都是单位正交向量，这意味着它们在进行数值计算时能够有效地控制误差的积累。</p>
+<h4>正交矩阵的性质</h4>
+<ol>
+<li>
+<p><strong>保持向量的长度</strong>：
+正交矩阵 $ Q $ 的一个基本性质是它保持了向量的长度。对于任意向量 $ x $，有：
+$$
+|Qx|_2 = |x|_2
+$$
+这意味着应用正交矩阵不会改变向量的二范数，从而在数值计算中有助于控制舍入误差。</p>
+</li>
+<li>
+<p><strong>正交矩阵的逆矩阵也是正交矩阵</strong>：
+对于正交矩阵 $ Q $，其逆矩阵 $ Q^{-1} $ 也是正交矩阵，并且有 $ Q^{-1} = Q^T $。这在数值计算中是非常有用的，因为我们可以通过转置操作高效地计算逆矩阵。</p>
+</li>
+<li>
+<p><strong>正交变换的稳定性</strong>：
+在浮点运算中，正交矩阵的应用具有逆向稳定性。应用正交矩阵后的结果可以看作是某个小扰动矩阵作用下的精确结果。这一点在数值计算中至关重要，因为它确保了计算结果的可靠性。</p>
+</li>
+</ol>
+<h4>正交矩阵在数值计算中的应用</h4>
+<ol>
+<li>
+<p><strong>QR 分解</strong>：
+QR 分解是将一个矩阵分解为一个正交矩阵和一个上三角矩阵的乘积。由于正交矩阵的良好性质，QR 分解在解决线性方程组和最小二乘问题中具有重要应用。</p>
+</li>
+<li>
+<p><strong>特征值和奇异值分解</strong>：
+正交矩阵在特征值和奇异值分解（SVD）中也起到关键作用。SVD 是将一个矩阵分解为三个矩阵的乘积，其中包括两个正交矩阵。SVD 广泛应用于数据压缩、降维和信号处理等领域。</p>
+</li>
+</ol>
+<h4>数值稳定性分析</h4>
+<p>假设我们用一系列非正交矩阵 $ X_i $ 进行变换，误差将随着条件数的增大而放大。具体来说，设 $ X $ 为精确的非正交变换， $ \tilde{X} $ 为其浮点近似，那么：
+$$
+\text{fl}(\tilde{X}A) = XA + E = X(A + X^{-1}E) \equiv X(A + F)
+$$
+其中 $ |E|_2 \leq O(\epsilon)|X|_2 |A|_2 $，因此 $ |F|_2 \leq |X^{-1}|_2 |E|_2 \leq O(\epsilon) \kappa_2(X) |A|_2 $。这表明误差 $ |E|_2 $ 被条件数 $ \kappa_2(X) $ 放大。</p>
+<p>在一系列非正交矩阵变换 $ \tilde{X}_k \cdots \tilde{X}_1 A \tilde{Y}_1 \cdots \tilde{Y}_k $ 中，误差将被放大 $ \prod_i \kappa_2(X_i) \cdot \kappa_2(Y_i) $。如果所有的 $ X_i $ 和 $ Y_i $ 都是正交矩阵，则这个放大因子为 1，从而最小化误差。</p>
+<h4>实际应用中的优点</h4>
+<p>正交矩阵广泛应用于各种数值算法中，主要原因在于它们的数值稳定性和高效性。例如：</p>
+<ul>
+<li><strong>最小二乘问题</strong>：利用 QR 分解解决最小二乘问题时，正交矩阵确保了计算结果的稳定性和准确性。</li>
+<li><strong>矩阵对角化</strong>：正交矩阵用于矩阵对角化时，能够有效地控制误差的积累，从而提高计算精度。</li>
+</ul>
+<h4>总结</h4>
+<p>选择正交矩阵进行数值计算的主要原因在于它们的良好数值稳定性和高效性。通过利用正交矩阵的性质，我们可以在数值计算中有效地控制误差，确保计算结果的可靠性和准确性。这在解决线性方程组、最小二乘问题以及特征值和奇异值分解等问题中尤为重要。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_3.4.4_Why_Orthogonal_Matrices?
+
+"""
+Lecture: 3_Linear_Least_Squares_Problems/3.4_Orthogonal_Matrices
+Content: 03_3.4.4_Why_Orthogonal_Matrices?
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

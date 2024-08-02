@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>activations in lstm</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>lstm各个门分别使用什么激活函数？以及为什么？</p>
+</blockquote>
+<h3>LSTM各个门分别使用的激活函数及其原因</h3>
+<p>长短期记忆网络（LSTM）的核心是其门机制（遗忘门、输入门、输出门），这些门通过不同的激活函数来控制信息流的动态。以下是LSTM中各个门使用的激活函数及其原因：</p>
+<h4>1. 遗忘门（Forget Gate）</h4>
+<p><strong>激活函数</strong>：Sigmoid 函数</p>
+<p><strong>公式</strong>：
+$$ f_t = \sigma(W_f \cdot [h_{t-1}, x_t] + b_f) $$</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li><strong>输出范围</strong>：Sigmoid函数的输出范围在0到1之间，这非常适合作为权重，表示每个单元需要保留多少以前的状态。</li>
+<li><strong>控制信息流</strong>：遗忘门决定了哪些信息需要被保留，哪些需要被遗忘。通过将输出限制在0到1之间，可以精确地控制这些比例。</li>
+</ul>
+<h4>2. 输入门（Input Gate）</h4>
+<p><strong>激活函数</strong>：Sigmoid 函数</p>
+<p><strong>公式</strong>：
+$$ i_t = \sigma(W_i \cdot [h_{t-1}, x_t] + b_i) $$</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li><strong>输出范围</strong>：同样，Sigmoid函数的输出在0到1之间，表示新信息应该被写入记忆单元的比例。</li>
+<li><strong>控制信息流</strong>：输入门控制新信息写入记忆单元的比例，输出0表示完全忽略，输出1表示完全接纳。</li>
+</ul>
+<h4>3. 候选记忆单元（Candidate Cell State）</h4>
+<p><strong>激活函数</strong>：Tanh 函数</p>
+<p><strong>公式</strong>：
+$$ \tilde{C}<em t-1="">t = \tanh(W_C \cdot [h</em>, x_t] + b_C) $$</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li><strong>输出范围</strong>：Tanh函数的输出范围在-1到1之间，适合表示可能的候选记忆值。</li>
+<li><strong>平衡信息</strong>：Tanh函数提供了正负值的平衡输出，有助于表示和调整信息的流入和流出。</li>
+</ul>
+<h4>4. 输出门（Output Gate）</h4>
+<p><strong>激活函数</strong>：Sigmoid 函数</p>
+<p><strong>公式</strong>：
+$$ o_t = \sigma(W_o \cdot [h_{t-1}, x_t] + b_o) $$</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li><strong>输出范围</strong>：Sigmoid函数的输出在0到1之间，控制从记忆单元输出到隐藏状态的比例。</li>
+<li><strong>控制信息流</strong>：输出门通过Sigmoid函数决定当前记忆单元中哪些部分应该影响到下一个时间步的隐藏状态。</li>
+</ul>
+<h4>5. 隐藏状态（Hidden State）</h4>
+<p><strong>激活函数</strong>：Tanh 函数</p>
+<p><strong>公式</strong>：
+$$ h_t = o_t * \tanh(C_t) $$</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li><strong>平衡输出</strong>：Tanh函数的输出范围在-1到1之间，使得隐藏状态的值既可以是正数也可以是负数，有助于后续层的学习。</li>
+<li><strong>非线性变换</strong>：Tanh函数提供了非线性变换，有助于网络表达复杂的模式。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>&quot;Long Short-Term Memory&quot; by Hochreiter and Schmidhuber</strong>：</p>
+<ul>
+<li>详细描述了LSTM的结构和工作原理。</li>
+<li><a href="https://www.bioinf.jku.at/publications/older/2604.pdf">论文链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;Understanding LSTM Networks&quot; by Christopher Olah</strong>：</p>
+<ul>
+<li>这篇博客文章通俗易懂地解释了LSTM的工作原理和各个门的作用。</li>
+<li><a href="http://colah.github.io/posts/2015-08-Understanding-LSTMs/">博客链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;Neural Networks and Deep Learning&quot; by Michael Nielsen</strong>：</p>
+<ul>
+<li>本书介绍了深度学习的基础知识，包括LSTM在内的多种神经网络结构。</li>
+<li><a href="http://neuralnetworksanddeeplearning.com/">在线书籍链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

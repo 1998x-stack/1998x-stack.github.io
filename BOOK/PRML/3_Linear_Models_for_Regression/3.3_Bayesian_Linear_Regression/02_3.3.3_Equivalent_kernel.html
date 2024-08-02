@@ -1,0 +1,297 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3.3 Equivalent kernel</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_3.3.3_Equivalent_kernel</h1>
+<pre><code>Lecture: 3_Linear_Models_for_Regression/3.3_Bayesian_Linear_Regression
+Content: 02_3.3.3_Equivalent_kernel
+</code></pre>
+<h2>3.3.3 等效核</h2>
+<h3>概述</h3>
+<p>在贝叶斯线性回归模型中，我们得到了参数 $ w $ 的后验均值解。在这一节中，我们将探索这种解的等效核表示，它为内核方法（包括高斯过程）奠定了基础。</p>
+<h3>后验均值解</h3>
+<p>线性基函数模型的后验均值解 $ m_N $ 可以写成如下形式：</p>
+<p>$$ m_N = \beta S_N \Phi^T t $$</p>
+<p>将其代入预测均值表达式中，我们得到：</p>
+<p>$$ y(x, m_N) = m_N^T \phi(x) = \beta \phi(x)^T S_N \Phi^T t $$</p>
+<p>其中， $ S_N $ 由以下公式定义：</p>
+<p>$$ S_N = (\alpha I + \beta \Phi^T \Phi)^{-1} $$</p>
+<h3>预测均值的等效核表示</h3>
+<p>通过代入并整理，我们可以将预测均值写成以下形式：</p>
+<p>$$ y(x, m_N) = \sum_{n=1}^N k(x, x_n) t_n $$</p>
+<p>其中，等效核函数 $ k(x, x') $ 定义为：</p>
+<p>$$ k(x, x') = \beta \phi(x)^T S_N \phi(x') $$</p>
+<p>这种形式的预测函数通过将训练集目标值的线性组合来进行预测，被称为线性平滑器。等效核依赖于数据集中的输入值 $ x_n $，因为它们出现在 $ S_N $ 的定义中。</p>
+<h3>等效核的性质</h3>
+<p>等效核 $ k(x, x') $ 对于高斯基函数的情况进行了可视化，如图3.10所示。核函数 $ k(x, x') $ 对三个不同的 $ x $ 值进行了绘制，可以看到它们在 $ x $ 附近是局部化的。因此，预测分布在 $ x $ 处的均值 $ y(x, m_N) $ 是通过形成目标值的加权组合得到的，其中距离 $ x $ 较近的数据点权重大于较远的数据点。</p>
+<p>这种局部化特性不仅适用于局部高斯基函数，对于非局部多项式和S形基函数也同样适用，如图3.11所示。</p>
+<h3>进一步理解</h3>
+<p>通过考虑 $ y(x) $ 和 $ y(x') $ 之间的协方差，可以进一步理解等效核的作用，协方差由以下公式给出：</p>
+<p>$$ \text{cov}[y(x), y(x')] = \phi(x)^T S_N \phi(x') = \beta^{-1} k(x, x') $$</p>
+<p>从等效核的形式可以看出，相邻点的预测均值高度相关，而距离较远的点的相关性较小。</p>
+<h3>结论</h3>
+<p>等效核的概念为内核方法提供了基础，使我们能够直接在内核函数的基础上进行回归分析，而无需显式地引入特征向量 $ \phi(x) $。这为处理高维甚至无限维特征空间提供了可能性。</p>
+<h3>示例代码</h3>
+<p>以下是实现等效核的Python代码：</p>
+<pre><code class="language-python">import numpy as np
+from scipy.linalg import inv
+
+class BayesianLinearRegression:
+    ```
+    贝叶斯线性回归模型类
+
+    参数:
+        alpha (float): 先验分布的方差参数
+        beta (float): 噪声精度参数
+    ```
+    
+    def __init__(self, alpha: float, beta: float):
+        ```
+        初始化贝叶斯线性回归模型
+
+        参数:
+            alpha (float): 先验分布的方差参数
+            beta (float): 噪声精度参数
+        ```
+        self.alpha = alpha
+        self.beta = beta
+        self.m_N = None
+        self.S_N = None
+
+    def fit(self, X: np.ndarray, t: np.ndarray):
+        ```
+        拟合贝叶斯线性回归模型
+
+        参数:
+            X (np.ndarray): 输入数据矩阵
+            t (np.ndarray): 目标值向量
+        ```
+        # 添加偏置项
+        X = np.hstack([np.ones((X.shape[0], 1)), X])
+        
+        # 计算先验分布的协方差矩阵
+        S_0_inv = self.alpha * np.eye(X.shape[1])
+        
+        # 计算后验分布的协方差矩阵
+        self.S_N = inv(S_0_inv + self.beta * X.T @ X)
+        
+        # 计算后验分布的均值向量
+        self.m_N = self.beta * self.S_N @ X.T @ t
+        
+        print(f&quot;后验均值向量: {self.m_N}&quot;)
+        print(f&quot;后验协方差矩阵: {self.S_N}&quot;)
+
+    def predict(self, X_new: np.ndarray):
+        ```
+        使用贝叶斯线性回归模型进行预测
+
+        参数:
+            X_new (np.ndarray): 新的输入数据矩阵
+
+        返回:
+            均值预测值和预测方差
+        ```
+        # 添加偏置项
+        X_new = np.hstack([np.ones((X_new.shape[0], 1)), X_new])
+        
+        # 预测均值
+        y_mean = X_new @ self.m_N
+        
+        # 预测方差
+        y_var = 1 / self.beta + np.sum(X_new @ self.S_N * X_new, axis=1)
+        
+        return y_mean, y_var
+
+    def equivalent_kernel(self, X_new: np.ndarray):
+        ```
+        计算等效核
+
+        参数:
+            X_new (np.ndarray): 新的输入数据矩阵
+
+        返回:
+            等效核矩阵
+        ```
+        X_new = np.hstack([np.ones((X_new.shape[0], 1)), X_new])
+        kernel = self.beta * X_new @ self.S_N @ X_new.T
+        return kernel
+
+if __name__ == &quot;__main__&quot;:
+    # 示例数据
+    X_train = np.array([[0.1], [0.4], [0.7], [1.0]])
+    t_train = np.array([1.1, 1.9, 3.0, 4.2])
+    
+    model = BayesianLinearRegression(alpha=1.0, beta=25.0)
+    model.fit(X_train, t_train)
+    
+    # 新数据进行预测
+    X_new = np.array([[0.2], [0.5], [0.8]])
+    y_mean, y_var = model.predict(X_new)
+    kernel = model.equivalent_kernel(X_new)
+    
+    print(&quot;预测均值: &quot;, y_mean)
+    print(&quot;预测方差: &quot;, y_var)
+    print(&quot;等效核矩阵: &quot;, kernel)
+</code></pre>
+<h3>代码解释</h3>
+<ol>
+<li><strong>类定义</strong>:
+<ul>
+<li><code>BayesianLinearRegression</code> 类用于实现贝叶斯线性回归模型。</li>
+<li>初始化时需要指定先验分布的方差参数 <code>alpha</code> 和噪声精度参数 <code>beta</code>。</li>
+</ul>
+</li>
+<li><strong>拟合模型</strong>:
+<ul>
+<li><code>fit</code> 方法用于拟合模型，计算后验分布的均值向量 <code>m_N</code> 和协方差矩阵 <code>S_N</code>。</li>
+</ul>
+</li>
+<li><strong>预测</strong>:
+<ul>
+<li><code>predict</code> 方法使用拟合好的模型对新的输入数据进行预测，返回预测的均值和方差。</li>
+</ul>
+</li>
+<li><strong>等效核</strong>:
+<ul>
+<li><code>equivalent_kernel</code> 方法计算等效核矩阵，用于理解输入数据点之间的关系。</li>
+</ul>
+</li>
+<li><strong>示例</strong>:
+<ul>
+<li>在 <code>__main__</code> 中，通过示例数据演示了模型的拟合、预测和等效核计算过程。</li>
+</ul>
+</li>
+</ol>
+<h3>检查代码逻辑</h3>
+<ul>
+<li>使用 <code>np.hstack</code> 添加偏置项，确保输入数据包含截距。</li>
+<li>使用矩阵运算和线性代数库确保计算的准确性和高效性。</li>
+<li>通过打印重要信息（如后验均值向量和协方差矩阵）来验证模型的正确性。</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_3.3.3_Equivalent_kernel
+
+"""
+Lecture: 3_Linear_Models_for_Regression/3.3_Bayesian_Linear_Regression
+Content: 02_3.3.3_Equivalent_kernel
+"""
+
+import numpy as np
+from scipy.linalg import inv
+
+class BayesianLinearRegression:
+    """
+    贝叶斯线性回归模型类
+
+    参数:
+        alpha (float): 先验分布的方差参数
+        beta (float): 噪声精度参数
+    """
+    
+    def __init__(self, alpha: float, beta: float):
+        """
+        初始化贝叶斯线性回归模型
+
+        参数:
+            alpha (float): 先验分布的方差参数
+            beta (float): 噪声精度参数
+        """
+        self.alpha = alpha
+        self.beta = beta
+        self.m_N = None
+        self.S_N = None
+
+    def fit(self, X: np.ndarray, t: np.ndarray):
+        """
+        拟合贝叶斯线性回归模型
+
+        参数:
+            X (np.ndarray): 输入数据矩阵
+            t (np.ndarray): 目标值向量
+        """
+        # 添加偏置项
+        X = np.hstack([np.ones((X.shape[0], 1)), X])
+        
+        # 计算先验分布的协方差矩阵
+        S_0_inv = self.alpha * np.eye(X.shape[1])
+        
+        # 计算后验分布的协方差矩阵
+        self.S_N = inv(S_0_inv + self.beta * X.T @ X)
+        
+        # 计算后验分布的均值向量
+        self.m_N = self.beta * self.S_N @ X.T @ t
+        
+        print(f"后验均值向量: {self.m_N}")
+        print(f"后验协方差矩阵: {self.S_N}")
+
+    def predict(self, X_new: np.ndarray):
+        """
+        使用贝叶斯线性回归模型进行预测
+
+        参数:
+            X_new (np.ndarray): 新的输入数据矩阵
+
+        返回:
+            均值预测值和预测方差
+        """
+        # 添加偏置项
+        X_new = np.hstack([np.ones((X_new.shape[0], 1)), X_new])
+        
+        # 预测均值
+        y_mean = X_new @ self.m_N
+        
+        # 预测方差
+        y_var = 1 / self.beta + np.sum(X_new @ self.S_N * X_new, axis=1)
+        
+        return y_mean, y_var
+
+    def equivalent_kernel(self, X_new: np.ndarray):
+        """
+        计算等效核
+
+        参数:
+            X_new (np.ndarray): 新的输入数据矩阵
+
+        返回:
+            等效核矩阵
+        """
+        X_new = np.hstack([np.ones((X_new.shape[0], 1)), X_new])
+        kernel = self.beta * X_new @ self.S_N @ X_new.T
+        return kernel
+
+if __name__ == "__main__":
+    # 示例数据
+    X_train = np.array([[0.1], [0.4], [0.7], [1.0]])
+    t_train = np.array([1.1, 1.9, 3.0, 4.2])
+    
+    model = BayesianLinearRegression(alpha=1.0, beta=25.0)
+    model.fit(X_train, t_train)
+    
+    # 新数据进行预测
+    X_new = np.array([[0.2], [0.5], [0.8]])
+    y_mean, y_var = model.predict(X_new)
+    kernel = model.equivalent_kernel(X_new)
+    
+    print("预测均值: ", y_mean)
+    print("预测方差: ", y_var)
+    print("等效核矩阵: ", kernel)
+</code></pre>
+  </div>
+</body>
+</html>
+  

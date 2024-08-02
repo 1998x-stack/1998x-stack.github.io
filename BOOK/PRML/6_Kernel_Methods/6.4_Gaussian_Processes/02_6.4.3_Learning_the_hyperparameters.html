@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>6.4.3 Learning the hyperparameters</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_6.4.3_Learning_the_hyperparameters</h1>
+<pre><code>Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 02_6.4.3_Learning_the_hyperparameters
+</code></pre>
+<h2>详细分析第6.4.3节：学习超参数</h2>
+<h3>引言</h3>
+<p>高斯过程（Gaussian Processes, GPs）作为一种非参数贝叶斯方法，通过核函数定义数据点之间的相似性。核函数本身包含多个超参数，这些超参数对模型的性能有显著影响。第6.4.3节详细介绍了如何在高斯过程回归中学习这些超参数。</p>
+<h3>超参数的作用</h3>
+<p>在高斯过程回归中，常用的核函数如RBF核、Matern核等，都依赖于超参数。这些超参数决定了核函数的形状和尺度，从而影响模型的预测性能。典型的超参数包括：</p>
+<ol>
+<li><strong>长度尺度（length-scale）</strong>：控制核函数对输入变化的敏感度。</li>
+<li><strong>信号方差（signal variance）</strong>：决定核函数的输出尺度。</li>
+<li><strong>噪声方差（noise variance）</strong>：用于建模观测数据中的噪声。</li>
+</ol>
+<h3>边际似然函数</h3>
+<p>为了选择最优的超参数，我们需要最大化边际似然（marginal likelihood）。边际似然函数定义为：
+$$ p(y|X, \theta) = \int p(y|f, X, \theta)p(f|X, \theta) df $$
+其中，$ \theta $ 表示超参数集合，$ y $ 表示观测值，$ X $ 表示输入数据。</p>
+<h4>负对数边际似然</h4>
+<p>由于边际似然的计算涉及高维积分，通常通过最大化其对数形式来简化计算：
+$$ \ln p(y|X, \theta) = -\frac{1}{2} y^T K_{\theta}^{-1} y - \frac{1}{2} \ln |K_{\theta}| - \frac{n}{2} \ln 2\pi $$
+其中，$ K_{\theta} $ 是由核函数和超参数 $ \theta $ 构成的协方差矩阵。</p>
+<h3>优化过程</h3>
+<p>最大化边际似然以确定超参数的过程可以通过梯度下降法、共轭梯度法等优化算法来实现。具体步骤如下：</p>
+<ol>
+<li><strong>初始值选择</strong>：选择超参数的初始值。</li>
+<li><strong>计算梯度</strong>：计算负对数边际似然函数对超参数的梯度。</li>
+<li><strong>梯度更新</strong>：使用梯度下降法更新超参数，重复直到收敛。</li>
+</ol>
+<h4>梯度计算</h4>
+<p>负对数边际似然对超参数的梯度计算为：
+$$ \frac{\partial \ln p(y|X, \theta)}{\partial \theta_i} = \frac{1}{2} \text{tr}\left( \left( \alpha \alpha^T - K_{\theta}^{-1} \right) \frac{\partial K_{\theta}}{\partial \theta_i} \right) $$
+其中，$ \alpha = K_{\theta}^{-1} y $。</p>
+<h3>实例分析</h3>
+<p>假设我们有一个一维回归问题，输入变量为 $ x $，目标变量为 $ y $。生成数据如下：
+$$ x_i \sim \mathcal{U}(0, 10) $$
+$$ y_i = \sin(x_i) + \epsilon_i $$
+其中，$ \epsilon_i \sim \mathcal{N}(0, 0.1) $。</p>
+<h4>数据可视化</h4>
+<p>绘制输入 $ x $ 和目标 $ y $ 的散点图。</p>
+<h4>模型训练</h4>
+<ol>
+<li><strong>初始超参数选择</strong>：选择核函数和超参数的初始值，如RBF核的长度尺度和信号方差。</li>
+<li><strong>边际似然最大化</strong>：通过优化算法最大化负对数边际似然，更新超参数。</li>
+<li><strong>预测</strong>：使用优化后的超参数进行预测，并计算预测均值和方差。</li>
+</ol>
+<h4>结果分析</h4>
+<p>通过可视化预测结果，可以看到优化后的高斯过程模型能够准确捕捉数据的非线性关系，并量化预测的不确定性。</p>
+<h3>小结</h3>
+<p>通过最大化边际似然来学习高斯过程的超参数，可以显著提高模型的预测性能。该方法提供了一种系统化的途径，自动选择最优的超参数，使得高斯过程在实际应用中更加高效和可靠。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_6.4.3_Learning_the_hyperparameters
+
+"""
+Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 02_6.4.3_Learning_the_hyperparameters
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

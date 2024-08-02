@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3.1 Parameter distribution</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_3.3.1_Parameter_distribution</h1>
+<pre><code>Lecture: 3_Linear_Models_for_Regression/3.3_Bayesian_Linear_Regression
+Content: 00_3.3.1_Parameter_distribution
+</code></pre>
+<h2>3.3.1 参数分布</h2>
+<h3>概述</h3>
+<p>在贝叶斯线性回归模型中，我们对参数 $ w $ 进行推断，而不是像频率学派那样只估计一个值。贝叶斯方法通过将先验分布与似然函数相结合来计算后验分布。</p>
+<h3>先验分布</h3>
+<p>我们假设参数 $ w $ 服从一个多变量正态分布（即高斯分布），其均值为 $ \mathbf{m_0} $，协方差矩阵为 $ \mathbf{S_0} $：</p>
+<p>$$ p(\mathbf{w}|\mathbf{S_0}) = \mathcal{N}(\mathbf{w}|\mathbf{m_0}, \mathbf{S_0}) $$</p>
+<h3>似然函数</h3>
+<p>给定输入向量 $ \mathbf{x} $ 和目标值 $ t $，似然函数 $ p(t|\mathbf{w}) $ 表示目标值在给定参数 $ \mathbf{w} $ 下的分布。假设观测数据的噪声服从方差为 $ \beta^{-1} $ 的高斯分布：</p>
+<p>$$ p(t|\mathbf{x}, \mathbf{w}, \beta) = \mathcal{N}(t|\mathbf{w}^T \mathbf{x}, \beta^{-1}) $$</p>
+<h3>后验分布</h3>
+<p>根据贝叶斯定理，参数 $ \mathbf{w} $ 的后验分布为：</p>
+<p>$$ p(\mathbf{w}|\mathbf{t}, \mathbf{X}) \propto p(\mathbf{t}|\mathbf{w}, \mathbf{X}) p(\mathbf{w}|\mathbf{S_0}) $$</p>
+<p>其中， $ \mathbf{X} $ 是设计矩阵，包含所有训练数据的输入向量。通过结合先验分布和似然函数，我们可以得到后验分布。由于两者都是高斯分布的形式，后验分布仍然是高斯分布：</p>
+<p>$$ p(\mathbf{w}|\mathbf{t}, \mathbf{X}) = \mathcal{N}(\mathbf{w}|\mathbf{m_N}, \mathbf{S_N}) $$</p>
+<p>其中：</p>
+<p>$$ \mathbf{S_N}^{-1} = \mathbf{S_0}^{-1} + \beta \mathbf{X}^T \mathbf{X} $$
+$$ \mathbf{m_N} = \mathbf{S_N} (\mathbf{S_0}^{-1} \mathbf{m_0} + \beta \mathbf{X}^T \mathbf{t}) $$</p>
+<p>这两个方程提供了更新后的均值和协方差矩阵，使得我们能够计算出后验分布。</p>
+<h3>详细推导</h3>
+<p>为了推导出后验分布，我们首先计算似然函数和先验分布的乘积：</p>
+<p>$$ p(\mathbf{t}|\mathbf{w}, \mathbf{X}) = \prod_{n=1}^N \mathcal{N}(t_n|\mathbf{w}^T \mathbf{x_n}, \beta^{-1}) $$</p>
+<p>结合先验分布：</p>
+<p>$$ p(\mathbf{w}|\mathbf{S_0}) = \mathcal{N}(\mathbf{w}|\mathbf{m_0}, \mathbf{S_0}) $$</p>
+<p>将这两个分布相乘，并忽略与 $ \mathbf{w} $ 无关的常数项，我们得到：</p>
+<p>$$ p(\mathbf{w}|\mathbf{t}, \mathbf{X}) \propto \exp \left( -\frac{\beta}{2} \sum_{n=1}^N (t_n - \mathbf{w}^T \mathbf{x_n})^2 - \frac{1}{2} (\mathbf{w} - \mathbf{m_0})^T \mathbf{S_0}^{-1} (\mathbf{w} - \mathbf{m_0}) \right) $$</p>
+<p>为了使这一表达式更为简洁，我们将其重新整理为高斯分布的形式。首先，将二次型项展开：</p>
+<p>$$ \sum_{n=1}^N (t_n - \mathbf{w}^T \mathbf{x_n})^2 = \sum_{n=1}^N (t_n^2 - 2t_n \mathbf{w}^T \mathbf{x_n} + (\mathbf{w}^T \mathbf{x_n})^2) $$</p>
+<p>将其代入后验分布的指数部分，并结合先验分布的二次型项，我们可以得到后验分布的均值和协方差矩阵的表达式。</p>
+<h3>总结</h3>
+<p>通过以上推导，我们可以看到，贝叶斯线性回归模型中的参数 $ \mathbf{w} $ 的后验分布仍然是高斯分布，其均值和协方差矩阵由先验分布和观测数据共同决定。具体地，后验分布的均值是先验均值和观测数据的加权和，而后验协方差矩阵则是先验协方差矩阵和观测数据协方差矩阵的加权和的逆。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_3.3.1_Parameter_distribution
+
+"""
+Lecture: 3_Linear_Models_for_Regression/3.3_Bayesian_Linear_Regression
+Content: 00_3.3.1_Parameter_distribution
+"""
+
+import numpy as np
+from scipy.linalg import inv
+
+class BayesianLinearRegression:
+    """
+    贝叶斯线性回归模型类
+
+    参数:
+        alpha (float): 先验分布的方差参数
+        beta (float): 噪声精度参数
+    """
+    
+    def __init__(self, alpha: float, beta: float):
+        """
+        初始化贝叶斯线性回归模型
+
+        参数:
+            alpha (float): 先验分布的方差参数
+            beta (float): 噪声精度参数
+        """
+        self.alpha = alpha
+        self.beta = beta
+        self.m_N = None
+        self.S_N = None
+
+    def fit(self, X: np.ndarray, t: np.ndarray):
+        """
+        拟合贝叶斯线性回归模型
+
+        参数:
+            X (np.ndarray): 输入数据矩阵
+            t (np.ndarray): 目标值向量
+        """
+        # 添加偏置项
+        X = np.hstack([np.ones((X.shape[0], 1)), X])
+        
+        # 计算先验分布的协方差矩阵
+        S_0_inv = self.alpha * np.eye(X.shape[1])
+        
+        # 计算后验分布的协方差矩阵
+        self.S_N = inv(S_0_inv + self.beta * X.T @ X)
+        
+        # 计算后验分布的均值向量
+        self.m_N = self.beta * self.S_N @ X.T @ t
+        
+        print(f"后验均值向量: {self.m_N}")
+        print(f"后验协方差矩阵: {self.S_N}")
+
+    def predict(self, X_new: np.ndarray):
+        """
+        使用贝叶斯线性回归模型进行预测
+
+        参数:
+            X_new (np.ndarray): 新的输入数据矩阵
+
+        返回:
+            均值预测值和预测方差
+        """
+        # 添加偏置项
+        X_new = np.hstack([np.ones((X_new.shape[0], 1)), X_new])
+        
+        # 预测均值
+        y_mean = X_new @ self.m_N
+        
+        # 预测方差
+        y_var = 1 / self.beta + np.sum(X_new @ self.S_N * X_new, axis=1)
+        
+        return y_mean, y_var
+
+if __name__ == "__main__":
+    # 示例数据
+    X_train = np.array([[0.1], [0.4], [0.7], [1.0]])
+    t_train = np.array([1.1, 1.9, 3.0, 4.2])
+    
+    model = BayesianLinearRegression(alpha=1.0, beta=25.0)
+    model.fit(X_train, t_train)
+    
+    # 新数据进行预测
+    X_new = np.array([[0.2], [0.5], [0.8]])
+    y_mean, y_var = model.predict(X_new)
+    
+    print("预测均值: ", y_mean)
+    print("预测方差: ", y_var)</code></pre>
+  </div>
+</body>
+</html>
+  

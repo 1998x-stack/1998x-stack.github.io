@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>05</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>2.5 图的类型</h3>
+<p>图论中的图有多种类型，每种类型在结构和应用上都有其独特的特点。以下是对社铃形、线形和环形图，结构化图与随机图，及 $ k $-规则图的详细展开。</p>
+<h4>2.5.1 社铃形、线形和环形图</h4>
+<p><strong>社铃形图（Star Graph）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：社铃形图是指一个中心节点与若干个外围节点直接相连，而外围节点之间没有直接连接的图。通常表示为 $ S_n $，其中 $ n $ 是外围节点的数量。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>中心节点</strong>：中心节点的度数为 $ n $，外围节点的度数均为 1。</li>
+<li><strong>路径长度</strong>：从中心节点到任何外围节点的路径长度均为 1。</li>
+<li><strong>对称性</strong>：具有高度对称性，以中心节点为对称中心。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>社交网络</strong>：在社交网络中，中心节点可以代表一个有影响力的人物或中心人物，其外围节点代表其关注者或粉丝。</li>
+<li><strong>通信网络</strong>：在通信网络中，中心节点可以代表一个集线器（hub），外围节点代表各个终端设备。</li>
+<li><strong>分布式系统</strong>：在分布式计算中，中心节点可以充当协调者，外围节点为工作节点。</li>
+</ul>
+</li>
+</ul>
+<p><strong>线形图（Path Graph）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：线形图是一条简单的路径，其中每个节点只与前一个和后一个节点相连，首尾节点除外。通常表示为 $ P_n $，其中 $ n $ 是节点数。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>端点</strong>：只有两个端点，其度数为 1，其他节点的度数均为 2。</li>
+<li><strong>直径</strong>：图的直径等于 $ n-1 $，即从一个端点到另一个端点的最长路径。</li>
+<li><strong>简单结构</strong>：没有循环，所有节点按一条直线排列。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>网络拓扑</strong>：在计算机网络拓扑中，常用于表示链式结构。</li>
+<li><strong>交通路线</strong>：在交通规划中，线形图可以表示一条线路上的各个站点。</li>
+<li><strong>任务流程</strong>：在项目管理中，可以用线形图表示任务的顺序和依赖关系。</li>
+</ul>
+</li>
+</ul>
+<p><strong>环形图（Cycle Graph）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：环形图是指所有节点连接成一个闭环的图。通常表示为 $ C_n $，其中 $ n $ 是节点数。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>闭环结构</strong>：每个节点的度数均为 2，所有节点构成一个闭环。</li>
+<li><strong>对称性</strong>：具有旋转对称性，任何节点可以作为起点。</li>
+<li><strong>简单循环</strong>：图中没有端点，所有节点按循环方式连接。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>网络拓扑</strong>：在计算机网络中，环形拓扑用于环网协议，确保数据传输的可靠性。</li>
+<li><strong>分子结构</strong>：在化学中，环形图可用于表示环状化合物的结构。</li>
+<li><strong>回路检测</strong>：在电路设计中，环形图用于分析和检测回路。</li>
+</ul>
+</li>
+</ul>
+<h4>2.5.2 结构化图与随机图</h4>
+<p><strong>结构化图（Structured Graphs）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：结构化图是指具有明确规则或特定模式的图。这类图通常有规律的连接方式和特定的几何形状。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>规则性</strong>：如完全图、格子图等，具有规律性和对称性。</li>
+<li><strong>可预测性</strong>：结构清晰，易于分析和计算。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>理论研究</strong>：在图论研究中，结构化图用于验证理论和算法。</li>
+<li><strong>网络设计</strong>：在实际网络设计中，用于优化网络结构和提高效率。</li>
+<li><strong>物理模型</strong>：在物理学中，结构化图用于模拟晶体结构和其他物理系统。</li>
+</ul>
+</li>
+</ul>
+<p><strong>随机图（Random Graphs）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：随机图是指节点和边的连接是根据一定概率随机生成的图。常用的随机图模型有Erdős–Rényi模型和Barabási–Albert模型。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>不确定性</strong>：连接方式没有确定的规则，具有随机性。</li>
+<li><strong>多样性</strong>：可以生成各种不同的图结构，反映实际网络中的复杂性。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>网络模拟</strong>：用于模拟和分析实际网络（如互联网、社交网络）的性质。</li>
+<li><strong>生物网络</strong>：在生物学中，用于研究基因网络和蛋白质相互作用网络。</li>
+<li><strong>社会科学</strong>：在社会科学中，用于模拟社会网络中的人际关系和传播模式。</li>
+</ul>
+</li>
+</ul>
+<h4>2.5.3 $ k $-规则图</h4>
+<p><strong>$ k $-规则图（$ k $-Regular Graph）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：$ k $-规则图是指图中每个节点的度数均为 $ k $ 的图。通常表示为 $ G_k $。</li>
+<li><strong>特点</strong>：
+<ul>
+<li><strong>均匀性</strong>：所有节点具有相同的度数，图的结构均匀。</li>
+<li><strong>对称性</strong>：具有一定的对称性，图中没有度数差异。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：
+<ul>
+<li><strong>对称网络设计</strong>：在网络设计中，$ k $-规则图用于均匀分布资源和负载，确保网络的平衡性。</li>
+<li><strong>图论研究</strong>：用于研究图的性质和算法的性能。</li>
+<li><strong>编码理论</strong>：在编码理论中，用于设计纠错码和网络编码方案。</li>
+</ul>
+</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li><strong>Mathematics | Free Full-Text | The Aα-Spectral Radii of Graphs with Given Connectivity</strong> - 讨论了固定连通性的图的谱半径及其相关性质。</li>
+<li><strong>SpringerLink | Spectral Radius of Graphs</strong> - 提供了关于图的谱半径和连通性的详细理论基础。</li>
+<li><strong>SpringerLink | Spectral radius and k-connectedness of a graph</strong> - 研究了图的谱半径与 $ k $-连通性的关系。</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>from typing import List, Dict
+
+
+class Graph:
+    """基础图类，包含节点和边的表示和基本操作。"""
+
+    def __init__(self, num_nodes: int):
+        """
+        初始化图的基本结构。
+
+        Args:
+            num_nodes (int): 图中的节点数。
+        """
+        self.num_nodes = num_nodes
+        self.edges = self.initialize_edges(num_nodes)
+
+    def initialize_edges(self, num_nodes: int) -> Dict[int, List[int]]:
+        """
+        初始化图的边。
+
+        Args:
+            num_nodes (int): 图中的节点数。
+
+        Returns:
+            Dict[int, List[int]]: 每个节点的连接列表。
+        """
+        return {i: [] for i in range(num_nodes)}
+
+    def add_edge(self, node1: int, node2: int):
+        """
+        向图中添加一条边。
+
+        Args:
+            node1 (int): 边的起始节点。
+            node2 (int): 边的结束节点。
+        """
+        self.edges[node1].append(node2)
+        self.edges[node2].append(node1)
+
+    def display_edges(self):
+        """打印图的所有边。"""
+        for node, neighbors in self.edges.items():
+            print(f"Node {node} is connected to {neighbors}")
+
+
+class StarGraph(Graph):
+    """社铃形图类，继承自基础图类。"""
+
+    def __init__(self, num_nodes: int):
+        """
+        初始化社铃形图，中心节点为0，其余为外围节点。
+
+        Args:
+            num_nodes (int): 图中的节点数。
+        """
+        if num_nodes < 2:
+            raise ValueError("社铃形图必须至少有两个节点。")
+        super().__init__(num_nodes)
+        self.create_star_graph()
+
+    def create_star_graph(self):
+        """创建社铃形图的结构。"""
+        for i in range(1, self.num_nodes):
+            self.add_edge(0, i)
+
+
+class PathGraph(Graph):
+    """线形图类，继承自基础图类。"""
+
+    def __init__(self, num_nodes: int):
+        """
+        初始化线形图，按顺序连接所有节点。
+
+        Args:
+            num_nodes (int): 图中的节点数。
+        """
+        if num_nodes < 2:
+            raise ValueError("线形图必须至少有两个节点。")
+        super().__init__(num_nodes)
+        self.create_path_graph()
+
+    def create_path_graph(self):
+        """创建线形图的结构。"""
+        for i in range(self.num_nodes - 1):
+            self.add_edge(i, i + 1)
+
+
+class CycleGraph(Graph):
+    """环形图类，继承自基础图类。"""
+
+    def __init__(self, num_nodes: int):
+        """
+        初始化环形图，首尾节点相连形成闭环。
+
+        Args:
+            num_nodes (int): 图中的节点数。
+        """
+        if num_nodes < 3:
+            raise ValueError("环形图必须至少有三个节点。")
+        super().__init__(num_nodes)
+        self.create_cycle_graph()
+
+    def create_cycle_graph(self):
+        """创建环形图的结构。"""
+        for i in range(self.num_nodes - 1):
+            self.add_edge(i, i + 1)
+        self.add_edge(self.num_nodes - 1, 0)
+
+
+def main():
+    """主函数，创建并展示三种类型的图。"""
+    print("社铃形图:")
+    star_graph = StarGraph(5)
+    star_graph.display_edges()
+
+    print("\n线形图:")
+    path_graph = PathGraph(5)
+    path_graph.display_edges()
+
+    print("\n环形图:")
+    cycle_graph = CycleGraph(5)
+    cycle_graph.display_edges()
+
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

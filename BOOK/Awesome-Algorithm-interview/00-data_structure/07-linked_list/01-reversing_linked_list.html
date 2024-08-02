@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-reversing linked list</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>翻转链表</p>
+</blockquote>
+<h3>翻转链表（Reversing a Linked List）</h3>
+<p>翻转链表是一个常见的链表操作，可以使用迭代或递归方法来实现。下面是详细的解释和代码实现。</p>
+<h3>方法一：迭代法</h3>
+<p>通过迭代方法翻转链表，我们需要三个指针来跟踪链表的当前节点、前一个节点和下一个节点。</p>
+<h4>算法步骤</h4>
+<ol>
+<li>初始化指针 <code>prev</code> 为 <code>None</code>，<code>curr</code> 为链表的头节点 <code>head</code>。</li>
+<li>遍历链表，直到 <code>curr</code> 为空：
+<ul>
+<li>保存当前节点的下一个节点 <code>next_temp</code>。</li>
+<li>将当前节点的 <code>next</code> 指向前一个节点 <code>prev</code>。</li>
+<li>将前一个节点 <code>prev</code> 移动到当前节点 <code>curr</code>。</li>
+<li>将当前节点 <code>curr</code> 移动到下一个节点 <code>next_temp</code>。</li>
+</ul>
+</li>
+<li>返回新的头节点 <code>prev</code>。</li>
+</ol>
+<h4>代码实现</h4>
+<pre><code class="language-python">class ListNode:
+    def __init__(self, value=0, next=None):
+        self.value = value
+        self.next = next
+
+def reverse_list(head):
+    prev = None
+    curr = head
+
+    while curr is not None:
+        next_temp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = next_temp
+
+    return prev
+
+# 示例使用
+def print_list(node):
+    while node:
+        print(node.value, end=&quot; -&gt; &quot;)
+        node = node.next
+    print(&quot;None&quot;)
+
+# 构建链表 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; None
+head = ListNode(1)
+head.next = ListNode(2)
+head.next.next = ListNode(3)
+head.next.next.next = ListNode(4)
+head.next.next.next.next = ListNode(5)
+
+print(&quot;原链表:&quot;)
+print_list(head)
+
+reversed_head = reverse_list(head)
+print(&quot;翻转后的链表:&quot;)
+print_list(reversed_head)
+</code></pre>
+<h3>方法二：递归法</h3>
+<p>通过递归方法翻转链表，主要思想是通过递归处理子链表，最终将每个节点的 <code>next</code> 指向前一个节点。</p>
+<h4>算法步骤</h4>
+<ol>
+<li>递归终止条件：如果链表为空或只有一个节点，直接返回头节点。</li>
+<li>递归翻转子链表，直到处理到最后一个节点。</li>
+<li>翻转当前节点与其下一个节点的指向关系。</li>
+<li>返回新的头节点。</li>
+</ol>
+<h4>代码实现</h4>
+<pre><code class="language-python">def reverse_list_recursive(head):
+    if head is None or head.next is None:
+        return head
+    
+    new_head = reverse_list_recursive(head.next)
+    head.next.next = head
+    head.next = None
+    
+    return new_head
+
+# 示例使用
+print(&quot;原链表:&quot;)
+print_list(head)
+
+reversed_head_recursive = reverse_list_recursive(head)
+print(&quot;翻转后的链表（递归）:&quot;)
+print_list(reversed_head_recursive)
+</code></pre>
+<h3>解释</h3>
+<ol>
+<li>
+<p><strong>迭代法</strong>：</p>
+<ul>
+<li>使用三个指针 <code>prev</code>、<code>curr</code> 和 <code>next_temp</code>。</li>
+<li>遍历链表并逐步翻转指向关系，直到所有节点都被处理。</li>
+</ul>
+</li>
+<li>
+<p><strong>递归法</strong>：</p>
+<ul>
+<li>递归处理子链表，直到链表尾部。</li>
+<li>翻转当前节点与其下一个节点的指向关系。</li>
+<li>返回新的头节点。</li>
+</ul>
+</li>
+</ol>
+<h3>优缺点</h3>
+<p><strong>迭代法</strong>：</p>
+<ul>
+<li><strong>优点</strong>：实现简单，时间复杂度为 $O(n)$，空间复杂度为 $O(1)$。</li>
+<li><strong>缺点</strong>：需要显式维护多个指针，代码较为繁琐。</li>
+</ul>
+<p><strong>递归法</strong>：</p>
+<ul>
+<li><strong>优点</strong>：代码简洁，逻辑清晰。</li>
+<li><strong>缺点</strong>：递归调用消耗栈空间，空间复杂度为 $O(n)$。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Reverse a linked list</strong>：</p>
+<ul>
+<li>提供了迭代法和递归法翻转链表的详细解释和代码示例。</li>
+<li><a href="https://www.geeksforgeeks.org/reverse-a-linked-list/">链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Problem - Reverse Linked List</strong>：</p>
+<ul>
+<li>提供了翻转链表问题的详细描述和解决方案。</li>
+<li><a href="https://leetcode.com/problems/reverse-linked-list/">LeetCode链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

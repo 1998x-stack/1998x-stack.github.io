@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.3 Simple Interest</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>2.3_Simple_Interest</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.3_Simple_Interest
+Content: 2.3_Simple_Interest
+
+</code></pre>
+<h3>2.3 简单利息</h3>
+<p><strong>讲座</strong>: 2_货币的时间价值/2.3_简单利息<br>
+<strong>内容</strong>: 2.3_简单利息</p>
+<h4>一、简单利息的定义</h4>
+<p>简单利息（Simple Interest）是最基本的利息计算方式，它只对初始本金计算利息，而不包括已经累计的利息。</p>
+<h5>1. 简单利息公式</h5>
+<p>简单利息的计算公式为：
+$$ I = r \cdot \tau \cdot F_0 $$
+其中，$ I $ 表示利息，$ r $ 表示年利率，$ \tau $ 表示时间（年），$ F_0 $ 表示本金。</p>
+<h5>2. 计算最终金额</h5>
+<p>在简单利息下，特定时间后的总金额（包括本金和利息）可以表示为：
+$$ F(\tau) = F_0 + r \cdot \tau \cdot F_0 = (1 + r \cdot \tau) \cdot F_0 $$
+其中，$ F(\tau) $ 表示在时间 $ \tau $ 后的总金额。</p>
+<h4>二、简单利息的计算示例</h4>
+<p><strong>示例 1</strong>：假设你在银行存入 $1000，本金保持一年，年利率为12%。根据简单利息计算公式，利息为：
+$$ I = 0.12 \times 1 \times 1000 = 120 $$
+一年后的总金额为：
+$$ F(1) = 1000 + 120 = 1120 $$</p>
+<p><strong>示例 2</strong>：假设账户中有 $700，年利率为4%。应用一年期的简单利息计算，利息为：
+$$ I = 0.04 \times 1 \times 700 = 28 $$
+一年后的总金额为：
+$$ F(1) = 700 + 28 = 728 $$</p>
+<p>如果应用两年的简单利息计算，总金额为：
+$$ F(2) = 700 + (0.04 \times 2 \times 700) = 700 + 56 = 756 $$
+等同于应用 8% 的两年期利率计算。</p>
+<h4>三、简单利息的应用</h4>
+<p>简单利息广泛应用于短期贷款和投资。例如，个人贷款、汽车贷款和短期存款证等。其主要特点是计算方式简单，适用于利息不复利的情形。</p>
+<h5>1. 短期贷款</h5>
+<p>在短期贷款中，借款人只需支付借款本金的固定百分比作为利息。这种方式透明且易于理解，适合小额短期融资需求。</p>
+<h5>2. 投资工具</h5>
+<p>对于一些短期投资工具，如存款证（CD）和短期国债，简单利息是常用的利息计算方式。这些工具通常提供固定利率，且不考虑利息复利。</p>
+<h4>四、简单利息与复利的比较</h4>
+<p>简单利息和复利的主要区别在于利息计算的基础不同。简单利息只对初始本金计算利息，而复利则将每期利息加入本金，再计算下一期的利息。复利的计算方式更加复杂，但长期来看，复利带来的收益通常高于简单利息。</p>
+<h5>1. 复利的计算公式</h5>
+<p>复利的计算公式为：
+$$ F(\tau) = F_0 \left(1 + \frac{r}{k}\right)^{k \cdot \tau} $$
+其中，$ k $ 表示一年中的复利次数。</p>
+<h5>2. 示例对比</h5>
+<p>假设投资 $1000，年利率为12%，简单利息和复利的比较如下：</p>
+<ul>
+<li>
+<p><strong>简单利息</strong>：
+$$ F(1) = 1000 \times (1 + 0.12) = 1120 $$
+$$ F(2) = 1000 \times (1 + 0.12 \times 2) = 1240 $$</p>
+</li>
+<li>
+<p><strong>复利（年复利）</strong>：
+$$ F(1) = 1000 \left(1 + \frac{0.12}{1}\right)^{1 \cdot 1} = 1120 $$
+$$ F(2) = 1000 \left(1 + \frac{0.12}{1}\right)^{1 \cdot 2} = 1254.4 $$</p>
+</li>
+</ul>
+<p>由此可见，复利在长期投资中带来的收益高于简单利息。</p>
+<h4>五、总结</h4>
+<p>简单利息是最基本的利息计算方式，适用于短期贷款和投资。虽然其计算方式简单，但在长期投资中，复利往往能带来更高的收益。因此，投资者在选择投资工具时，需要根据投资期限和利息计算方式进行综合考虑。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 2.3_Simple_Interest
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.3_Simple_Interest
+Content: 2.3_Simple_Interest
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

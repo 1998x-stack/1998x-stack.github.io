@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.5.2 Strassen 算法</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_1.5.2_Strassen_算法</h1>
+<pre><code>Lecture: 01._基础知识/1.5_分治法
+Content: 01_1.5.2_Strassen_算法
+</code></pre>
+<h3>01_1.5.2_Strassen_算法 深度解析</h3>
+<h4>1. 引言</h4>
+<p>Strassen算法是矩阵乘法的一种快速算法，由Volker Strassen在1969年提出。传统的矩阵乘法算法需要进行 $O(n^3)$ 次标量乘法，而Strassen算法通过分治法，将复杂度降至 $O(n^{\log_2 7})$，即约 $O(n^{2.81})$，显著提升了计算效率  。</p>
+<h4>2. 基本原理</h4>
+<p>Strassen算法的核心思想是将矩阵分块，通过递归计算减少乘法次数。具体而言，Strassen算法将两个 $n \times n$ 矩阵分成若干个 $n/2 \times n/2$ 的子矩阵，然后通过巧妙地组合这些子矩阵来减少乘法的次数。</p>
+<p>传统算法进行矩阵乘法时需要进行8次递归乘法，而Strassen算法通过构造七个新的矩阵乘法和若干加减法，将乘法次数减少到7次。</p>
+<h4>3. 算法步骤</h4>
+<p>Strassen算法的主要步骤如下：</p>
+<ol>
+<li>
+<p><strong>矩阵分块</strong>：将两个 $n \times n$ 矩阵 $A$ 和 $B$ 分成大小为 $n/2 \times n/2$ 的子矩阵：</p>
+<ul>
+<li>$A = \begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}$</li>
+<li>$B = \begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}$</li>
+</ul>
+</li>
+<li>
+<p><strong>构造中间矩阵</strong>：计算10个中间矩阵 $S_i$：</p>
+<ul>
+<li>$S_1 = B_{12} - B_{22}$</li>
+<li>$S_2 = A_{11} + A_{12}$</li>
+<li>$S_3 = A_{21} + A_{22}$</li>
+<li>$S_4 = B_{21} - B_{11}$</li>
+<li>$S_5 = A_{11} + A_{22}$</li>
+<li>$S_6 = B_{11} + B_{22}$</li>
+<li>$S_7 = A_{12} - A_{22}$</li>
+<li>$S_8 = B_{21} + B_{22}$</li>
+<li>$S_9 = A_{11} - A_{21}$</li>
+<li>$S_{10} = B_{11} + B_{12}$</li>
+</ul>
+</li>
+<li>
+<p><strong>计算7个乘积矩阵</strong>：</p>
+<ul>
+<li>$P_1 = A_{11} \times S_1$</li>
+<li>$P_2 = S_2 \times B_{22}$</li>
+<li>$P_3 = S_3 \times B_{11}$</li>
+<li>$P_4 = A_{22} \times S_4$</li>
+<li>$P_5 = S_5 \times S_6$</li>
+<li>$P_6 = S_7 \times S_8$</li>
+<li>$P_7 = S_9 \times S_{10}$</li>
+</ul>
+</li>
+<li>
+<p><strong>计算最终矩阵</strong>：</p>
+<ul>
+<li>$C_{11} = P_5 + P_4 - P_2 + P_6$</li>
+<li>$C_{12} = P_1 + P_2$</li>
+<li>$C_{21} = P_3 + P_4$</li>
+<li>$C_{22} = P_5 + P_1 - P_3 - P_7$</li>
+</ul>
+</li>
+</ol>
+<p>整个过程递归进行，直到矩阵大小缩小到基准规模。</p>
+<h4>4. 算法复杂度分析</h4>
+<p>Strassen算法的时间复杂度由递推关系式 $T(n) = 7T(n/2) + O(n^2)$ 决定。根据Master定理，该递推关系的解为 $T(n) = O(n^{\log_2 7}) ≈ O(n^{2.81})$。相比传统的 $O(n^3)$ 算法，Strassen算法在大规模矩阵运算中表现出显著优势   。</p>
+<h4>5. 优缺点</h4>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>计算效率高</strong>：在处理大规模矩阵时，显著减少了乘法运算次数，提高了计算效率。</li>
+<li><strong>理论突破</strong>：首次证明了矩阵乘法可以在 $O(n^3)$ 之内完成，激发了对更快速矩阵乘法算法的研究。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>实现复杂</strong>：Strassen算法比传统算法更复杂，实现起来需要更多的临时存储和额外的加减法运算。</li>
+<li><strong>数值稳定性</strong>：在浮点数运算中，累积的舍入误差可能导致数值结果不稳定。</li>
+</ul>
+<h4>6. 应用场景</h4>
+<p>Strassen算法主要适用于大规模矩阵乘法的场景，如科学计算、图像处理和机器学习等领域。在小规模矩阵运算中，由于其较高的实现复杂度和额外的加减法操作，Strassen算法未必比传统算法高效。</p>
+<h4>7. 总结</h4>
+<p>Strassen算法是计算复杂度理论中的一个重要里程碑，证明了通过巧妙的算法设计，可以突破看似不可逾越的性能瓶颈。尽管其在实际应用中有一些局限性，但其理论意义和对后续研究的推动作用不可忽视    。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_1.5.2_Strassen_算法
+
+"""
+Lecture: 01._基础知识/1.5_分治法
+Content: 01_1.5.2_Strassen_算法
+"""
+
+import numpy as np
+from typing import Tuple
+
+class StrassenMatrixMultiplication:
+    """使用Strassen算法进行矩阵乘法的类"""
+
+    def __init__(self, A: np.ndarray, B: np.ndarray):
+        """
+        初始化函数，检查输入矩阵的有效性并进行填充
+        Args:
+            A (np.ndarray): 矩阵A
+            B (np.ndarray): 矩阵B
+        """
+        assert A.shape[1] == B.shape[0], "矩阵A的列数必须等于矩阵B的行数"
+        self.A = A
+        self.B = B
+        self.n = self._next_power_of_2(max(A.shape[0], A.shape[1], B.shape[0], B.shape[1]))
+        self.A_padded = self._pad_matrix(A, self.n)
+        self.B_padded = self._pad_matrix(B, self.n)
+
+    @staticmethod
+    def _next_power_of_2(x: int) -> int:
+        """计算大于等于x的下一个2的幂
+        Args:
+            x (int): 输入整数
+        Returns:
+            int: 大于等于x的下一个2的幂
+        """
+        return 1 if x == 0 else 2**(x - 1).bit_length()
+
+    @staticmethod
+    def _pad_matrix(A: np.ndarray, new_size: int) -> np.ndarray:
+        """填充矩阵到指定大小
+        Args:
+            A (np.ndarray): 输入矩阵
+            new_size (int): 新的尺寸
+        Returns:
+            np.ndarray: 填充后的矩阵
+        """
+        padded_A = np.zeros((new_size, new_size), dtype=A.dtype)
+        padded_A[:A.shape[0], :A.shape[1]] = A
+        return padded_A
+
+    @staticmethod
+    def _add_matrices(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+        """矩阵加法
+        Args:
+            A (np.ndarray): 矩阵A
+            B (np.ndarray): 矩阵B
+        Returns:
+            np.ndarray: 矩阵A和B的和
+        """
+        return A + B
+
+    @staticmethod
+    def _subtract_matrices(A: np.ndarray, B: np.ndarray) -> np.ndarray:
+        """矩阵减法
+        Args:
+            A (np.ndarray): 矩阵A
+            B (np.ndarray): 矩阵B
+        Returns:
+            np.ndarray: 矩阵A和B的差
+        """
+        return A - B
+
+    def _strassen(self, A: np.ndarray, B: np.ndarray) -> np.ndarray:
+        """Strassen算法的递归实现
+        Args:
+            A (np.ndarray): 矩阵A
+            B (np.ndarray): 矩阵B
+        Returns:
+            np.ndarray: 矩阵A和B的乘积
+        """
+        n = A.shape[0]
+
+        # 基本情况，当矩阵大小为1x1时，直接相乘
+        if n == 1:
+            return A * B
+
+        # 将矩阵分为四个子矩阵
+        mid = n // 2
+        A11, A12, A21, A22 = A[:mid, :mid], A[:mid, mid:], A[mid:, :mid], A[mid:, mid:]
+        B11, B12, B21, B22 = B[:mid, :mid], B[:mid, mid:], B[mid:, :mid], B[mid:, mid:]
+
+        # 计算S1到S10
+        S1 = self._subtract_matrices(B12, B22)
+        S2 = self._add_matrices(A11, A12)
+        S3 = self._add_matrices(A21, A22)
+        S4 = self._subtract_matrices(B21, B11)
+        S5 = self._add_matrices(A11, A22)
+        S6 = self._add_matrices(B11, B22)
+        S7 = self._subtract_matrices(A12, A22)
+        S8 = self._add_matrices(B21, B22)
+        S9 = self._subtract_matrices(A11, A21)
+        S10 = self._add_matrices(B11, B12)
+
+        # 计算P1到P7
+        P1 = self._strassen(A11, S1)
+        P2 = self._strassen(S2, B22)
+        P3 = self._strassen(S3, B11)
+        P4 = self._strassen(A22, S4)
+        P5 = self._strassen(S5, S6)
+        P6 = self._strassen(S7, S8)
+        P7 = self._strassen(S9, S10)
+
+        # 计算C11, C12, C21, C22
+        C11 = self._add_matrices(self._subtract_matrices(self._add_matrices(P5, P4), P2), P6)
+        C12 = self._add_matrices(P1, P2)
+        C21 = self._add_matrices(P3, P4)
+        C22 = self._add_matrices(self._subtract_matrices(self._add_matrices(P5, P1), P3), P7)
+
+        # 组合子矩阵成结果矩阵
+        C = np.empty((n, n), dtype=A.dtype)
+        C[:mid, :mid] = C11
+        C[:mid, mid:] = C12
+        C[mid:, :mid] = C21
+        C[mid:, mid:] = C22
+
+        return C
+
+    def multiply(self) -> np.ndarray:
+        """执行Strassen矩阵乘法
+        Returns:
+            np.ndarray: 矩阵乘积
+        """
+        C_padded = self._strassen(self.A_padded, self.B_padded)
+        C = C_padded[:self.A.shape[0], :self.B.shape[1]]
+        return C
+
+if __name__ == "__main__":
+    # 示例矩阵
+    A = np.array([[1, 2], [3, 4]], dtype=np.int32)
+    B = np.array([[5, 6], [7, 8]], dtype=np.int32)
+
+    # 创建StrassenMatrixMultiplication对象并计算乘积
+    strassen = StrassenMatrixMultiplication(A, B)
+    C = strassen.multiply()
+
+    # 输出结果
+    print("矩阵A和B的乘积:\n", C)
+</code></pre>
+  </div>
+</body>
+</html>
+  

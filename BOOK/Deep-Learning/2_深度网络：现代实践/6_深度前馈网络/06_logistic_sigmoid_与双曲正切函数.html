@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>logistic sigmoid 与双曲正切函数</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>06_logistic sigmoid 与双曲正切函数</h1>
+<pre><code>Lecture: 2_深度网络：现代实践/6_深度前馈网络
+Content: 06_logistic sigmoid 与双曲正切函数
+</code></pre>
+<h2>06_logistic sigmoid 与双曲正切函数</h2>
+<h3>任务分解：</h3>
+<ol>
+<li><strong>背景介绍</strong></li>
+<li><strong>Logistic Sigmoid 函数的定义</strong></li>
+<li><strong>双曲正切函数（Tanh）的定义</strong></li>
+<li><strong>Logistic Sigmoid 与 Tanh 的优缺点</strong></li>
+<li><strong>Logistic Sigmoid 与 Tanh 的应用场景</strong></li>
+<li><strong>实现 Logistic Sigmoid 和 Tanh 函数</strong></li>
+<li><strong>训练和评估模型</strong></li>
+<li><strong>可视化 Logistic Sigmoid 与 Tanh 函数</strong></li>
+</ol>
+<h3>1. 背景介绍</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>解释激活函数在神经网络中的作用。</li>
+<li>强调 Logistic Sigmoid 和 Tanh 函数的重要性及其应用场景。
+<strong>解释：</strong>
+激活函数是神经网络中的关键组件，用于引入非线性，使网络能够学习复杂的模式和特征。Logistic Sigmoid 和双曲正切（Tanh）函数是两种常用的激活函数，广泛应用于早期的神经网络模型中。</li>
+</ul>
+<h3>2. Logistic Sigmoid 函数的定义</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>提供 Logistic Sigmoid 函数的数学定义。</li>
+<li>说明 Logistic Sigmoid 如何在神经网络中进行信息处理。
+<strong>解释：</strong>
+Logistic Sigmoid 函数的数学定义为：
+$$ f(x) = \frac{1}{1 + e^{-x}} $$
+它将输入值压缩到 [0, 1] 之间，使得输出可以被解释为概率值。</li>
+</ul>
+<h3>3. 双曲正切函数（Tanh）的定义</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>提供双曲正切函数（Tanh）的数学定义。</li>
+<li>说明 Tanh 如何在神经网络中进行信息处理。
+<strong>解释：</strong>
+双曲正切（Tanh）函数的数学定义为：
+$$ f(x) = \tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}} $$
+它将输入值压缩到 [-1, 1] 之间，相对于 Logistic Sigmoid，Tanh 在输出上具有零中心性。</li>
+</ul>
+<h3>4. Logistic Sigmoid 与 Tanh 的优缺点</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>
+<p>介绍 Logistic Sigmoid 和 Tanh 的主要优点。</p>
+</li>
+<li>
+<p>讨论 Logistic Sigmoid 和 Tanh 的潜在缺点。
+<strong>解释：</strong></p>
+</li>
+<li>
+<p><strong>Logistic Sigmoid 优点</strong>：</p>
+<ul>
+<li>简单易计算</li>
+<li>输出值在 [0, 1] 之间，易于解释为概率</li>
+</ul>
+</li>
+<li>
+<p><strong>Logistic Sigmoid 缺点</strong>：</p>
+<ul>
+<li>梯度消失问题：在输入绝对值较大时，梯度接近于零，导致训练速度变慢</li>
+</ul>
+</li>
+<li>
+<p><strong>Tanh 优点</strong>：</p>
+<ul>
+<li>输出范围为 [-1, 1]，具有零中心性，更有利于梯度下降</li>
+<li>在某些情况下表现优于 Logistic Sigmoid</li>
+</ul>
+</li>
+<li>
+<p><strong>Tanh 缺点</strong>：</p>
+<ul>
+<li>同样存在梯度消失问题，特别是在深层网络中</li>
+</ul>
+</li>
+</ul>
+<h3>5. Logistic Sigmoid 与 Tanh 的应用场景</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>讨论 Logistic Sigmoid 和 Tanh 的适用场景。</li>
+<li>说明何时选择使用 Logistic Sigmoid 或 Tanh。
+<strong>解释：</strong></li>
+<li>Logistic Sigmoid 适用于输出需要表示为概率的场景，如二分类问题的输出层。</li>
+<li>Tanh 适用于隐藏层，尤其是在需要零中心化输出的情况下，相比 Logistic Sigmoid 更能帮助网络更快地收敛。</li>
+</ul>
+<h3>6. 实现 Logistic Sigmoid 和 Tanh 函数</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>使用 PyTorch 实现 Logistic Sigmoid 和 Tanh 函数。</li>
+<li>演示如何在神经网络中使用这些激活函数。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python">import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+# 定义神经网络模型
+class SimpleNN(nn.Module):
+    def __init__(self, activation='sigmoid'):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 2)
+        if activation == 'sigmoid':
+            self.activation = nn.Sigmoid()
+        elif activation == 'tanh':
+            self.activation = nn.Tanh()
+        self.fc2 = nn.Linear(2, 1)
+        self.output = nn.Sigmoid()  # 假设是一个二分类问题
+    def forward(self, x):
+        x = self.activation(self.fc1(x))
+        x = self.fc2(x)
+        return self.output(x)
+# 初始化模型
+model = SimpleNN(activation='tanh')
+# 定义损失函数和优化器
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.1)
+# 准备数据
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
+# 训练模型
+epochs = 10000
+losses = []
+for epoch in range(epochs):
+    # 前向传播
+    outputs = model(torch.tensor(X, dtype=torch.float))
+    loss = criterion(outputs, torch.tensor(y, dtype=torch.float))
+    losses.append(loss.item())
+    
+    # 反向传播和优化
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    
+    if (epoch+1) % 1000 == 0:
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+# 评估模型
+with torch.no_grad():
+    predicted = model(torch.tensor(X, dtype=torch.float)).round()
+    accuracy = (predicted.numpy() == y).mean()
+    print(f'Accuracy: {accuracy * 100:.2f}%')
+</code></pre>
+<h3>7. 训练和评估模型</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>训练模型并记录损失。</li>
+<li>评估模型在训练数据上的准确性。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python"># 训练和评估模型的代码已包含在上一步中
+</code></pre>
+<h3>8. 可视化 Logistic Sigmoid 与 Tanh 函数</h3>
+<p><strong>步骤：</strong></p>
+<ul>
+<li>可视化不同激活函数的输出。</li>
+<li>展示不同激活函数在训练过程中的表现差异。
+<strong>代码：</strong></li>
+</ul>
+<pre><code class="language-python">import matplotlib.pyplot as plt
+# 可视化训练损失
+plt.plot(losses)
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
+plt.title('Training Loss with Tanh Activation Function')
+plt.show()
+</code></pre>
+
+    <h3>Python 文件</h3>
+    <pre><code># 06_logistic sigmoid 与双曲正切函数
+"""
+Lecture: 2_深度网络：现代实践/6_深度前馈网络
+Content: 06_logistic sigmoid 与双曲正切函数
+"""
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+# 定义神经网络模型
+class SimpleNN(nn.Module):
+    def __init__(self, activation='sigmoid'):
+        super(SimpleNN, self).__init__()
+        self.fc1 = nn.Linear(2, 2)
+        if activation == 'sigmoid':
+            self.activation = nn.Sigmoid()
+        elif activation == 'tanh':
+            self.activation = nn.Tanh()
+        self.fc2 = nn.Linear(2, 1)
+        self.output = nn.Sigmoid()  # 假设是一个二分类问题
+    def forward(self, x):
+        x = self.activation(self.fc1(x))
+        x = self.fc2(x)
+        return self.output(x)
+# 初始化模型
+model = SimpleNN(activation='tanh')
+# 定义损失函数和优化器
+criterion = nn.BCELoss()
+optimizer = optim.SGD(model.parameters(), lr=0.1)
+# 准备数据
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+y = np.array([[0], [1], [1], [0]])
+# 训练模型
+epochs = 10000
+losses = []
+for epoch in range(epochs):
+    # 前向传播
+    outputs = model(torch.tensor(X, dtype=torch.float))
+    loss = criterion(outputs, torch.tensor(y, dtype=torch.float))
+    losses.append(loss.item())
+    
+    # 反向传播和优化
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+    
+    if (epoch+1) % 1000 == 0:
+        print(f'Epoch [{epoch+1}/{epochs}], Loss: {loss.item():.4f}')
+# 评估模型
+with torch.no_grad():
+    predicted = model(torch.tensor(X, dtype=torch.float)).round()
+    accuracy = (predicted.numpy() == y).mean()
+    print(f'Accuracy: {accuracy * 100:.2f}%')
+</code></pre>
+  </div>
+</body>
+</html>
+  

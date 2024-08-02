@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.4.1 O 符号 Ω 符号和Θ 符号</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_1.4.1_O_符号_Ω_符号和Θ_符号</h1>
+<pre><code>Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 00_1.4.1_O_符号_Ω_符号和Θ_符号
+</code></pre>
+<h3>深度分析：O符号、Ω符号和Θ符号</h3>
+<p>在算法分析中，O符号（大O符号）、Ω符号（大Ω符号）和Θ符号（Theta符号）是描述算法复杂度的三种常用记号。这些符号帮助我们理解和比较不同算法在大规模输入下的性能表现。下面将详细介绍每个符号的定义、直观理解、数学证明及其应用。</p>
+<h4>O符号（大O符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ O(g(n)) $（读作“大O的g的n”）定义为：
+$$ O(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ 0 \leq f(n) \leq c \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>O符号提供了一个函数的渐进上界。也就是说，f(n)在n趋于无穷大时不会超过g(n)的某个常数倍。通常用来描述算法的最坏情况复杂度。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ O(n^2)，因为当n足够大时，4n^2是主导项，其他项相对较小。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有0 ≤ 4n^2 + 100n + 500 ≤ c * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ 0 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c $$</p>
+<p>选择n0 = 1时，c = 604；
+选择n0 = 10时，c = 19；
+选择n0 = 100时，c = 5.05。</p>
+<p>可以看出，随着n0的增大，c逐渐接近主导项的系数4。因此，4n^2 + 100n + 500 ∈ O(n^2)。</p>
+<h5>应用</h5>
+<p>在分析算法时，O符号常用来描述最坏情况。例如，快速排序（Quicksort）的最坏情况复杂度是O(n^2)，但其平均情况复杂度是O(n log n)。</p>
+<h4>Ω符号（大Ω符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ Ω(g(n)) $（读作“大Ω的g的n”）定义为：
+$$ Ω(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ f(n) \geq c \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>Ω符号提供了一个函数的渐进下界。即，f(n)在n趋于无穷大时至少是g(n)的某个常数倍。通常用来描述算法的最好情况复杂度。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ Ω(n^2)，因为当n足够大时，4n^2是主导项，使得函数值至少是n^2的某个常数倍。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有f(n) ≥ c * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ 4 + \frac{100}{n} + \frac{500}{n^2} \geq c $$</p>
+<p>选择n0 = 1时，c = 4；
+选择n0 = 100时，c = 4。</p>
+<p>可以看出，主导项系数足以提供渐进下界。因此，4n^2 + 100n + 500 ∈ Ω(n^2)。</p>
+<h5>应用</h5>
+<p>Ω符号常用来描述算法的最好情况。例如，插入排序（Insertion Sort）的最好情况复杂度是Ω(n)，当输入数组已经排序时达到此复杂度。</p>
+<h4>Θ符号（Theta符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ Θ(g(n)) $（读作“Theta的g的n”）定义为：
+$$ Θ(g(n)) = { f(n) \mid \text{存在正的常数} \ c_1 \ 、c_2 \ 和 \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>Θ符号表示f(n)与g(n)在n趋于无穷大时是渐进相等的。即f(n)的增长速率与g(n)相同。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ Θ(n^2)。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c1, c2和n0，使得对所有n ≥ n0，有c1 * n^2 ≤ f(n) ≤ c2 * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ c_1 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c_2 $$</p>
+<p>选择n0 = 1时，c1 = 4，c2 = 604；
+选择n0 = 100时，c1 = 4，c2 = 5.05。</p>
+<p>可以看出，这个范围随着n的增大逐渐缩小。因此，4n^2 + 100n + 500 ∈ Θ(n^2)。</p>
+<h5>应用</h5>
+<p>Θ符号用于描述算法的渐进准确复杂度。例如，归并排序（Merge Sort）的时间复杂度是Θ(n log n)，无论最坏情况还是最好情况。</p>
+<h4>综合应用与比较</h4>
+<ol>
+<li>
+<p><strong>渐进上界与下界</strong>：</p>
+<ul>
+<li>O符号提供了一个算法的渐进上界，描述了算法在最坏情况下的表现。</li>
+<li>Ω符号提供了一个算法的渐进下界，描述了算法在最好情况下的表现。</li>
+<li>Θ符号提供了一个算法的渐进准确复杂度，描述了算法在平均情况下的表现。</li>
+</ul>
+</li>
+<li>
+<p><strong>实际应用</strong>：</p>
+<ul>
+<li>在实际应用中，算法的最坏情况复杂度（O符号）通常是最重要的，因为它能保证在最糟糕情况下，算法依然能在可接受的时间内完成。</li>
+<li>对于一些特殊情况，最好情况复杂度（Ω符号）和平均情况复杂度（Θ符号）也具有重要意义，尤其是在需要对算法进行优化和改进时。</li>
+</ul>
+</li>
+</ol>
+<h3>总结</h3>
+<p>O符号、Ω符号和Θ符号是算法分析中不可或缺的工具，帮助我们在大规模输入下评估算法的性能。通过这些符号，我们可以更清晰地理解算法的复杂度，并在实际应用中做出更好的选择和优化。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_1.4.1_O_符号_Ω_符号和Θ_符号
+
+"""
+Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 00_1.4.1_O_符号_Ω_符号和Θ_符号
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

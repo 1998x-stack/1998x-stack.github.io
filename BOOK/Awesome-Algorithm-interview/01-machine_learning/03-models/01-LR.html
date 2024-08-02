@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-LR</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>详细手推LR</p>
+</blockquote>
+<h3>逻辑回归（Logistic Regression）手推导</h3>
+<p>逻辑回归是一种用于二分类问题的线性模型，其目的是估计输入特征与输出标签之间的关系。逻辑回归通过使用Sigmoid函数将线性回归的输出映射到(0, 1)区间，从而用于概率估计。</p>
+<h4>1. 模型假设</h4>
+<p>逻辑回归模型假设输出 $ y $ 与输入 $ \mathbf{x} $ 的关系如下：
+$$ h(\mathbf{x}) = \sigma(\mathbf{w}^T \mathbf{x} + b) $$
+其中，$ \sigma(z) $ 是Sigmoid函数，定义为：
+$$ \sigma(z) = \frac{1}{1 + e^{-z}} $$</p>
+<h4>2. 损失函数</h4>
+<p>逻辑回归使用对数似然损失函数。对于单个样本 $ (x_i, y_i) $，损失函数为：
+$$ \ell(h(x_i), y_i) = -y_i \log(h(x_i)) - (1 - y_i) \log(1 - h(x_i)) $$</p>
+<p>对于整个训练集，损失函数为：
+$$ L(\mathbf{w}, b) = -\frac{1}{m} \sum_{i=1}^{m} \left[ y_i \log(h(x_i)) + (1 - y_i) \log(1 - h(x_i)) \right] $$
+其中，$ m $ 是样本数量。</p>
+<h4>3. 梯度计算</h4>
+<p>为了最小化损失函数，我们需要计算损失函数相对于模型参数 $ \mathbf{w} $ 和 $ b $ 的梯度。</p>
+<p>对于权重 $ \mathbf{w} $：
+$$ \frac{\partial L}{\partial \mathbf{w}} = \frac{1}{m} \sum_{i=1}^{m} (h(x_i) - y_i) x_i $$</p>
+<p>对于偏置 $ b $：
+$$ \frac{\partial L}{\partial b} = \frac{1}{m} \sum_{i=1}^{m} (h(x_i) - y_i) $$</p>
+<h4>4. 梯度下降更新</h4>
+<p>使用梯度下降算法来更新模型参数。更新公式为：</p>
+<p>$$ \mathbf{w} := \mathbf{w} - \alpha \frac{\partial L}{\partial \mathbf{w}} $$
+$$ b := b - \alpha \frac{\partial L}{\partial b} $$</p>
+<p>其中， $ \alpha $ 是学习率。</p>
+<h4>5. 详细推导步骤</h4>
+<p><strong>步骤 1</strong>：计算假设函数 $ h(\mathbf{x}) $ 的输出：</p>
+<p>$$ h(x_i) = \sigma(\mathbf{w}^T x_i + b) = \frac{1}{1 + e^{-(\mathbf{w}^T x_i + b)}} $$</p>
+<p><strong>步骤 2</strong>：计算损失函数：</p>
+<p>$$ L(\mathbf{w}, b) = -\frac{1}{m} \sum_{i=1}^{m} \left[ y_i \log(h(x_i)) + (1 - y_i) \log(1 - h(x_i)) \right] $$</p>
+<p><strong>步骤 3</strong>：计算损失函数对权重 $ \mathbf{w} $ 的偏导数：</p>
+<p>$$ \frac{\partial L}{\partial \mathbf{w}} = -\frac{1}{m} \sum_{i=1}^{m} \left[ \frac{y_i (1 - h(x_i)) x_i - (1 - y_i) h(x_i) x_i}{h(x_i) (1 - h(x_i))} \right] $$</p>
+<p>利用 $ h(x_i) = \frac{1}{1 + e^{-(\mathbf{w}^T x_i + b)}} $ 和 $ 1 - h(x_i) = \frac{e^{-(\mathbf{w}^T x_i + b)}}{1 + e^{-(\mathbf{w}^T x_i + b)}} $，可以化简为：</p>
+<p>$$ \frac{\partial L}{\partial \mathbf{w}} = \frac{1}{m} \sum_{i=1}^{m} (h(x_i) - y_i) x_i $$</p>
+<p><strong>步骤 4</strong>：计算损失函数对偏置 $ b $ 的偏导数：</p>
+<p>$$ \frac{\partial L}{\partial b} = \frac{1}{m} \sum_{i=1}^{m} (h(x_i) - y_i) $$</p>
+<p><strong>步骤 5</strong>：更新权重和偏置：</p>
+<p>$$ \mathbf{w} := \mathbf{w} - \alpha \frac{\partial L}{\partial \mathbf{w}} $$
+$$ b := b - \alpha \frac{\partial L}{\partial b} $$</p>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>Pattern Recognition and Machine Learning by Christopher M. Bishop</strong>：</p>
+<ul>
+<li>提供了逻辑回归的详细理论和推导。</li>
+<li><a href="https://www.springer.com/gp/book/9780387310732">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>The Elements of Statistical Learning by Trevor Hastie, Robert Tibshirani, and Jerome Friedman</strong>：</p>
+<ul>
+<li>介绍了逻辑回归、梯度下降以及其他机器学习算法。</li>
+<li><a href="https://web.stanford.edu/~hastie/ElemStatLearn/">书籍链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

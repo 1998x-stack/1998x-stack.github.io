@@ -1,0 +1,131 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-activation function</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>常见的损失函数和激活函数</h2>
+<h3>一、损失函数（Loss Function）</h3>
+<p>损失函数是用于评估模型预测结果与真实结果之间差异的函数。以下是几种常见的损失函数：</p>
+<ol>
+<li>
+<p><strong>均方误差（Mean Squared Error, MSE）</strong>
+$ L(\mathbf{y}, \mathbf{t}) = \frac{1}{n} \sum_{i=1}^n (y_i - t_i)^2 $</p>
+<ul>
+<li>适用于回归问题</li>
+<li>优点：易于计算和求导</li>
+<li>缺点：对异常值敏感</li>
+</ul>
+</li>
+<li>
+<p><strong>交叉熵损失（Cross-Entropy Loss）</strong>
+$ L(\mathbf{y}, \mathbf{t}) = -\sum_{i=1}^n t_i \log y_i $</p>
+<ul>
+<li>适用于分类问题，尤其是多分类问题</li>
+<li>优点：能有效衡量概率分布之间的差异</li>
+<li>缺点：对标签进行独热编码处理</li>
+</ul>
+</li>
+<li>
+<p><strong>二元交叉熵损失（Binary Cross-Entropy Loss）</strong>
+$ L(\mathbf{y}, \mathbf{t}) = -\frac{1}{n} \sum_{i=1}^n [t_i \log y_i + (1 - t_i) \log (1 - y_i)] $</p>
+<ul>
+<li>适用于二分类问题</li>
+<li>优点：适合输出为概率的模型</li>
+</ul>
+</li>
+</ol>
+<h3>二、激活函数（Activation Function）</h3>
+<p>激活函数决定了神经元的输出。常见的激活函数有：</p>
+<ol>
+<li>
+<p><strong>Sigmoid</strong>
+$ \sigma(z) = \frac{1}{1 + e^{-z}} $</p>
+<ul>
+<li>优点：输出范围在 (0, 1) 之间，适用于概率预测</li>
+<li>缺点：梯度消失问题，收敛慢</li>
+</ul>
+</li>
+<li>
+<p><strong>Softmax</strong>
+$ \sigma(z_i) = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}} $</p>
+<ul>
+<li>优点：输出为概率分布，适用于多分类问题</li>
+<li>缺点：计算复杂度高</li>
+</ul>
+</li>
+<li>
+<p><strong>ReLU（Rectified Linear Unit）</strong>
+$ \sigma(z) = \max(0, z) $</p>
+<ul>
+<li>优点：计算简单，不会出现梯度消失问题</li>
+<li>缺点：在负半轴上输出恒为0，可能导致神经元死亡</li>
+</ul>
+</li>
+<li>
+<p><strong>tanh</strong>
+$ \sigma(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}} $</p>
+<ul>
+<li>优点：输出范围在 (-1, 1) 之间，收敛速度快于Sigmoid</li>
+<li>缺点：仍存在梯度消失问题</li>
+</ul>
+</li>
+</ol>
+<h3>三、常见激活函数之间的关系及优势</h3>
+<ol>
+<li>
+<p><strong>Sigmoid 和 Softmax 的关系</strong></p>
+<ul>
+<li>都可以用于分类问题</li>
+<li>Sigmoid 常用于二分类问题，输出一个概率</li>
+<li>Softmax 常用于多分类问题，输出一个概率分布</li>
+</ul>
+</li>
+<li>
+<p><strong>ReLU 对比 tanh 的优势</strong></p>
+<ul>
+<li>ReLU 在正轴上保持线性，不会出现梯度消失问题</li>
+<li>ReLU 计算速度快，简单有效</li>
+<li>tanh 虽然在范围上更合理（-1 到 1），但仍有梯度消失问题，尤其是在深层网络中</li>
+</ul>
+</li>
+</ol>
+<h3>四、举例</h3>
+<p>假设我们有一个两分类问题，输入为 $ \mathbf{x} $，输出为 $ \mathbf{y} $，标签为 $ \mathbf{t} $。我们选择使用 Sigmoid 激活函数和二元交叉熵损失函数。</p>
+<ol>
+<li>
+<p><strong>前向传播：</strong>
+$ z = \mathbf{W} \mathbf{x} + \mathbf{b} $
+$ y = \sigma(z) = \frac{1}{1 + e^{-z}} $</p>
+</li>
+<li>
+<p><strong>损失函数：</strong>
+$ L(y, t) = -[t \log y + (1 - t) \log (1 - y)] $</p>
+</li>
+<li>
+<p><strong>反向传播：</strong>
+$ \delta = y - t $
+$ \frac{\partial L}{\partial \mathbf{W}} = \delta \mathbf{x}^T $
+$ \frac{\partial L}{\partial \mathbf{b}} = \delta $</p>
+</li>
+</ol>
+<p>通过上述步骤，可以清晰地理解常见损失函数和激活函数的使用及其优势。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

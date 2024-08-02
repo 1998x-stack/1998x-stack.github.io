@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.1 Time</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>2.1_Time</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.1_Time
+Content: 2.1_Time
+
+</code></pre>
+<h3>2.1_时间</h3>
+<p><strong>讲座</strong>: 2_货币的时间价值/2.1_时间<br>
+<strong>内容</strong>: 2.1_时间</p>
+<h4>一、时间的定义和重要性</h4>
+<p>在讨论货币随时间变化的价值之前，首先需要明确我们对时间的约定和符号表示。在整个讨论中，默认的时间单位为一年。除非特别说明，否则假设一年包括365个日历天和252个交易日。</p>
+<ul>
+<li><strong>当前时间 $ t_0 $</strong>: 固定的当前时间</li>
+<li><strong>一般时间 $ t $</strong>: 任意时间点</li>
+</ul>
+<p>一个一般的时间点 $ t &gt; 0 $ 同时表示从起始时间0到给定时间点的年数。例如：</p>
+<ul>
+<li>$ t_0 = \frac{1}{4} $, $ t = \frac{1}{2} $ 意味着当前时间是起始时间后3个月，而 $ t $ 是从现在起3个月。</li>
+<li>如果2015年的10月1日、11月1日和12月1日分别标记为时间0、$ t_1 $ 和 $ t_2 $，则：
+<ul>
+<li>$ t_1 = \frac{1}{12} $ 年</li>
+<li>$ t_2 = \frac{1}{6} $ 年</li>
+</ul>
+</li>
+</ul>
+<h4>二、时间间隔和时间跨度</h4>
+<p>时间间隔如 [$ t_0, t_f $] 和其时间跨度 $ \tau $ 是不同的概念。时间跨度是时间间隔的长度，表示为：
+$$ \tau = t_f - t_0 $$</p>
+<h4>三、时间分割和周期</h4>
+<p>如果一个时间间隔被分割成等长度的子间隔，则子间隔的长度称为周期。例如，一年有12个每月周期和4个每季周期。</p>
+<ul>
+<li><strong>符号约定</strong>：
+<ul>
+<li>$ mth $ = 月</li>
+<li>$ yr $ = 年</li>
+<li>$ prd $ = 周期</li>
+</ul>
+</li>
+</ul>
+<p>例如，一年可以表示为“1 yr”，两年可以表示为“2 yr”。</p>
+<h4>四、应用中的时间选择</h4>
+<p>时间的起始点根据应用的上下文而定，但我们通常将其表示为0。注意，起始时间不一定是当前时间。举例来说，在金融计算中，特别是涉及未来现金流和贴现的计算时，明确时间点和时间跨度是至关重要的。</p>
+<h4>五、时间在货币价值中的作用</h4>
+<p>货币的时间价值理论表明，今天的一美元比明天的一美元更有价值，这是因为今天的一美元可以用于投资，从而在未来产生更多的收益。这一理论广泛应用于评估未来的现金流和确定现值和未来值。</p>
+<p>通过明确时间的定义和符号表示，可以更好地理解货币随时间变化的价值。理解这些概念对于掌握货币的时间价值和进行金融计算至关重要。</p>
+<h4>六、时间在实际计算中的应用</h4>
+<p>时间概念在金融计算中有广泛的应用。例如，在计算复利、贴现现金流和评估投资回报率时，明确时间点和时间跨度对于准确计算至关重要。</p>
+<p><strong>示例</strong>：
+假设你今天投资 $ F(t_0) $，未来某一时间点 $ t_f = t_0 + \tau $ 时投资的价值为 $ F(t_f) $。从时间 $ t_0 $ 到 $ t_f $ 的总回报率定义为：
+$$ R(t_0, t_f) = \frac{F(t_f) - F(t_0)}{F(t_0)} $$</p>
+<p>总回报率与利率的关系将在后续章节详细探讨，通过这些概念的应用，可以进行更复杂的金融计算和投资决策。</p>
+<p>通过对时间的详细分析和理解，可以为后续的货币时间价值讨论奠定坚实基础。这对于金融市场参与者、投资者和研究人员制定策略和进行风险管理具有重要指导意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 2.1_Time
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.1_Time
+Content: 2.1_Time
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>01-forward backward</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>前向传播和反向传播</h2>
+<h3>一、前向传播 (Forward Propagation)</h3>
+<p>给定一个简单的两层神经网络，输入为一个一维向量 $ \mathbf{x} $，网络的输出为 $ \mathbf{y} $。网络的结构如下：</p>
+<ul>
+<li>输入层：$ \mathbf{x} \in \mathbb{R}^n $</li>
+<li>隐藏层：$ \mathbf{h} \in \mathbb{R}^m $，激活函数为 $ \sigma $</li>
+<li>输出层：$ \mathbf{y} \in \mathbb{R}^k $，激活函数为 $ \phi $</li>
+</ul>
+<p>假设参数如下：</p>
+<ul>
+<li>输入层到隐藏层的权重矩阵：$ \mathbf{W}_1 \in \mathbb{R}^{m \times n} $</li>
+<li>输入层到隐藏层的偏置向量：$ \mathbf{b}_1 \in \mathbb{R}^m $</li>
+<li>隐藏层到输出层的权重矩阵：$ \mathbf{W}_2 \in \mathbb{R}^{k \times m} $</li>
+<li>隐藏层到输出层的偏置向量：$ \mathbf{b}_2 \in \mathbb{R}^k $</li>
+</ul>
+<p>前向传播的步骤如下：</p>
+<ol>
+<li>
+<p>计算隐藏层的输入：
+$ \mathbf{z}_1 = \mathbf{W}_1 \mathbf{x} + \mathbf{b}_1 $</p>
+</li>
+<li>
+<p>计算隐藏层的输出：
+$ \mathbf{h} = \sigma(\mathbf{z}_1) $</p>
+</li>
+<li>
+<p>计算输出层的输入：
+$ \mathbf{z}_2 = \mathbf{W}_2 \mathbf{h} + \mathbf{b}_2 $</p>
+</li>
+<li>
+<p>计算输出层的输出：
+$ \mathbf{y} = \phi(\mathbf{z}_2) $</p>
+</li>
+</ol>
+<h3>二、反向传播 (Back Propagation)</h3>
+<p>为了最小化损失函数 $ L(\mathbf{y}, \mathbf{t}) $，需要通过反向传播计算梯度，并使用梯度下降更新权重。假设损失函数为均方误差 (MSE)，即：
+$ L(\mathbf{y}, \mathbf{t}) = \frac{1}{2} |\mathbf{y} - \mathbf{t}|^2 $</p>
+<p>反向传播的步骤如下：</p>
+<ol>
+<li>
+<p>计算输出层的梯度：
+$ \delta_2 = \frac{\partial L}{\partial \mathbf{z}_2} = (\mathbf{y} - \mathbf{t}) \odot \phi'(\mathbf{z}_2) $</p>
+</li>
+<li>
+<p>计算隐藏层的梯度：
+$ \delta_1 = \frac{\partial L}{\partial \mathbf{z}_1} = (\mathbf{W}_2^T \delta_2) \odot \sigma'(\mathbf{z}_1) $</p>
+</li>
+<li>
+<p>计算权重和偏置的梯度：
+$ \frac{\partial L}{\partial \mathbf{W}_2} = \delta_2 \mathbf{h}^T $
+$ \frac{\partial L}{\partial \mathbf{b}_2} = \delta_2 $
+$ \frac{\partial L}{\partial \mathbf{W}_1} = \delta_1 \mathbf{x}^T $
+$ \frac{\partial L}{\partial \mathbf{b}_1} = \delta_1 $</p>
+</li>
+</ol>
+<h3>三、权重更新</h3>
+<p>使用梯度下降更新权重和偏置：</p>
+<p>$ \mathbf{W}_2 \leftarrow \mathbf{W}_2 - \eta \frac{\partial L}{\partial \mathbf{W}_2} $
+$ \mathbf{b}_2 \leftarrow \mathbf{b}_2 - \eta \frac{\partial L}{\partial \mathbf{b}_2} $
+$ \mathbf{W}_1 \leftarrow \mathbf{W}_1 - \eta \frac{\partial L}{\partial \mathbf{W}_1} $
+$ \mathbf{b}_1 \leftarrow \mathbf{b}_1 - \eta \frac{\partial L}{\partial \mathbf{b}_1} $</p>
+<p>其中，$ \eta $ 是学习率。</p>
+<h3>四、实例计算</h3>
+<p>假设输入向量 $ \mathbf{x} = [x_1, x_2]^T $，网络参数为：</p>
+<p>$ \mathbf{W}<em 11="">1 = \begin{bmatrix} w</em> &amp; w_{12} \ w_{21} &amp; w_{22} \end{bmatrix}, \quad \mathbf{b}<em 11="">1 = \begin{bmatrix} b</em> \ b_{12} \end{bmatrix} $
+$ \mathbf{W}<em 31="">2 = \begin{bmatrix} w</em> &amp; w_{32} \end{bmatrix}, \quad \mathbf{b}<em 21="">2 = b</em> $</p>
+<p>假设激活函数 $ \sigma $ 和 $ \phi $ 为ReLU，即 $ \sigma(z) = \phi(z) = \max(0, z) $。</p>
+<ol>
+<li>
+<p>计算隐藏层的输入：
+$ \mathbf{z}<em 21="">1 = \mathbf{W}<em 12="">1 \mathbf{x} + \mathbf{b}<em 11="">1 = \begin{bmatrix} w</em> &amp; w</em> \ w</em> &amp; w_{22} \end{bmatrix} \begin{bmatrix} x_1 \ x_2 \end{bmatrix} + \begin{bmatrix} b_{11} \ b_{12} \end{bmatrix} $</p>
+</li>
+<li>
+<p>计算隐藏层的输出：
+$ \mathbf{h} = \sigma(\mathbf{z}<em 11="">1) = \begin{bmatrix} \max(0, w</em>x_1 + w_{12}x_2 + b_{11}) \ \max(0, w_{21}x_1 + w_{22}x_2 + b_{12}) \end{bmatrix} $</p>
+</li>
+<li>
+<p>计算输出层的输入：
+$ \mathbf{z}<em 21="">2 = \mathbf{W}<em 32="">2 \mathbf{h} + \mathbf{b}<em 31="">2 = \begin{bmatrix} w</em> &amp; w</em> \end{bmatrix} \begin{bmatrix} h_1 \ h_2 \end{bmatrix} + b</em> $</p>
+</li>
+<li>
+<p>计算输出层的输出：
+$ \mathbf{y} = \phi(\mathbf{z}<em 31="">2) = \max(0, w</em>h_1 + w_{32}h_2 + b_{21}) $</p>
+</li>
+</ol>
+<p>通过上述步骤，可以详细地计算出前向传播和反向传播的结果。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

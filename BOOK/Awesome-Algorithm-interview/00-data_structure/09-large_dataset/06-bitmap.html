@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>06-bitmap</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>bitmap</p>
+</blockquote>
+<h3>位图（Bitmap）</h3>
+<p>位图是一种用于高效存储和处理大量数据的空间优化数据结构。它利用位数组来表示数据集中的元素，用于实现快速查找、插入和删除操作。位图常用于大数据处理中，以提高性能和减少内存使用。</p>
+<h3>位图的基本原理</h3>
+<ol>
+<li>
+<p><strong>位数组</strong>：</p>
+<ul>
+<li>位图的核心是一个位数组（bit array），每一位表示一个元素是否存在。</li>
+<li>如果一个元素存在，则对应位置的位设置为1；如果不存在，则设置为0。</li>
+</ul>
+</li>
+<li>
+<p><strong>元素映射</strong>：</p>
+<ul>
+<li>将元素映射到位数组的索引位置上。</li>
+<li>例如，对于元素 <code>x</code>，可以将其映射到位数组的第 <code>x</code> 位。</li>
+</ul>
+</li>
+<li>
+<p><strong>基本操作</strong>：</p>
+<ul>
+<li><strong>插入</strong>：将对应位置的位设置为1。</li>
+<li><strong>查找</strong>：检查对应位置的位是否为1。</li>
+<li><strong>删除</strong>：将对应位置的位设置为0。</li>
+</ul>
+</li>
+</ol>
+<h3>代码实现</h3>
+<p>以下是一个简单的位图实现示例：</p>
+<pre><code class="language-python">class Bitmap:
+    def __init__(self, size):
+        self.size = size
+        self.bit_array = [0] * size
+
+    def add(self, item):
+        self.bit_array[item] = 1
+
+    def remove(self, item):
+        self.bit_array[item] = 0
+
+    def contains(self, item):
+        return self.bit_array[item] == 1
+
+# 示例使用
+bitmap = Bitmap(size=100)
+
+# 添加元素
+bitmap.add(10)
+bitmap.add(50)
+bitmap.add(99)
+
+# 查询元素
+print(bitmap.contains(10))  # 输出: True
+print(bitmap.contains(99))  # 输出: True
+print(bitmap.contains(50))  # 输出: True
+print(bitmap.contains(1))   # 输出: False
+
+# 删除元素
+bitmap.remove(50)
+print(bitmap.contains(50))  # 输出: False
+</code></pre>
+<h3>应用场景</h3>
+<ol>
+<li>
+<p><strong>去重</strong>：</p>
+<ul>
+<li>位图用于大规模数据去重操作，快速判断一个元素是否已经存在。</li>
+</ul>
+</li>
+<li>
+<p><strong>快速查找</strong>：</p>
+<ul>
+<li>位图可以在常数时间内完成查找操作，适用于需要高效查找的场景。</li>
+</ul>
+</li>
+<li>
+<p><strong>内存优化</strong>：</p>
+<ul>
+<li>位图占用内存较少，适用于需要处理大量数据且内存有限的场景。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据流处理</strong>：</p>
+<ul>
+<li>在数据流处理中，位图可以用于统计数据的特征，如网络流量分析、日志数据分析等。</li>
+</ul>
+</li>
+</ol>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Bitmap</strong>：</p>
+<ul>
+<li>提供了位图的详细解释和实现示例。</li>
+<li><a href="https://www.geeksforgeeks.org/bitmap/">GeeksforGeeks链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Wikipedia - Bitmap Index</strong>：</p>
+<ul>
+<li>提供了位图索引的详细解释和应用场景。</li>
+<li><a href="https://en.wikipedia.org/wiki/Bitmap_index">Wikipedia链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

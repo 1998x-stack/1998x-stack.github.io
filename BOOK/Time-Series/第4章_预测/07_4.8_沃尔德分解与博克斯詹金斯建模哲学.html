@@ -1,0 +1,263 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.8 沃尔德分解与博克斯詹金斯建模哲学</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>07_4.8 沃尔德分解与博克斯詹金斯建模哲学</h1>
+<pre><code>Lecture: /第4章 预测
+Content: 07_4.8 沃尔德分解与博克斯詹金斯建模哲学
+</code></pre>
+<h3>第4章 预测</h3>
+<h4>4.8 沃尔德分解与博克斯詹金斯建模哲学</h4>
+<p>本节内容涵盖了沃尔德分解和博克斯詹金斯建模哲学的核心概念及其在时间序列分析中的应用。以下是对本节内容的详细分析。</p>
+<hr>
+<h4>1. 沃尔德分解</h4>
+<p><strong>沃尔德分解的定义</strong></p>
+<ul>
+<li><strong>沃尔德分解</strong>：对于一个非确定性平稳时间序列 {Xt}，沃尔德分解将其表示为：</li>
+</ul>
+<p>$$ Xt = \sum_{j=0}^{\infty} \psi_j Z_{t-j} + V_t $$</p>
+<p>其中，</p>
+<ol>
+<li>$ \psi_0 = 1 $ 并且 $ \sum_{j=0}^{\infty} \psi_j^2 &lt; \infty $</li>
+<li>{Zt} 是均值为0，方差为 $ \sigma^2 $ 的白噪声过程</li>
+<li>{Vt} 是确定性过程，与 {Zt} 不相关</li>
+</ol>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>唯一性</strong>：上述分解是唯一的，且 {Zt} 和 {Vt} 可以唯一确定。</li>
+<li><strong>预测</strong>：基于沃尔德分解，任何平稳时间序列的未来值可以通过其过去值和白噪声过程来预测。</li>
+</ul>
+<hr>
+<h4>2. 博克斯詹金斯建模哲学</h4>
+<p><strong>模型识别与估计</strong></p>
+<ul>
+<li><strong>模型识别</strong>：通过时间序列的自相关函数（ACF）和偏自相关函数（PACF），初步确定模型的类型和阶数。例如，AR(p)模型的PACF在p阶截尾，而MA(q)模型的ACF在q阶截尾。</li>
+<li><strong>模型估计</strong>：使用Yule-Walker方程、最小二乘法、极大似然估计等方法估计模型参数。具体方法的选择取决于模型的复杂度和数据特性。</li>
+</ul>
+<p><strong>模型检验与选择</strong></p>
+<ul>
+<li><strong>残差分析</strong>：检验模型拟合的残差是否为白噪声。如果残差存在自相关，说明模型可能不适合，需要重新识别和估计。</li>
+<li><strong>信息准则</strong>：使用AIC、BIC等信息准则选择最优模型。这些准则综合考虑模型的拟合优度和复杂度，避免过拟合。</li>
+</ul>
+<p><strong>预测与应用</strong></p>
+<ul>
+<li><strong>一步预测与多步预测</strong>：利用ARMA模型对未来时间点进行预测。一步预测基于当前观测值，而多步预测则需要递归进行。</li>
+<li><strong>实际应用</strong>：ARMA模型在金融市场预测、经济指标分析等领域具有广泛应用。通过合理选择模型阶数和参数，可以提高预测精度和稳定性。</li>
+</ul>
+<hr>
+<h4>3. 实例分析</h4>
+<p><strong>金融时间序列预测</strong></p>
+<ul>
+<li><strong>背景</strong>：金融时间序列数据通常具有较强的随机性和波动性，适合使用ARMA模型进行建模和预测。</li>
+<li><strong>步骤</strong>：
+<ol>
+<li><strong>数据预处理</strong>：对原始数据进行差分、对数变换等预处理，以使其平稳。</li>
+<li><strong>模型识别</strong>：通过绘制ACF和PACF图，初步确定模型阶数。</li>
+<li><strong>参数估计</strong>：使用最大似然估计方法，估计模型参数。</li>
+<li><strong>模型检验</strong>：通过残差分析和信息准则，检验模型的拟合效果。</li>
+<li><strong>进行预测</strong>：利用训练好的ARMA模型，对未来的时间点进行预测，并评估预测效果。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h4>4. 结论</h4>
+<p>沃尔德分解提供了一种将时间序列分解为确定性和非确定性成分的方法，为时间序列分析提供了理论基础。博克斯詹金斯建模哲学则通过系统的方法论，为时间序列建模和预测提供了实践指导。两者结合，为时间序列分析提供了强有力的工具，广泛应用于金融、经济等领域。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 07_4.8 沃尔德分解与博克斯詹金斯建模哲学
+
+"""
+Lecture: /第4章 预测
+Content: 07_4.8 沃尔德分解与博克斯詹金斯建模哲学
+"""
+
+import numpy as np
+from typing import Tuple, List
+
+class ARMA:
+    """自回归移动平均（ARMA）模型
+
+    该类实现了 ARMA(p, q) 模型的参数估计和预测功能。
+
+    Attributes:
+        p (int): 自回归（AR）项的阶数。
+        q (int): 移动平均（MA）项的阶数。
+        ar_params (np.ndarray): 自回归参数。
+        ma_params (np.ndarray): 移动平均参数。
+        residuals (np.ndarray): 残差。
+    """
+    
+    def __init__(self, p: int, q: int):
+        """
+        初始化 ARMA 模型。
+
+        Args:
+            p (int): 自回归（AR）项的阶数。
+            q (int): 移动平均（MA）项的阶数。
+        """
+        self.p = p
+        self.q = q
+        self.ar_params = np.zeros(p)
+        self.ma_params = np.zeros(q)
+        self.residuals = None
+    
+    def fit(self, time_series: np.ndarray):
+        """
+        估计 ARMA 模型的参数。
+
+        Args:
+            time_series (np.ndarray): 时间序列数据，形状为 (n_samples,)。
+        """
+        n = len(time_series)
+        max_lag = max(self.p, self.q)
+        
+        # 初始估计参数
+        self.ar_params = np.random.randn(self.p)
+        self.ma_params = np.random.randn(self.q)
+        
+        # 计算残差
+        self.residuals = np.zeros(n)
+        for t in range(max_lag, n):
+            ar_term = np.dot(self.ar_params, time_series[t-self.p:t][::-1])
+            ma_term = np.dot(self.ma_params, self.residuals[t-self.q:t][::-1])
+            self.residuals[t] = time_series[t] - ar_term - ma_term
+        
+        # 最小化残差平方和，估计参数
+        def objective(params):
+            self.ar_params = params[:self.p]
+            self.ma_params = params[self.p:]
+            residuals = np.zeros_like(time_series)
+            for t in range(max_lag, n):
+                ar_term = np.dot(self.ar_params, time_series[t-self.p:t][::-1])
+                ma_term = np.dot(self.ma_params, residuals[t-self.q:t][::-1])
+                residuals[t] = time_series[t] - ar_term - ma_term
+            return np.sum(residuals**2)
+        
+        from scipy.optimize import minimize
+        initial_params = np.concatenate([self.ar_params, self.ma_params])
+        result = minimize(objective, initial_params, method='L-BFGS-B')
+        self.ar_params = result.x[:self.p]
+        self.ma_params = result.x[self.p:]
+    
+    def predict(self, steps: int, time_series: np.ndarray) -> np.ndarray:
+        """
+        预测未来的时间序列值。
+
+        Args:
+            steps (int): 预测的步数。
+            time_series (np.ndarray): 用于预测的时间序列数据，形状为 (n_samples,)。
+        
+        Returns:
+            np.ndarray: 预测值，形状为 (steps,)。
+        """
+        predictions = np.zeros(steps)
+        n = len(time_series)
+        extended_series = np.concatenate([time_series, predictions])
+        
+        for t in range(steps):
+            ar_term = np.dot(self.ar_params, extended_series[n+t-self.p:n+t][::-1])
+            ma_term = np.dot(self.ma_params, self.residuals[n+t-self.q:n+t][::-1])
+            predictions[t] = ar_term + ma_term
+        
+        return predictions
+
+class WoldDecomposition:
+    """沃尔德分解模型
+
+    该类实现了对时间序列进行沃尔德分解的功能。
+
+    Attributes:
+        time_series (np.ndarray): 输入的时间序列。
+        deterministic (np.ndarray): 确定性部分。
+        stochastic (np.ndarray): 随机性部分。
+        coefficients (np.ndarray): 沃尔德分解系数。
+    """
+    
+    def __init__(self, time_series: np.ndarray):
+        """
+        初始化沃尔德分解模型。
+
+        Args:
+            time_series (np.ndarray): 时间序列数据，形状为 (n_samples,)。
+        """
+        self.time_series = time_series
+        self.deterministic = None
+        self.stochastic = None
+        self.coefficients = None
+    
+    def decompose(self):
+        """
+        对时间序列进行沃尔德分解。
+        """
+        n = len(self.time_series)
+        self.coefficients = np.zeros(n)
+        
+        # 初始化确定性和随机性部分
+        self.deterministic = np.zeros(n)
+        self.stochastic = np.zeros(n)
+        
+        for t in range(n):
+            self.deterministic[t] = np.mean(self.time_series[:t+1])
+            self.stochastic[t] = self.time_series[t] - self.deterministic[t]
+            self.coefficients[t] = np.sum(self.stochastic[:t+1]**2)
+        
+        self.stochastic /= np.sqrt(np.max(self.coefficients))
+
+# 主程序
+if __name__ == "__main__":
+    # 示例时间序列数据
+    time_series = np.array([1.0, 0.9, 1.1, 1.3, 0.8, 0.7, 1.2, 1.5, 0.9, 0.8])
+    
+    # 沃尔德分解
+    wold = WoldDecomposition(time_series)
+    wold.decompose()
+    
+    # 打印分解结果
+    print("确定性部分:")
+    print(wold.deterministic)
+    
+    print("随机性部分:")
+    print(wold.stochastic)
+    
+    print("沃尔德分解系数:")
+    print(wold.coefficients)
+    
+    # ARMA 模型
+    p, q = 2, 2
+    arma_model = ARMA(p, q)
+    
+    # 拟合模型
+    arma_model.fit(time_series)
+    
+    # 进行预测
+    steps = 5
+    predictions = arma_model.predict(steps, time_series)
+    
+    # 打印预测结果
+    print("预测值:")
+    print(predictions)
+    
+    # 打印估计的参数
+    print("估计的 AR 参数:")
+    print(arma_model.ar_params)
+    
+    print("估计的 MA 参数:")
+    print(arma_model.ma_params)</code></pre>
+  </div>
+</body>
+</html>
+  

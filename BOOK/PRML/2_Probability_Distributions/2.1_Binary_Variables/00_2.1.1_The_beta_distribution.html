@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.1.1 The beta distribution</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>00_2.1.1_The_beta_distribution</h3>
+<pre><code>Lecture: 2_Probability_Distributions/2.1_Binary_Variables
+Content: 00_2.1.1_The_beta_distribution
+</code></pre>
+<p><strong>深入分析：2.1.1 贝塔分布（The Beta Distribution）</strong></p>
+<h4>定义与基本概念</h4>
+<ol>
+<li>
+<p><strong>贝塔分布的定义</strong></p>
+<ul>
+<li>贝塔分布 $ \text{Beta}(\mu | a, b) $ 是定义在区间 $ [0, 1] $ 上的连续概率分布，常用于表示某些二项事件的概率。</li>
+<li>贝塔分布由两个参数 $ a $ 和 $ b $ 决定，它们必须大于零，以确保分布可归一化。</li>
+<li>贝塔分布的概率密度函数（PDF）为：
+$$
+\text{Beta}(\mu | a, b) = \frac{\Gamma(a + b)}{\Gamma(a)\Gamma(b)} \mu^{a-1} (1 - \mu)^{b-1}
+$$
+其中，$ \Gamma(x) $ 是伽马函数。</li>
+</ul>
+</li>
+<li>
+<p><strong>贝塔分布的性质</strong></p>
+<ul>
+<li><strong>均值</strong>：贝塔分布的均值 $ \mu $ 为：
+$$
+E[\mu] = \frac{a}{a + b}
+$$</li>
+<li><strong>方差</strong>：贝塔分布的方差为：
+$$
+\text{Var}[\mu] = \frac{ab}{(a + b)^2 (a + b + 1)}
+$$</li>
+<li><strong>众数</strong>：贝塔分布的众数为：
+$$
+\text{Mode}[\mu] = \frac{a - 1}{a + b - 2} \quad \text{(当} a, b &gt; 1 \text{时)}
+$$</li>
+<li>这些性质表明，参数 $ a $ 和 $ b $ 控制分布的形状，特别是均值和方差。</li>
+</ul>
+</li>
+<li>
+<p><strong>共轭性质</strong></p>
+<ul>
+<li>贝塔分布是伯努利分布和二项分布的共轭先验分布。</li>
+<li>给定观测数据 $ m $ 个1和 $ l $ 个0（即 $ N = m + l $），后验分布仍然是贝塔分布，参数更新为：
+$$
+p(\mu | m, l, a, b) \propto \mu^{m + a - 1} (1 - \mu)^{l + b - 1}
+$$</li>
+<li>这种共轭性质使得贝叶斯推断过程简化，因为后验分布形式与先验分布相同。</li>
+</ul>
+</li>
+</ol>
+<h4>数学推导与应用</h4>
+<ol>
+<li>
+<p><strong>贝塔分布的推导</strong></p>
+<ul>
+<li>使用伽马函数的定义，可以证明贝塔分布的归一化性质，即：
+$$
+\int_0^1 \mu^{a-1} (1 - \mu)^{b-1} d\mu = \frac{\Gamma(a)\Gamma(b)}{\Gamma(a + b)}
+$$</li>
+<li>通过变换变量和积分技术，可以进一步推导其均值和方差。</li>
+</ul>
+</li>
+<li>
+<p><strong>贝塔分布在贝叶斯推断中的应用</strong></p>
+<ul>
+<li>在二项分布问题中，假设先验分布为贝塔分布，观测到 $ m $ 个成功和 $ l $ 个失败后，更新后的后验分布仍然是贝塔分布。</li>
+<li>这种方法在处理少量数据时特别有效，可以避免过拟合。</li>
+</ul>
+</li>
+<li>
+<p><strong>实际应用中的贝塔分布</strong></p>
+<ul>
+<li>贝塔分布广泛应用于各种领域，如机器学习中的参数估计、医学中的诊断测试、金融中的风险评估等。</li>
+<li>例如，在广告点击率预测中，使用贝塔分布可以根据历史点击数据更新点击率的估计。</li>
+</ul>
+</li>
+</ol>
+<h4>代码实现</h4>
+<p>以下是使用Numpy和Scipy从头实现贝塔分布及其相关计算的Python代码。该代码包括了贝塔分布的概率密度函数、均值、方差等，并进行了鲁棒性检查，遵循Google风格指南和PEP 8注释规范。</p>
+<pre><code class="language-python">import numpy as np
+import scipy.special as sp
+
+class BetaDistribution:
+    ```贝塔分布类，用于表示和计算贝塔分布的相关属性。
+
+    参数:
+    a (float): 贝塔分布的形状参数a，a &gt; 0。
+    b (float): 贝塔分布的形状参数b，b &gt; 0。
+
+    示例:
+    &gt;&gt;&gt; beta_dist = BetaDistribution(2, 3)
+    &gt;&gt;&gt; pdf_value = beta_dist.pdf(0.5)
+    &gt;&gt;&gt; mean_value = beta_dist.mean()
+    &gt;&gt;&gt; var_value = beta_dist.variance()
+    ```
+    def __init__(self, a: float, b: float):
+        if a &lt;= 0 or b &lt;= 0:
+            raise ValueError(&quot;参数a和b必须大于0&quot;)
+        self.a = a
+        self.b = b
+
+    def pdf(self, x: float) -&gt; float:
+        ```计算给定x下的贝塔分布概率密度函数值。
+
+        参数:
+        x (float): 自变量x，0 &lt;= x &lt;= 1。
+
+        返回:
+        float: 贝塔分布在x处的概率密度函数值。
+        ```
+        if x &lt; 0 or x &gt; 1:
+            raise ValueError(&quot;自变量x必须在[0, 1]范围内&quot;)
+        coef = sp.gamma(self.a + self.b) / (sp.gamma(self.a) * sp.gamma(self.b))
+        return coef * (x ** (self.a - 1)) * ((1 - x) ** (self.b - 1))
+
+    def mean(self) -&gt; float:
+        ```计算贝塔分布的均值。
+
+        返回:
+        float: 贝塔分布的均值。
+        ```
+        return self.a / (self.a + self.b)
+
+    def variance(self) -&gt; float:
+        ```计算贝塔分布的方差。
+
+        返回:
+        float: 贝塔分布的方差。
+        ```
+        return (self.a * self.b) / ((self.a + self.b) ** 2 * (self.a + self.b + 1))
+
+    def mode(self) -&gt; float:
+        ```计算贝塔分布的众数。
+
+        返回:
+        float: 贝塔分布的众数。
+        ```
+        if self.a &gt; 1 and self.b &gt; 1:
+            return (self.a - 1) / (self.a + self.b - 2)
+        else:
+            raise ValueError(&quot;当a和b都大于1时，众数才定义&quot;)
+
+# 示例使用
+if __name__ == &quot;__main__&quot;:
+    beta_dist = BetaDistribution(2, 5)
+    x = 0.5
+    print(f&quot;PDF at x={x}: {beta_dist.pdf(x)}&quot;)
+    print(f&quot;Mean: {beta_dist.mean()}&quot;)
+    print(f&quot;Variance: {beta_dist.variance()}&quot;)
+    try:
+        print(f&quot;Mode: {beta_dist.mode()}&quot;)
+    except ValueError as e:
+        print(e)
+</code></pre>
+<h3>代码说明</h3>
+<ol>
+<li><strong>BetaDistribution类</strong>：该类封装了贝塔分布的参数和方法，包括计算概率密度函数（pdf）、均值（mean）、方差（variance）和众数（mode）。</li>
+<li><strong>初始化方法</strong>：检查参数 $ a $ 和 $ b $ 是否大于0，确保参数有效。</li>
+<li><strong>pdf方法</strong>：计算给定 $ x $ 下的贝塔分布概率密度函数值，使用伽马函数进行归一化。</li>
+<li><strong>mean方法</strong>：返回贝塔分布的均值。</li>
+<li><strong>variance方法</strong>：返回贝塔分布的方差。</li>
+<li><strong>mode方法</strong>：计算并返回贝塔分布的众数，若参数不满足条件，则抛出异常。</li>
+</ol>
+<h3>结论</h3>
+<p>贝塔分布是处理二项事件概率的强大工具，其共轭性质使得在贝叶斯推断中非常便利。通过合理设置参数 $ a $ 和 $ b $，可以有效地表达先验知识并更新后验分布。理解和应用贝塔分布对于统计推断和机器学习中的参数估计具有重要意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_2.1.1_The_beta_distribution
+
+"""
+Lecture: 2_Probability_Distributions/2.1_Binary_Variables
+Content: 00_2.1.1_The_beta_distribution
+"""
+
+import numpy as np
+import scipy.special as sp
+
+class BetaDistribution:
+    """贝塔分布类，用于表示和计算贝塔分布的相关属性。
+
+    参数:
+    a (float): 贝塔分布的形状参数a，a > 0。
+    b (float): 贝塔分布的形状参数b，b > 0。
+
+    示例:
+    >>> beta_dist = BetaDistribution(2, 3)
+    >>> pdf_value = beta_dist.pdf(0.5)
+    >>> mean_value = beta_dist.mean()
+    >>> var_value = beta_dist.variance()
+    """
+    def __init__(self, a: float, b: float):
+        if a <= 0 or b <= 0:
+            raise ValueError("参数a和b必须大于0")
+        self.a = a
+        self.b = b
+
+    def pdf(self, x: float) -> float:
+        """计算给定x下的贝塔分布概率密度函数值。
+
+        参数:
+        x (float): 自变量x，0 <= x <= 1。
+
+        返回:
+        float: 贝塔分布在x处的概率密度函数值。
+        """
+        if x < 0 or x > 1:
+            raise ValueError("自变量x必须在[0, 1]范围内")
+        coef = sp.gamma(self.a + self.b) / (sp.gamma(self.a) * sp.gamma(self.b))
+        return coef * (x ** (self.a - 1)) * ((1 - x) ** (self.b - 1))
+
+    def mean(self) -> float:
+        """计算贝塔分布的均值。
+
+        返回:
+        float: 贝塔分布的均值。
+        """
+        return self.a / (self.a + self.b)
+
+    def variance(self) -> float:
+        """计算贝塔分布的方差。
+
+        返回:
+        float: 贝塔分布的方差。
+        """
+        return (self.a * self.b) / ((self.a + self.b) ** 2 * (self.a + self.b + 1))
+
+    def mode(self) -> float:
+        """计算贝塔分布的众数。
+
+        返回:
+        float: 贝塔分布的众数。
+        """
+        if self.a > 1 and self.b > 1:
+            return (self.a - 1) / (self.a + self.b - 2)
+        else:
+            raise ValueError("当a和b都大于1时，众数才定义")
+
+# 示例使用
+if __name__ == "__main__":
+    beta_dist = BetaDistribution(2, 5)
+    x = 0.5
+    print(f"PDF at x={x}: {beta_dist.pdf(x)}")
+    print(f"Mean: {beta_dist.mean()}")
+    print(f"Variance: {beta_dist.variance()}")
+    try:
+        print(f"Mode: {beta_dist.mode()}")
+    except ValueError as e:
+        print(e)</code></pre>
+  </div>
+</body>
+</html>
+  

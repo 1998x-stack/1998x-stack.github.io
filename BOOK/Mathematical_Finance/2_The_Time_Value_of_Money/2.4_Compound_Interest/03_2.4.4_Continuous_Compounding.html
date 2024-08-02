@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.4.4 Continuous Compounding</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_2.4.4_Continuous_Compounding</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.4_Compound_Interest
+Content: 03_2.4.4_Continuous_Compounding
+
+</code></pre>
+<h3>03_2.4.4_连续复利</h3>
+<p><strong>讲座</strong>: 2_货币的时间价值/2.4_复利<br>
+<strong>内容</strong>: 03_2.4.4_连续复利</p>
+<h4>一、连续复利的定义</h4>
+<p>连续复利（Continuous Compounding）是指在一个计息周期内，利息不断地加入本金，并计算下一瞬时的利息。与普通的复利不同，连续复利是在无限小的时间间隔内进行的，从而在数学上使用极限概念来定义。</p>
+<h5>1. 连续复利公式</h5>
+<p>在连续复利中，未来价值 $ F_{cts} $ 的计算公式为：
+$$ F_{cts} = F_0 e^{r \cdot \tau} $$
+其中，$ F_0 $ 是初始本金，$ r $ 是年利率，$ \tau $ 是时间（年），$ e $ 是自然对数的底数（约等于2.71828）。</p>
+<h5>2. 数学推导</h5>
+<p>当复利次数 $ k $ 每年增加到无穷大时，我们得到连续复利。通过公式：
+$$ F_{cts} = \lim_{k \to \infty} F_{k\tau} = \lim_{k \to \infty} \left(1 + \frac{r}{k}\right)^{k\tau} F_0 $$
+利用极限定义，我们得出：
+$$ \left(1 + \frac{r}{k}\right)^k \to e^r $$
+因此：
+$$ F_{cts} = F_0 e^{r \cdot \tau} $$</p>
+<h4>二、连续复利的计算步骤</h4>
+<p>假设初始本金为 $ F_0 $，年利率为 $ r $，时间为 $ \tau $ 年，连续复利的计算步骤如下：</p>
+<ol>
+<li><strong>确定初始本金</strong>： $ F_0 $</li>
+<li><strong>计算自然指数</strong>： $ e^{r \cdot \tau} $</li>
+<li><strong>计算未来价值</strong>： $ F_{cts} = F_0 e^{r \cdot \tau} $</li>
+</ol>
+<h4>三、连续复利的应用示例</h4>
+<p>假设你借款 $1,000，年利率为5%，投资期为3年。应用连续复利公式，计算本息总额如下：
+$$ F_{cts} = 1000 \times e^{0.05 \times 3} \approx 1000 \times 1.161834 \approx 1161.83 $$</p>
+<h4>四、连续复利的市场影响</h4>
+<p>连续复利在金融市场中有着广泛的应用，尤其在股票、债券和其他金融衍生品的定价中。其主要优点在于能够更加精确地反映利息在极短时间内的积累。</p>
+<h5>1. 股票市场</h5>
+<p>在股票市场中，连续复利常用于计算股票的复合年增长率（CAGR），以便投资者评估长期投资的回报。</p>
+<h5>2. 债券市场</h5>
+<p>在债券市场中，连续复利用于计算零息债券的到期价值，从而帮助投资者决定买入价格和预期收益。</p>
+<h4>五、连续复利与普通复利的比较</h4>
+<p>普通复利是在固定的时间间隔内计算利息，而连续复利是在无限小的时间间隔内进行计算，因此在相同条件下，连续复利的最终收益通常略高于普通复利。</p>
+<h5>1. 普通复利公式</h5>
+<p>普通复利的计算公式为：
+$$ F_n = F_0 \left(1 + \frac{r}{k}\right)^{k\tau} $$</p>
+<h5>2. 连续复利与普通复利的差异</h5>
+<p>假设初始本金 $1,000，年利率5%，投资期为3年：</p>
+<ul>
+<li>
+<p><strong>普通年复利</strong>（每年一次）：
+$$ F_{year} = 1000 \left(1 + 0.05\right)^3 \approx 1000 \times 1.157625 = 1157.63 $$</p>
+</li>
+<li>
+<p><strong>连续复利</strong>：
+$$ F_{cts} = 1000 \times e^{0.05 \times 3} \approx 1161.83 $$</p>
+</li>
+</ul>
+<p>可以看出，连续复利的收益略高于普通年复利。</p>
+<h4>六、连续复利的数学模型</h4>
+<p>连续复利的数学模型基于指数函数 $ e $，其增长函数 $ G(\tau) $ 为：
+$$ G(\tau) = e^{r \cdot \tau} $$
+满足以下性质：
+$$ G(\tau_1 + \tau_2) = G(\tau_1) \cdot G(\tau_2) $$
+$$ G(0) = 1 $$</p>
+<h4>七、总结</h4>
+<p>连续复利是金融和投资中极其重要的概念，通过在无限小的时间间隔内计算利息，连续复利可以更精确地反映利息的积累过程。理解连续复利的计算方法和应用场景，有助于投资者进行科学的财务规划和决策。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_2.4.4_Continuous_Compounding
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.4_Compound_Interest
+Content: 03_2.4.4_Continuous_Compounding
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-ACC</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>Accuracy作为指标有哪些局限性？</p>
+</blockquote>
+<h3>Accuracy 作为指标的局限性</h3>
+<p>在机器学习和分类任务中，准确率（Accuracy）是最常用的评价指标之一。然而，准确率作为一个指标存在一些局限性，特别是在某些特定的应用场景下。这些局限性包括但不限于以下几点：</p>
+<ol>
+<li>
+<p><strong>类别不平衡问题</strong>：</p>
+<ul>
+<li><strong>描述</strong>：当数据集中某个类别的样本数量远多于其他类别时，模型可以通过简单地偏向多数类来获得较高的准确率，而忽视少数类。</li>
+<li><strong>影响</strong>：这种情况下，准确率不能有效反映模型对少数类的预测性能，导致模型对少数类的预测准确性较低。</li>
+<li><strong>示例</strong>：在一个具有95%正类和5%负类的二分类问题中，如果模型总是预测正类，准确率也能达到95%。</li>
+</ul>
+</li>
+<li>
+<p><strong>忽略错误分类的严重性</strong>：</p>
+<ul>
+<li><strong>描述</strong>：准确率对所有错误分类一视同仁，未考虑不同类型错误的不同影响。</li>
+<li><strong>影响</strong>：在一些应用中，某些类型的错误比其他类型的错误更为严重。例如，在医疗诊断中，将疾病预测为健康（假阴性）可能比将健康预测为疾病（假阳性）更危险。</li>
+<li><strong>解决方案</strong>：需要结合其他指标，如精确率（Precision）、召回率（Recall）和F1-score。</li>
+</ul>
+</li>
+<li>
+<p><strong>对阈值敏感</strong>：</p>
+<ul>
+<li><strong>描述</strong>：在二分类问题中，准确率对选择的决策阈值非常敏感，不同的阈值会导致不同的准确率。</li>
+<li><strong>影响</strong>：模型的性能评估可能会因阈值的变化而有较大波动，导致评估结果不稳定。</li>
+<li><strong>解决方案</strong>：使用ROC曲线和AUC值进行评估，可以提供对阈值变化更鲁棒的评估。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺乏全面性</strong>：</p>
+<ul>
+<li><strong>描述</strong>：准确率无法提供模型在各个类别上的详细表现信息，特别是在多分类问题中。</li>
+<li><strong>影响</strong>：难以判断模型在每个类别上的具体表现，无法了解模型是否对某些类别有偏见。</li>
+<li><strong>解决方案</strong>：结合混淆矩阵，查看每个类别的精确率、召回率和F1-score。</li>
+</ul>
+</li>
+<li>
+<p><strong>无法衡量概率预测的好坏</strong>：</p>
+<ul>
+<li><strong>描述</strong>：准确率只关心预测的类别，而不关心预测概率的质量。</li>
+<li><strong>影响</strong>：对于一些应用，如信用评分、风险评估等，模型输出的概率分布同样重要，但准确率无法反映这一点。</li>
+<li><strong>解决方案</strong>：使用Brier Score或对数损失（Log Loss）等评估概率预测质量的指标。</li>
+</ul>
+</li>
+</ol>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://towardsdatascience.com/understanding-the-limitations-of-accuracy-when-evaluating-machine-learning-models-1212f480394b">Understanding the Limitations of Accuracy</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/model_evaluation.html#classification-metrics">Classification Metrics in Machine Learning</a></li>
+<li><a href="https://www.kdnuggets.com/2020/01/accuracy-alone-good-measure-classification-model.html">Why Accuracy alone is not a good measure for a classification model</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

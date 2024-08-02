@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>05-tree tune params</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>树模型如何调参</p>
+</blockquote>
+<p>树模型（如决策树、随机森林和梯度提升树等）在机器学习中具有广泛应用。调参（超参数调优）是提高树模型性能的重要步骤。以下是调参的详细步骤和方法：</p>
+<h3>决策树模型的调参</h3>
+<ol>
+<li>
+<p><strong>最大深度（max_depth）</strong>：</p>
+<ul>
+<li>控制树的最大深度，防止树过度生长导致过拟合。</li>
+<li><strong>调参方法</strong>：网格搜索（Grid Search）或随机搜索（Random Search）。</li>
+<li><strong>推荐范围</strong>：从3到10，具体取决于数据集的大小和复杂度。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本分裂数（min_samples_split）</strong>：</p>
+<ul>
+<li>控制一个节点最少需要多少样本才可以分裂。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：2到20，具体取决于数据集的大小。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本叶子数（min_samples_leaf）</strong>：</p>
+<ul>
+<li>控制叶子节点最少包含的样本数，防止过拟合。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：1到10，具体取决于数据集的大小。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大特征数（max_features）</strong>：</p>
+<ul>
+<li>控制每次分裂时考虑的最大特征数。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：可以是整数（特征数），浮点数（特征比例），或'auto'、'sqrt'、'log2'等。</li>
+</ul>
+</li>
+</ol>
+<h3>随机森林模型的调参</h3>
+<ol>
+<li>
+<p><strong>决策树数量（n_estimators）</strong>：</p>
+<ul>
+<li>控制森林中决策树的数量。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：100到500，具体取决于数据集和计算资源。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大深度（max_depth）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本分裂数（min_samples_split）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本叶子数（min_samples_leaf）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大特征数（max_features）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>引导采样（bootstrap）</strong>：</p>
+<ul>
+<li>控制是否在构建树时使用引导采样。</li>
+<li><strong>调参方法</strong>：网格搜索。</li>
+<li><strong>推荐范围</strong>：True或False。</li>
+</ul>
+</li>
+</ol>
+<h3>梯度提升树（GBDT）模型的调参</h3>
+<ol>
+<li>
+<p><strong>决策树数量（n_estimators）</strong>：</p>
+<ul>
+<li>控制提升阶段中要使用的树的数量。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：100到1000，具体取决于数据集和计算资源。</li>
+</ul>
+</li>
+<li>
+<p><strong>学习率（learning_rate）</strong>：</p>
+<ul>
+<li>控制每棵树的贡献，通常与n_estimators结合调整。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：0.01到0.3，通常选择较小的值。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大深度（max_depth）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本分裂数（min_samples_split）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最小样本叶子数（min_samples_leaf）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>最大特征数（max_features）</strong>：</p>
+<ul>
+<li>同决策树模型。</li>
+</ul>
+</li>
+<li>
+<p><strong>子样本比例（subsample）</strong>：</p>
+<ul>
+<li>控制每棵树构建时所使用的样本比例，防止过拟合。</li>
+<li><strong>调参方法</strong>：网格搜索或随机搜索。</li>
+<li><strong>推荐范围</strong>：0.5到1.0。</li>
+</ul>
+</li>
+</ol>
+<h3>调参方法</h3>
+<ol>
+<li>
+<p><strong>网格搜索（Grid Search）</strong>：</p>
+<ul>
+<li>穷举所有可能的超参数组合，找到最优的超参数。</li>
+<li><strong>优点</strong>：简单易实现，适合小范围的超参数调优。</li>
+<li><strong>缺点</strong>：计算成本高，特别是超参数空间较大时。</li>
+</ul>
+</li>
+<li>
+<p><strong>随机搜索（Random Search）</strong>：</p>
+<ul>
+<li>随机选择超参数的组合进行评估，相比网格搜索效率更高。</li>
+<li><strong>优点</strong>：适合大范围的超参数调优，效率较高。</li>
+<li><strong>缺点</strong>：可能漏掉最优的超参数组合。</li>
+</ul>
+</li>
+<li>
+<p><strong>贝叶斯优化（Bayesian Optimization）</strong>：</p>
+<ul>
+<li>使用贝叶斯统计模型选择超参数的过程，通过构建代理模型来指导搜索过程。</li>
+<li><strong>优点</strong>：效率高，适合复杂模型的超参数调优。</li>
+<li><strong>缺点</strong>：实现相对复杂。</li>
+</ul>
+</li>
+</ol>
+<h3>参考资料</h3>
+<ol>
+<li>
+<p><strong>&quot;Pattern Recognition and Machine Learning&quot; by Christopher M. Bishop</strong>：</p>
+<ul>
+<li>介绍了机器学习中超参数调优的基本方法和理论。</li>
+<li><a href="https://www.springer.com/gp/book/9780387310732">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;The Elements of Statistical Learning&quot; by Trevor Hastie, Robert Tibshirani, and Jerome Friedman</strong>：</p>
+<ul>
+<li>详细讨论了决策树、随机森林、梯度提升树及其调参方法。</li>
+<li><a href="https://web.stanford.edu/~hastie/ElemStatLearn/">书籍链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>&quot;Introduction to Statistical Learning&quot; by Gareth James, Daniela Witten, Trevor Hastie, and Robert Tibshirani</strong>：</p>
+<ul>
+<li>提供了机器学习模型调参的实际案例和方法。</li>
+<li><a href="http://faculty.marshall.usc.edu/gareth-james/ISL/">书籍链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

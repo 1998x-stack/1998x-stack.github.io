@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>18-Using and Fine-Tuning Pretrained Transformers</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>使用和微调预训练Transformer模型（Using and Fine-Tuning Pretrained Transformers）：</h3>
+<h4>关键问题</h4>
+<ol>
+<li><strong>预训练的Transformer模型有哪些使用和微调方法？</strong></li>
+<li><strong>什么是基于特征的方法？</strong></li>
+<li><strong>什么是上下文学习（In-Context Learning）？</strong></li>
+<li><strong>什么是参数高效微调（Parameter-Efficient Fine-Tuning）？</strong></li>
+<li><strong>人类反馈的强化学习（RLHF）如何应用于预训练模型的微调？</strong></li>
+</ol>
+<h4>详细回答</h4>
+<ol>
+<li>
+<p><strong>预训练的Transformer模型有哪些使用和微调方法？</strong>
+预训练的Transformer模型的使用和微调方法主要包括三种：基于特征的方法、上下文学习（In-Context Learning）和更新模型参数的一部分。每种方法都有其独特的优点和适用场景。例如，基于特征的方法不需要进一步微调模型，可以直接利用预训练模型生成的嵌入进行下游任务。上下文学习通过在输入中展示新任务的示例，直接在模型中体现预期结果，而无需对模型进行更新。最后，可以通过微调全部或部分参数来实现特定任务的目标   。</p>
+</li>
+<li>
+<p><strong>什么是基于特征的方法？</strong>
+在基于特征的方法中，我们加载预训练模型并保持其参数“冻结”，即不更新任何参数。相反，我们将模型视为特征提取器，应用于新的数据集，然后在这些嵌入上训练下游模型。这个下游模型可以是任何类型的模型，如随机森林、XGBoost等，但通常线性分类器表现最佳。这是因为像BERT和GPT这样的预训练Transformer已经从输入数据中提取了高质量的信息特征，这些特征嵌入通常捕捉了复杂的关系和模式，使得线性分类器能够有效地区分数据  。</p>
+</li>
+<li>
+<p><strong>什么是上下文学习（In-Context Learning）？</strong>
+上下文学习（In-Context Learning）是利用大规模预训练语言模型（LLM）的一个方法，其中模型通过在输入或提示中提供任务的上下文或示例，推断出预期行为并生成适当的响应。这种方法利用了模型在预训练期间从大量数据中学习的能力，包括各种任务和上下文。与传统的微调相比，上下文学习在标注数据有限或无法获取时尤为有用，并且允许快速实验不同的任务而无需微调模型参数    。</p>
+</li>
+<li>
+<p><strong>什么是参数高效微调（Parameter-Efficient Fine-Tuning）？</strong>
+参数高效微调（Parameter-Efficient Fine-Tuning）是一种在不显著增加计算成本和资源的情况下，利用预训练Transformer模型处理新任务的方法。常见的方法包括软提示调优（Soft Prompt Tuning）、前缀调优（Prefix Tuning）和适配器方法（Adapter Methods）。这些方法通过引入额外的可训练参数来适应新任务，同时保持预训练模型的核心参数不变，从而确保模型的原始知识不被遗忘    。</p>
+</li>
+<li>
+<p><strong>人类反馈的强化学习（RLHF）如何应用于预训练模型的微调？</strong>
+人类反馈的强化学习（Reinforcement Learning with Human Feedback, RLHF）是通过结合监督学习和强化学习来进一步优化模型以符合人类偏好的方法。例如，ChatGPT和其前身Instruct-GPT就是通过RLHF进行微调的。在RLHF中，通过让人类对不同的模型输出进行排序或评分来收集反馈，提供奖励信号。这些奖励标签用于训练一个奖励模型，该模型随后用于指导预训练LLM适应人类偏好。这种训练方式使用一种称为近端策略优化（Proximal Policy Optimization, PPO）的强化学习算法   。</p>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

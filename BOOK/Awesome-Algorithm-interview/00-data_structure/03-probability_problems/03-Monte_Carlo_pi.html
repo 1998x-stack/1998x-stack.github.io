@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03-Monte Carlo pi</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>采样 计算 pi 的大小</p>
+</blockquote>
+<p>计算圆周率 $\pi$ 的一个常用方法是蒙特卡罗方法。这种方法利用随机采样来估计 $\pi$ 的值。下面是详细的步骤和Python代码实现。</p>
+<h3>蒙特卡罗方法计算 $\pi$ 的步骤</h3>
+<ol>
+<li><strong>随机采样点</strong>：在单位正方形 $[0,1] \times [0,1]$ 内生成大量随机点。</li>
+<li><strong>计算点落在圆内的比例</strong>：计算这些点中有多少落在以原点为圆心、半径为1的四分之一圆内。</li>
+<li><strong>估算 $\pi$ 的值</strong>：利用圆的面积和正方形面积的比值来估计 $\pi$。</li>
+</ol>
+<p>由于四分之一圆的面积为 $\pi/4$，而单位正方形的面积为1，因此，四分之一圆内点的比例应接近 $\pi/4$。具体来说，如果在单位正方形内生成 $N$ 个点，其中有 $M$ 个点落在四分之一圆内，那么可以用下面的公式估算 $\pi$：</p>
+<p>$$ \pi \approx 4 \times \frac{M}{N} $$</p>
+<h3>Python代码实现</h3>
+<pre><code class="language-python">import random
+
+def estimate_pi(num_samples):
+    inside_circle = 0
+
+    for _ in range(num_samples):
+        x = random.random()  # 生成 [0,1] 之间的随机数
+        y = random.random()  # 生成 [0,1] 之间的随机数
+        if x*x + y*y &lt;= 1:
+            inside_circle += 1
+    
+    return (inside_circle / num_samples) * 4
+
+# 示例使用
+num_samples = 1000000  # 采样点数量
+estimated_pi = estimate_pi(num_samples)
+print(f&quot;估计的 π 值: {estimated_pi}&quot;)
+</code></pre>
+<h3>解释</h3>
+<ol>
+<li><strong>生成随机点</strong>：使用 <code>random.random()</code> 生成 $[0,1]$ 区间的随机浮点数作为点的坐标。</li>
+<li><strong>判断点是否在圆内</strong>：检查点 $(x, y)$ 是否满足 $x^2 + y^2 \leq 1$。</li>
+<li><strong>计算 $\pi$ 的估计值</strong>：统计在圆内的点数，然后用公式 $\pi \approx 4 \times \frac{M}{N}$ 计算 $\pi$。</li>
+</ol>
+<h3>结果与精度</h3>
+<p>由于蒙特卡罗方法的随机性，采样点数 $N$ 越多，估计值的精度越高。可以通过增加 <code>num_samples</code> 的值来提高估计 $\pi$ 的精度。例如，使用 1,000,000 个采样点通常能得到小数点后4位左右精度的 $\pi$ 值。</p>
+<h3>总结</h3>
+<p>蒙特卡罗方法是一种简单而有效的估算 $\pi$ 的方法，适用于计算机仿真和随机数生成。通过不断增加采样点的数量，可以提高估算的精度。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

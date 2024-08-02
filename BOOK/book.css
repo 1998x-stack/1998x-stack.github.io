@@ -1,0 +1,111 @@
+/* 设置 body 元素的基本样式 */
+body {
+    /* 使用苹果系统默认字体以及其他常用无衬线字体 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* 设置背景为渐变色，从左上到右下 */
+    /* background: linear-gradient(135deg, #f3ec78, #af4261); */
+    background: linear-gradient(to right, #d3d3d3, #a9a9a9); /* 渐变灰色背景 */
+    /* 使用 flex 布局 */
+    display: flex;
+    /* 将子元素按列排列 */
+    flex-direction: column;
+    /* 水平居中对齐子元素 */
+    align-items: center;
+    /* 垂直居中对齐子元素 */
+    justify-content: center;
+    /* 设定全屏高度 */
+    height: 100vh;
+    /* 去除默认边距 */
+    margin: 0;
+    /* 设置字体颜色 */
+    color: #333;
+}
+
+/* 设置 h1 标题的样式 */
+h1 {
+    /* 设置标题下方的外边距 */
+    margin-bottom: 20px;
+    /* 设置字体大小 */
+    font-size: 2em;
+}
+
+/* 设置链接容器的样式 */
+.link-container {
+    /* 使用 flex 布局 */
+    display: flex;
+    /* 允许子元素换行 */
+    flex-wrap: wrap;
+    /* 水平居中对齐子元素 */
+    justify-content: center;
+    /* 设置子元素之间的间距 */
+    gap: 20px;
+}
+
+/* 设置每个链接框的样式 */
+.link-box {
+    /* 设置背景为渐变色，从左上到右下 */
+    /* background: linear-gradient(135deg, #74ebd5, #acb6e5); */
+    background: linear-gradient(to right, #d3d3d3, #a9a9a9); /* 渐变灰色背景 */
+    /* 设置圆角 */
+    border-radius: 10px;
+    /* 设置内边距 */
+    padding: 20px;
+    /* 文字居中 */
+    text-align: center;
+    /* 设置过渡效果 */
+    transition: transform 0.3s, background 0.3s;
+}
+
+/* 设置链接的样式 */
+.link-box a {
+    /* 去除下划线 */
+    text-decoration: none;
+    /* 设置链接颜色 */
+    color: #007aff;
+    /* 设置字体大小 */
+    font-size: 1.2em;
+    /* 使链接块级化 */
+    display: block;
+}
+
+/* 设置链接框在鼠标悬停时的效果 */
+.link-box:hover {
+    /* 缩放效果 */
+    transform: scale(1.1);
+    /* 变换背景色 */
+    background: linear-gradient(135deg, #acb6e5, #74ebd5);
+}
+
+/* 设置链接框在鼠标点击时的效果 */
+.link-box:active {
+    /* 缩放效果 */
+    transform: scale(0.9);
+    /* 变换背景色 */
+    background: linear-gradient(135deg, #ff9500, #ff2d55);
+}
+
+.back-button-container {
+    margin: 20px;
+    text-align: center;
+}
+
+.back-button-container button {
+    background-color: #4CAF50; /* 绿色背景 */
+    color: white; /* 白色文字 */
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+}
+
+.back-button-container button:hover {
+    background-color: white; 
+    color: black;
+    border: 2px solid #4CAF50;
+}

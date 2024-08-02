@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.1 Graphs and Their Invariants</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_2.1_Graphs_and_Their_Invariants</h1>
+<pre><code>Lecture: /2._Introduction
+Content: 00_2.1_Graphs_and_Their_Invariants
+</code></pre>
+<h3>2.1 图与它们的不变量</h3>
+<h4>图的基本定义</h4>
+<p>在图论中，一个简单图 $ G = (V, E) $ 由顶点集 $ V $ 和边集 $ E $ 组成，其中 $ |V| = n $ 表示顶点的数量， $ |E| = m $ 表示边的数量。简单图不包含方向边和重复边，因此一条边 $ e \in E $ 可以表示为两个不同顶点 $ u, v $ 的无序对 $ {u, v} $。我们简写为 $ uv $ 来表示这条边。顶点集和边集分别可以简写为 $ V(G) $ 和 $ E(G) $。</p>
+<h4>邻接和度数</h4>
+<p>对于一个顶点 $ u \in V $，其邻接顶点的集合记为 $ N(u) = {v \in V : uv \in E} $。顶点 $ u $ 的度数 $ \deg(u) $ 是其邻接顶点的数量，即 $ \deg(u) = |N(u)| $。图的最大顶点度数 $ \Delta $ 和最小顶点度数 $ \delta $ 定义为：
+$$ \Delta = \max_{u \in V} \deg(u), $$
+$$ \delta = \min_{u \in V} \deg(u)。$$
+如果图的所有顶点度数均相等，那么这个图被称为 $ d $-正则图。</p>
+<h4>路径与连通性</h4>
+<p>顶点 $ u $ 和 $ v $ 之间的一条路径是指由顶点序列 $ u = u_0, u_1, \ldots, u_k = v $ 组成的，满足任意相邻顶点 $ u_i $ 和 $ u_{i+1} $ 之间都有边连接。图 $ G $ 是连通的，当且仅当对于任意两顶点 $ u $ 和 $ v $，都存在一条路径连接它们。</p>
+<h4>距离与直径</h4>
+<p>在连通图 $ G $ 中，两个顶点 $ u $ 和 $ v $ 之间的距离 $ d(u, v) $ 是指连接它们的最短路径的长度。顶点 $ u $ 的偏心度 $ \operatorname{ecc}(u) $ 是指从 $ u $ 到图中其他所有顶点的最大距离：
+$$ \operatorname{ecc}(u) = \max_{v \in V} d(u, v)。$$
+图的直径 $ D $ 和半径 $ r $ 分别定义为：
+$$ D = \max_{u \in V} \operatorname{ecc}(u)，$$
+$$ r = \min_{u \in V} \operatorname{ecc}(u)。$$</p>
+<h4>重要图类型</h4>
+<ul>
+<li><strong>路径 $ P_n $</strong>: 包含顶点 $ 1, 2, \ldots, n $ 和边 $ {i, i+1} $，其中 $ 1 \le i &lt; n $。</li>
+<li><strong>环 $ C_n $</strong>: 由路径 $ P_n $ 加上一条边 $ {n, 1} $ 构成。</li>
+<li><strong>完全图 $ K_n $</strong>: 包含顶点 $ 1, 2, \ldots, n $ 和所有可能的边 $ {i, j} $，其中 $ 1 \le i &lt; j \le n $。</li>
+<li><strong>完全二部图 $ K_{n_1, n_2} $</strong>: 由两个不相交的顶点集 $ V_1 $ 和 $ V_2 $ 组成，所有边均连接 $ V_1 $ 和 $ V_2 $ 的顶点。</li>
+<li><strong>星图 $ S_n $</strong>: 是完全二部图 $ K_{1, n-1} $ 的特例。</li>
+</ul>
+<h4>图的共轭与并集</h4>
+<p>图 $ G = (V, E) $ 的补图记作 $ \overline{G} = (V, \binom{V}{2} \setminus E) $，即所有不在 $ E $ 中的边组成的图。两个图 $ G $ 和 $ G' $ 的并集记作 $ G \cup G' $，其顶点集和边集分别为两个图的顶点集和边集的并集。</p>
+<h4>图不变量</h4>
+<p>图的不变量是指其值仅依赖于图的结构而不依赖于顶点的标签。例如，顶点数 $ n $、边数 $ m $、最大度数 $ \Delta $、最小度数 $ \delta $、直径 $ D $、半径 $ r $、独立数 $ \alpha $、团数 $ \omega $、色数 $ \chi $、控制数 $ \gamma $ 和匹配数 $ \nu $ 等。</p>
+<p>在本书中，我们的重点在于另一种图的不变量——谱半径，其定义将在下一节中详细讨论。</p>
+<h4>引言</h4>
+<p>这部分内容为后续章节的结果提供必要的定义和工具。我们将覆盖各种图的概念和不变量，邻接矩阵及其特征值和特征多项式，以及一些矩阵理论的标准工具，这些工具将在后面的证明中使用。</p>
+<hr>
+<h3>邻接和度数的深入分析</h3>
+<p>在图论中，<strong>邻接（Adjacency）</strong> 和 <strong>度数（Degree）</strong> 是两个基本且重要的概念，它们对理解图的结构和性质具有关键作用。以下是对这两个概念的详细探讨：</p>
+<h4>邻接顶点的集合 $N(u)$</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：对于图 $ G = (V, E) $ 中的任意顶点 $ u $，其邻接顶点的集合 $ N(u) $ 是指所有与 $ u $ 有直接边相连的顶点的集合。形式化定义为：
+$$
+N(u) = {v \in V : uv \in E}
+$$
+其中 $ uv $ 表示顶点 $ u $ 和顶点 $ v $ 之间存在一条边。</p>
+</li>
+<li>
+<p><strong>性质</strong>：邻接集合 $ N(u) $ 的大小，即集合中顶点的数量，直接反映了顶点 $ u $ 在图中的连接情况。通过邻接集合，可以了解顶点的直接“邻居”有哪些，从而帮助分析图的局部结构。</p>
+</li>
+<li>
+<p><strong>示例</strong>：考虑一个简单图 $ G $，其中 $ V = {1, 2, 3, 4} $， $ E = {{1, 2}, {1, 3}, {2, 4}, {3, 4}} $。对于顶点 $ 1 $，其邻接集合 $ N(1) = {2, 3} $，因为顶点 $ 2 $ 和顶点 $ 3 $ 都与顶点 $ 1 $ 直接相连。</p>
+</li>
+</ul>
+<h4>顶点的度数 $ \deg(u) $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：顶点 $ u $ 的度数 $ \deg(u) $ 是指与该顶点直接相连的边的数量。度数可以理解为顶点的“连接度”，即一个顶点有多少条边连向其他顶点。形式化定义为：
+$$
+\deg(u) = |N(u)|
+$$
+这里的 $ |N(u)| $ 表示集合 $ N(u) $ 的大小。</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>顶点度数的分布</strong>：一个图中所有顶点的度数可以反映图的整体结构特征。度数分布（degree distribution）是指图中顶点度数的频率分布，可以用来分析图的稠密度和连通性。</li>
+<li><strong>最大和最小度数</strong>：图的最大顶点度数 $ \Delta $ 和最小顶点度数 $ \delta $ 分别表示图中所有顶点度数的最大值和最小值。它们定义为：
+$$
+\Delta = \max_{u \in V} \deg(u), \quad \delta = \min_{u \in V} \deg(u)
+$$
+这两个参数在分析图的极端情况时非常有用，例如评估图的最稠密区域和最稀疏区域。</li>
+</ul>
+</li>
+<li>
+<p><strong>正则图</strong>：如果一个图中的所有顶点度数都相等，那么这个图被称为 $ d $-正则图（$ d $-regular graph）。在 $ d $-正则图中，每个顶点的度数均为 $ d $，即对于任意顶点 $ u $，都有 $ \deg(u) = d $。正则图在图论研究中有重要的应用，因为它们的对称性和均匀性使得许多问题的分析变得更加简单。</p>
+</li>
+<li>
+<p><strong>示例</strong>：继续前面的示例图 $ G $，我们可以计算各个顶点的度数：
+$$
+\deg(1) = 2, \quad \deg(2) = 2, \quad \deg(3) = 2, \quad \deg(4) = 2
+$$
+由于所有顶点的度数都相等，因此图 $ G $ 是一个 2-正则图。</p>
+</li>
+</ul>
+<h3>邻接和度数的实际应用</h3>
+<ul>
+<li><strong>网络分析</strong>：在社交网络中，用户的度数表示其朋友的数量。通过分析用户的度数分布，可以发现网络中的关键节点和影响力大的用户。</li>
+<li><strong>图的遍历</strong>：在图的遍历算法（如深度优先搜索和广度优先搜索）中，邻接集合用于确定下一步访问的顶点。顶点度数可以影响遍历的效率和路径选择。</li>
+<li><strong>图的分割</strong>：在图的分割问题中，通常会考虑度数高的顶点作为分割点，以最小化分割后的子图之间的边数。</li>
+</ul>
+<hr>
+<h3>路径与连通性的深入分析</h3>
+<p>在图论中，<strong>路径（Path）</strong> 和 <strong>连通性（Connectivity）</strong> 是两个关键概念，分别描述了图中顶点之间的连接方式及其整体结构特征。这两个概念对于理解图的性质、分析图的结构以及解决实际问题都有重要意义。以下是对这两个概念的详细探讨：</p>
+<h4>路径（Path）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：路径是图 $ G = (V, E) $ 中顶点和边的有序序列。形式化定义为：从顶点 $ u $ 到顶点 $ v $ 的一条路径 $ P $ 是指一个顶点序列 $ u = u_0, u_1, u_2, \ldots, u_k = v $，其中 $ {u_i, u_{i+1}} \in E $，$ 0 \leq i &lt; k $。即路径上的任意相邻顶点对 $ u_i $ 和 $ u_{i+1} $ 之间都有边相连。</p>
+</li>
+<li>
+<p><strong>路径长度</strong>：路径的长度是指路径中边的数量，即序列中顶点的个数减一。路径长度可以用来衡量顶点之间的距离。</p>
+</li>
+<li>
+<p><strong>简单路径</strong>：如果路径中不包含重复顶点（起点和终点除外），则该路径称为简单路径（simple path）。简单路径确保了顶点之间的直接性和唯一性。</p>
+</li>
+<li>
+<p><strong>回路与环</strong>：如果路径的起点和终点是同一个顶点，则该路径称为回路（circuit）或环（cycle）。环的长度至少为3，因为至少需要三个顶点和三条边才能构成环。</p>
+</li>
+</ul>
+<h4>连通性（Connectivity）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：图 $ G $ 是连通的，当且仅当对于任意两个顶点 $ u, v \in V $，都存在一条路径从 $ u $ 到 $ v $。连通性反映了图中顶点之间的可达性。</p>
+</li>
+<li>
+<p><strong>连通分量</strong>：对于非连通图，可以将其分成若干个连通子图，每个子图称为一个连通分量（connected component）。每个连通分量内部的任意两个顶点都是连通的，但不同连通分量之间的顶点则是不连通的。</p>
+</li>
+<li>
+<p><strong>强连通性</strong>：在有向图中，如果从顶点 $ u $ 到顶点 $ v $ 存在一条有向路径，并且从 $ v $ 到 $ u $ 也存在一条有向路径，则称顶点 $ u $ 和 $ v $ 是强连通的（strongly connected）。如果图中的任意两个顶点都是强连通的，则称该图是强连通图。</p>
+</li>
+</ul>
+<h4>图的连通性测度</h4>
+<ul>
+<li>
+<p><strong>直径（Diameter）</strong>：图的直径是指图中任意两个顶点之间最短路径长度的最大值。直径反映了图的“宽度”，即最远两个顶点之间的距离。
+$$
+D = \max_{u, v \in V} d(u, v)
+$$
+其中 $ d(u, v) $ 是顶点 $ u $ 和 $ v $ 之间的最短路径长度。</p>
+</li>
+<li>
+<p><strong>半径（Radius）</strong>：图的半径是指从图中某个顶点到其最远顶点的最短路径长度的最小值。半径反映了图的“紧凑度”。
+$$
+r = \min_{u \in V} \max_{v \in V} d(u, v)
+$$</p>
+</li>
+<li>
+<p><strong>中心（Center）</strong>：图的中心是指所有偏心度（eccentricity）最小的顶点的集合。顶点的偏心度是指从该顶点到图中其他顶点的最短路径长度的最大值。图的中心反映了图中“最中心”的部分。
+$$
+\operatorname{ecc}(u) = \max_{v \in V} d(u, v)
+$$</p>
+</li>
+</ul>
+<h4>路径与连通性的实际应用</h4>
+<ul>
+<li>
+<p><strong>网络设计</strong>：在通信网络、交通网络等应用中，连通性是一个关键指标。确保网络的连通性可以提高可靠性和效率。路径分析可以用于寻找最优的通信路径或最短的运输路线。</p>
+</li>
+<li>
+<p><strong>图的遍历算法</strong>：如深度优先搜索（DFS）和广度优先搜索（BFS）利用路径概念遍历图中的所有顶点。遍历算法可以用于查找连通分量、检测环以及解决其他图相关问题。</p>
+</li>
+<li>
+<p><strong>社交网络分析</strong>：在社交网络中，连通分量可以用于发现社区结构。路径长度（如最短路径）可以用于度量用户之间的关系紧密程度。中心性测度（如介数中心性）可以用于识别关键人物或节点。</p>
+</li>
+</ul>
+<hr>
+<h3>距离与直径的深入分析</h3>
+<p>在图论中，<strong>距离（Distance）</strong> 和 <strong>直径（Diameter）</strong> 是描述图中顶点之间关系的重要概念。这些概念不仅用于理论研究，还在实际应用中，如网络设计、路径优化等方面发挥关键作用。以下是对这些概念的详细探讨。</p>
+<h4>距离（Distance）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：在一个连通图 $ G = (V, E) $ 中，两个顶点 $ u $ 和 $ v $ 之间的距离 $ d(u, v) $ 是指从 $ u $ 到 $ v $ 的所有路径中长度最短的那条路径的长度。路径的长度由路径中包含的边的数量决定。
+$$
+d(u, v) = \text{从 } u \text{ 到 } v \text{ 的最短路径长度}
+$$</p>
+</li>
+<li>
+<p><strong>计算方法</strong>：</p>
+<ul>
+<li><strong>广度优先搜索（BFS）</strong>：对于无权图或权重为1的图，可以使用BFS算法计算一个顶点到所有其他顶点的最短路径。BFS的时间复杂度为 $ O(V + E) $。</li>
+<li><strong>Dijkstra算法</strong>：对于带权图，Dijkstra算法可以有效计算单源最短路径。其时间复杂度为 $ O(V^2) $，使用优先队列优化后为 $ O(E + V \log V) $。</li>
+<li><strong>Floyd-Warshall算法</strong>：用于计算所有顶点对之间的最短路径，时间复杂度为 $ O(V^3) $。</li>
+</ul>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>对称性</strong>：对于无向图，距离函数 $ d(u, v) $ 是对称的，即 $ d(u, v) = d(v, u) $。</li>
+<li><strong>三角不等式</strong>：对于任意三个顶点 $ u, v, w $，有 $ d(u, w) \leq d(u, v) + d(v, w) $。</li>
+</ul>
+</li>
+</ul>
+<h4>偏心度（Eccentricity）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：顶点 $ u $ 的偏心度 $ \operatorname{ecc}(u) $ 是指从 $ u $ 到图中其他所有顶点的最大距离。偏心度衡量了一个顶点在图中的“最远”距离。
+$$
+\operatorname{ecc}(u) = \max_{v \in V} d(u, v)
+$$</p>
+</li>
+<li>
+<p><strong>计算方法</strong>：</p>
+<ul>
+<li><strong>广度优先搜索（BFS）或Dijkstra算法</strong>：对于每个顶点 $ u $，计算其到所有其他顶点的最短路径，然后取最大值。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用</strong>：</p>
+<ul>
+<li><strong>图的中心性分析</strong>：偏心度可以用于识别图的中心顶点，这些顶点到其他顶点的最大距离最小。</li>
+</ul>
+</li>
+</ul>
+<h4>直径（Diameter）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：图的直径 $ D $ 是指图中任意两个顶点之间的最短路径长度的最大值。直径反映了图的“宽度”，即最远两个顶点之间的距离。
+$$
+D = \max_{u \in V} \operatorname{ecc}(u) = \max_{u, v \in V} d(u, v)
+$$</p>
+</li>
+<li>
+<p><strong>计算方法</strong>：</p>
+<ul>
+<li><strong>两次BFS</strong>：选择一个顶点 $ u $ 开始，使用BFS找到最远的顶点 $ v $，然后从 $ v $ 开始再次使用BFS，找到最远的顶点 $ w $， $ d(v, w) $ 即为直径。</li>
+<li><strong>Floyd-Warshall算法</strong>：可以在 $ O(V^3) $ 的时间复杂度内计算出所有顶点对之间的最短路径，从而得到直径。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用</strong>：</p>
+<ul>
+<li><strong>网络设计</strong>：在设计网络时，直径是一个重要指标。较小的直径意味着网络的连通性更好，通信延迟更低。</li>
+<li><strong>生物信息学</strong>：在分析生物网络（如蛋白质相互作用网络）时，直径可以帮助理解网络的整体结构和功能。</li>
+</ul>
+</li>
+</ul>
+<h4>半径（Radius）和中心（Center）</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：</p>
+<ul>
+<li><strong>半径（Radius）</strong>：图的半径 $ r $ 是指图中所有顶点的偏心度的最小值。半径反映了图的“紧凑度”。
+$$
+r = \min_{u \in V} \operatorname{ecc}(u)
+$$</li>
+<li><strong>中心（Center）</strong>：图的中心是指所有偏心度等于半径的顶点的集合。这些顶点到其他顶点的最大距离最小，处于图的“中心”位置。</li>
+</ul>
+</li>
+<li>
+<p><strong>计算方法</strong>：</p>
+<ul>
+<li><strong>两次BFS</strong>：首先计算所有顶点的偏心度，然后取最小值即为半径，对应的顶点即为中心。</li>
+</ul>
+</li>
+<li>
+<p><strong>应用</strong>：</p>
+<ul>
+<li><strong>物流和交通网络</strong>：中心顶点可以作为物流中心或交通枢纽，以提高运输和通信的效率。</li>
+<li><strong>社交网络分析</strong>：中心顶点往往是社交网络中的重要节点，可以作为信息传播的关键点。</li>
+</ul>
+</li>
+</ul>
+<h3>距离与直径的实际应用</h3>
+<ul>
+<li><strong>网络设计和优化</strong>：在通信网络、交通网络等应用中，距离和直径是评估网络性能和优化设计的重要指标。通过最小化直径，可以提高网络的连通性和效率。</li>
+<li><strong>路径规划</strong>：在机器人和自动驾驶等领域，路径规划需要考虑距离和最短路径，以实现高效的导航和避障。</li>
+<li><strong>社交网络分析</strong>：在社交网络中，距离可以用来衡量用户之间的关系紧密程度，直径可以反映整个网络的扩展性和信息传播速度。</li>
+<li><strong>生物网络</strong>：在生物信息学中，分析蛋白质相互作用网络的距离和直径，可以揭示生物系统的功能和结构特性。</li>
+</ul>
+<hr>
+<h3>重要图类型的深入分析</h3>
+<p>在图论中，有几种特别重要的图类型，它们在理论研究和实际应用中都具有广泛的意义。以下是对这些重要图类型的详细探讨。</p>
+<h4>1. 路径图 $ P_n $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：路径图 $ P_n $ 是由 $ n $ 个顶点和 $ n-1 $ 条边构成的图。顶点按顺序排列，每对相邻顶点之间有一条边。形式化定义为：
+$$
+P_n = { V = {1, 2, \ldots, n}, E = {{i, i+1} | 1 \leq i &lt; n} }
+$$</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>无环性</strong>：路径图中没有环，所有的顶点都位于一条直线上。</li>
+<li><strong>连通性</strong>：路径图是连通图，任意两个顶点之间都有唯一的一条路径。</li>
+<li><strong>直径</strong>：路径图的直径为 $ n-1 $，即从第一个顶点到最后一个顶点的距离。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>$ P_3 $：顶点集 $ V = {1, 2, 3} $，边集 $ E = {{1, 2}, {2, 3}} $。该图是一个线性结构，顶点 1、2、3 依次相连。</li>
+</ul>
+</li>
+</ul>
+<h4>2. 环图 $ C_n $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：环图 $ C_n $ 是由 $ n $ 个顶点和 $ n $ 条边构成的图，每个顶点与两个相邻顶点相连，形成一个闭合的环。形式化定义为：
+$$
+C_n = { V = {1, 2, \ldots, n}, E = {{i, i+1} | 1 \leq i &lt; n} \cup {{n, 1}} }
+$$</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>循环性</strong>：环图中每个顶点都有两个邻居，图的结构是循环的。</li>
+<li><strong>连通性</strong>：环图是连通图，且任意两个顶点之间都有两条不同的路径。</li>
+<li><strong>直径</strong>：环图的直径为 $ \lfloor n/2 \rfloor $，即最大距离是顶点数的一半（向下取整）。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>$ C_4 $：顶点集 $ V = {1, 2, 3, 4} $，边集 $ E = {{1, 2}, {2, 3}, {3, 4}, {4, 1}} $。该图形成一个四边形，每个顶点连接两个邻居。</li>
+</ul>
+</li>
+</ul>
+<h4>3. 完全图 $ K_n $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：完全图 $ K_n $ 是由 $ n $ 个顶点和 $ \binom{n}{2} $ 条边构成的图，任意两个顶点之间都有一条边。形式化定义为：
+$$
+K_n = { V = {1, 2, \ldots, n}, E = {{i, j} | 1 \leq i &lt; j \leq n} }
+$$</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>最大连通性</strong>：完全图是连通性最强的图，任意两个顶点之间都有直接连接。</li>
+<li><strong>直径</strong>：完全图的直径为 1，因为任意两个顶点之间都直接相连。</li>
+<li><strong>对称性</strong>：完全图是高度对称的，每个顶点的度数都是 $ n-1 $。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>$ K_4 $：顶点集 $ V = {1, 2, 3, 4} $，边集 $ E = {{1, 2}, {1, 3}, {1, 4}, {2, 3}, {2, 4}, {3, 4}} $。每个顶点都与其他所有顶点相连。</li>
+</ul>
+</li>
+</ul>
+<h4>4. 完全二部图 $ K_{n_1, n_2} $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：完全二部图 $ K_{n_1, n_2} $ 是由两个不相交的顶点集 $ V_1 $ 和 $ V_2 $ 构成的图，所有的边都连接 $ V_1 $ 和 $ V_2 $ 中的顶点。形式化定义为：
+$$
+K_{n_1, n_2} = { V = V_1 \cup V_2, E = {{u, v} | u \in V_1, v \in V_2} }
+$$</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>二分性</strong>：完全二部图中的顶点可以分成两个集合 $ V_1 $ 和 $ V_2 $，同一集合内的顶点之间没有边。</li>
+<li><strong>连通性</strong>：完全二部图是连通的，且从任意一个顶点到另一个顶点的最短路径长度为 2。</li>
+<li><strong>度数</strong>：$ V_1 $ 中每个顶点的度数为 $ n_2 $，$ V_2 $ 中每个顶点的度数为 $ n_1 $。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>$ K_{2, 3} $：顶点集 $ V = {1, 2} \cup {3, 4, 5} $，边集 $ E = {{1, 3}, {1, 4}, {1, 5}, {2, 3}, {2, 4}, {2, 5}} $。这是一个“星形”结构的二部图。</li>
+</ul>
+</li>
+</ul>
+<h4>5. 星图 $ S_n $</h4>
+<ul>
+<li>
+<p><strong>定义</strong>：星图 $ S_n $ 是一个特殊的完全二部图 $ K_{1, n-1} $，由一个中心顶点和 $ n-1 $ 个外围顶点构成。形式化定义为：
+$$
+S_n = { V = {0, 1, 2, \ldots, n-1}, E = {{0, i} | 1 \leq i &lt; n} }
+$$</p>
+</li>
+<li>
+<p><strong>性质</strong>：</p>
+<ul>
+<li><strong>中心性</strong>：星图有一个中心顶点，所有其他顶点都直接连接到中心顶点。</li>
+<li><strong>直径</strong>：星图的直径为 2，任意两个非中心顶点之间的路径长度为 2。</li>
+<li><strong>度数</strong>：中心顶点的度数为 $ n-1 $，外围顶点的度数为 1。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例</strong>：</p>
+<ul>
+<li>$ S_5 $：顶点集 $ V = {0, 1, 2, 3, 4} $，边集 $ E = {{0, 1}, {0, 2}, {0, 3}, {0, 4}} $。中心顶点 0 与所有其他顶点相连，形成一个星形结构。</li>
+</ul>
+</li>
+</ul>
+<h3>重要图类型的实际应用</h3>
+<ul>
+<li>
+<p><strong>路径图和环图</strong>：</p>
+<ul>
+<li><strong>通信网络</strong>：用于模拟线性和环形网络结构，路径图可用于链路状态路由，环图可用于环网拓扑。</li>
+<li><strong>生物信息学</strong>：在DNA和蛋白质结构分析中，路径图和环图可以描述分子链和环状分子。</li>
+</ul>
+</li>
+<li>
+<p><strong>完全图</strong>：</p>
+<ul>
+<li><strong>社交网络</strong>：完全图可以用于模拟一个小团体中的所有成员彼此相连的关系。</li>
+<li><strong>优化问题</strong>：在旅行商问题和其他组合优化问题中，完全图用于表示所有可能的路线或连接。</li>
+</ul>
+</li>
+<li>
+<p><strong>完全二部图和星图</strong>：</p>
+<ul>
+<li><strong>匹配问题</strong>：完全二部图在婚姻匹配、任务分配等问题中有广泛应用。</li>
+<li><strong>网络设计</strong>：星图用于设计高效的集中式网络，如星型拓扑结构的局域网（LAN）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3>图不变量的详细讲解</h3>
+<p>图的不变量是描述图结构的一些基本特征和量度，这些不变量只依赖于图的结构，而不依赖于顶点的标签。下面是对一些常见图不变量的详细讲解，包括它们的具体含义和计算公式。</p>
+<h4>1. 顶点数 $ n $</h4>
+<ul>
+<li><strong>定义</strong>：图 $ G = (V, E) $ 中顶点的数量。</li>
+<li><strong>公式</strong>：$ n = |V| $</li>
+<li><strong>示例</strong>：对于图 $ G $ 有顶点集 $ V = {1, 2, 3} $，则 $ n = 3 $。</li>
+</ul>
+<h4>2. 边数 $ m $</h4>
+<ul>
+<li><strong>定义</strong>：图 $ G $ 中边的数量。</li>
+<li><strong>公式</strong>：$ m = |E| $</li>
+<li><strong>示例</strong>：对于图 $ G $ 有边集 $ E = {{1, 2}, {2, 3}} $，则 $ m = 2 $。</li>
+</ul>
+<h4>3. 最大度数 $ \Delta $</h4>
+<ul>
+<li><strong>定义</strong>：图 $ G $ 中顶点的最大度数。</li>
+<li><strong>公式</strong>：$ \Delta = \max_{u \in V} \deg(u) $</li>
+<li><strong>示例</strong>：对于图 $ G $，顶点的度数分别为 $ 1, 2, 2 $，则 $ \Delta = 2 $。</li>
+</ul>
+<h4>4. 最小度数 $ \delta $</h4>
+<ul>
+<li><strong>定义</strong>：图 $ G $ 中顶点的最小度数。</li>
+<li><strong>公式</strong>：$ \delta = \min_{u \in V} \deg(u) $</li>
+<li><strong>示例</strong>：对于图 $ G $，顶点的度数分别为 $ 1, 2, 2 $，则 $ \delta = 1 $。</li>
+</ul>
+<h4>5. 直径 $ D $</h4>
+<ul>
+<li><strong>定义</strong>：图中任意两个顶点之间最短路径长度的最大值。</li>
+<li><strong>公式</strong>：$ D = \max_{u, v \in V} d(u, v) $</li>
+<li><strong>示例</strong>：对于图 $ G $，若顶点间最短路径的最大值为 3，则 $ D = 3 $。</li>
+</ul>
+<h4>6. 半径 $ r $</h4>
+<ul>
+<li><strong>定义</strong>：图中所有顶点的偏心度的最小值。</li>
+<li><strong>公式</strong>：$ r = \min_{u \in V} \operatorname{ecc}(u) $</li>
+<li><strong>示例</strong>：对于图 $ G $，若顶点的最小偏心度为 2，则 $ r = 2 $。</li>
+</ul>
+<h4>7. 独立数 $ \alpha $</h4>
+<ul>
+<li><strong>定义</strong>：图中最大的独立集的大小。独立集是指图中没有任何两个顶点相连的顶点集。</li>
+<li><strong>公式</strong>：无特定公式，需通过算法计算。</li>
+<li><strong>示例</strong>：对于图 $ G $，若最大的独立集为 $ {1, 3} $，则 $ \alpha = 2 $。</li>
+</ul>
+<h4>8. 团数 $ \omega $</h4>
+<ul>
+<li><strong>定义</strong>：图中最大的完全子图的大小。完全子图是指任意两个顶点都有边相连的子图。</li>
+<li><strong>公式</strong>：无特定公式，需通过算法计算。</li>
+<li><strong>示例</strong>：对于图 $ G $，若最大的完全子图为 $ {1, 2, 3} $，则 $ \omega = 3 $。</li>
+</ul>
+<h4>9. 色数 $ \chi $</h4>
+<ul>
+<li><strong>定义</strong>：将图的顶点涂色，使得相邻顶点有不同颜色所需的最少颜色数。</li>
+<li><strong>公式</strong>：无特定公式，需通过算法计算。</li>
+<li><strong>示例</strong>：对于图 $ G $，若最少需要 3 种颜色使得相邻顶点不同色，则 $ \chi = 3 $。</li>
+</ul>
+<h4>10. 控制数 $ \gamma $</h4>
+<ul>
+<li><strong>定义</strong>：图中最小的控制集的大小。控制集是指图中任意一个顶点不在集合中的所有顶点至少与集合中的一个顶点相连。</li>
+<li><strong>公式</strong>：无特定公式，需通过算法计算。</li>
+<li><strong>示例</strong>：对于图 $ G $，若最小的控制集为 $ {1, 3} $，则 $ \gamma = 2 $。</li>
+</ul>
+<h4>11. 匹配数 $ \nu $</h4>
+<ul>
+<li><strong>定义</strong>：图中最大的匹配的大小。匹配是指一组边，其中没有任何两个边共享同一个顶点。</li>
+<li><strong>公式</strong>：无特定公式，需通过算法计算。</li>
+<li><strong>示例</strong>：对于图 $ G $，若最大的匹配为 $ {{1, 2}, {3, 4}} $，则 $ \nu = 2 $。</li>
+</ul>
+<h3>多角度分析和应用</h3>
+<h4>1. 顶点数和边数的关系</h4>
+<p><strong>问题</strong>：顶点数和边数之间有什么关系？
+<strong>分析</strong>：</p>
+<ul>
+<li>在稀疏图中，边数较少，通常 $ m \approx n $。</li>
+<li>在稠密图中，边数接近最大值 $ m \approx \frac{n(n-1)}{2} $。</li>
+<li>完全图 $ K_n $ 中，边数为 $ \binom{n}{2} = \frac{n(n-1)}{2} $。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>在网络设计中，边数反映了连接的成本，顶点数反映了节点的数量。</li>
+</ul>
+<h4>2. 最大度数和最小度数的分布</h4>
+<p><strong>问题</strong>：最大度数和最小度数的分布如何影响图的性质？
+<strong>分析</strong>：</p>
+<ul>
+<li>最大度数反映了图中最“活跃”的顶点，最小度数反映了图中最“孤立”的顶点。</li>
+<li>高度数的顶点在网络中可能是关键节点（如互联网中的路由器）。</li>
+<li>度数分布可以用于分析图的整体结构，如幂律分布反映了无标度网络的特性。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>社交网络分析中，度数高的用户可能是影响力大的用户。</li>
+<li>在分子网络中，度数高的分子可能是功能关键的分子。</li>
+</ul>
+<h4>3. 直径和半径的意义</h4>
+<p><strong>问题</strong>：直径和半径分别反映了什么？
+<strong>分析</strong>：</p>
+<ul>
+<li>直径反映了图中最远两个顶点之间的距离，体现了图的“宽度”。</li>
+<li>半径反映了图中最中心顶点的最大距离，体现了图的“紧凑度”。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>在通信网络中，较小的直径意味着更快的信息传播速度。</li>
+<li>在物流网络中，中心顶点可以作为配送中心以优化运输路径。</li>
+</ul>
+<h4>4. 独立数和团数的应用</h4>
+<p><strong>问题</strong>：独立数和团数如何应用于实际问题？
+<strong>分析</strong>：</p>
+<ul>
+<li>独立数可以用于调度问题，确保没有冲突的资源分配。</li>
+<li>团数可以用于聚类分析，识别紧密相连的顶点群体。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>在考试安排中，独立数可以用于安排没有冲突的考试时间。</li>
+<li>在社交网络中，团数可以用于发现密集的社交群体。</li>
+</ul>
+<h4>5. 色数的计算</h4>
+<p><strong>问题</strong>：色数在图论中的作用是什么？
+<strong>分析</strong>：</p>
+<ul>
+<li>色数用于图的顶点着色问题，确保相邻顶点不同色。</li>
+<li>应用场景包括地图着色、频率分配等。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>在无线网络中，色数用于频率分配，避免相邻节点使用相同频率。</li>
+<li>在地图绘制中，色数用于区域着色，确保相邻区域不同色。</li>
+</ul>
+<h4>6. 控制数和匹配数的应用</h4>
+<p><strong>问题</strong>：控制数和匹配数分别在什么场景下应用？
+<strong>分析</strong>：</p>
+<ul>
+<li>控制数用于监控问题，确保所有节点都在监控范围内。</li>
+<li>匹配数用于配对问题，如婚姻匹配、任务分配等。</li>
+</ul>
+<p><strong>应用</strong>：</p>
+<ul>
+<li>在监控系统中，控制数用于最小化监控设备数量。</li>
+<li>在任务分配中，匹配数用于最优分配任务，确保任务之间没有冲突。</li>
+</ul>
+<h3>总结</h3>
+<p>图不变量是图论中描述图结构和性质的重要工具。通过理解这些不变量的定义、公式和应用，可以更好地解决实际问题并优化系统性能。这些不变量在网络设计、路径规划、社交网络分析、物流优化等多个领域中都有重要的应用。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03-gru lstm compare</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>GRU相较于LSTM的改动及参数量</h2>
+<h3>一、GRU（门控循环单元）的改动</h3>
+<p>GRU是由Cho等人在2014年提出的一种简化版的LSTM，其设计目的是为了降低计算复杂度，同时保持或提高性能。GRU与LSTM的主要区别如下：</p>
+<ol>
+<li>
+<p><strong>结构简化</strong>：</p>
+<ul>
+<li>GRU将LSTM中的输入门和遗忘门合并为一个更新门，减少了计算量。</li>
+<li>GRU没有单独的单元状态，只有一个隐藏状态，因此不需要像LSTM那样维护单元状态。</li>
+</ul>
+</li>
+<li>
+<p><strong>门控机制</strong>：</p>
+<ul>
+<li>LSTM有三个门：输入门、遗忘门和输出门，而GRU只有两个门：更新门和重置门。</li>
+</ul>
+</li>
+</ol>
+<h3>二、GRU的状态更新步骤</h3>
+<ol>
+<li>
+<p><strong>更新门 $ z_t $</strong>：</p>
+<ul>
+<li>控制当前隐藏状态与前一隐藏状态的混合程度。
+$$
+z_t = \sigma(W_z \cdot [h_{t-1}, x_t])
+$$</li>
+</ul>
+</li>
+<li>
+<p><strong>重置门 $ r_t $</strong>：</p>
+<ul>
+<li>控制当前输入对前一隐藏状态的影响程度。
+$$
+r_t = \sigma(W_r \cdot [h_{t-1}, x_t])
+$$</li>
+</ul>
+</li>
+<li>
+<p><strong>候选隐藏状态 $ \tilde{h}_t $</strong>：</p>
+<ul>
+<li>结合当前输入和前一隐藏状态计算出候选隐藏状态。
+$$
+\tilde{h}<em t-1="">t = \tanh(W \cdot [r_t \odot h</em>, x_t])
+$$</li>
+</ul>
+</li>
+<li>
+<p><strong>隐藏状态 $ h_t $</strong>：</p>
+<ul>
+<li>根据更新门的值，决定当前隐藏状态的更新方式。
+$$
+h_t = (1 - z_t) \odot h_{t-1} + z_t \odot \tilde{h}_t
+$$</li>
+</ul>
+</li>
+</ol>
+<h3>三、GRU的参数量</h3>
+<p>假设输入向量的维度为 $ n $，隐藏状态的维度为 $ m $，则GRU的参数量如下：</p>
+<ol>
+<li>
+<p><strong>更新门参数</strong>：</p>
+<ul>
+<li>权重矩阵 $ W_z \in \mathbb{R}^{m \times (m + n)} $ 的参数量为 $ m \times (m + n) $</li>
+<li>偏置向量 $ b_z \in \mathbb{R}^m $ 的参数量为 $ m $</li>
+</ul>
+</li>
+<li>
+<p><strong>重置门参数</strong>：</p>
+<ul>
+<li>权重矩阵 $ W_r \in \mathbb{R}^{m \times (m + n)} $ 的参数量为 $ m \times (m + n) $</li>
+<li>偏置向量 $ b_r \in \mathbb{R}^m $ 的参数量为 $ m $</li>
+</ul>
+</li>
+<li>
+<p><strong>候选隐藏状态参数</strong>：</p>
+<ul>
+<li>权重矩阵 $ W \in \mathbb{R}^{m \times (m + n)} $ 的参数量为 $ m \times (m + n) $</li>
+<li>偏置向量 $ b \in \mathbb{R}^m $ 的参数量为 $ m $</li>
+</ul>
+</li>
+</ol>
+<p>综上所述，GRU的总参数量为：
+$$ 3 \times (m \times (m + n) + m) = 3m \times (m + n + 1) $$</p>
+<h3>四、总结</h3>
+<p>GRU通过简化门控机制，减少了计算复杂度，同时保持了与LSTM相近的性能。在实际应用中，GRU比LSTM更高效，尤其在计算资源有限的情况下。其参数量也相对较少，具体计算如上所示。</p>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">Understanding LSTM Networks</a></li>
+<li><a href="https://arxiv.org/abs/1406.1078">Cho et al., 2014. Learning Phrase Representations using RNN Encoder–Decoder for Statistical Machine Translation</a></li>
+<li><a href="https://www.deeplearning.ai/ai-notes/comparison-lstm-gru-rnn/">Comparison of LSTM and GRU on Speech Recognition</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

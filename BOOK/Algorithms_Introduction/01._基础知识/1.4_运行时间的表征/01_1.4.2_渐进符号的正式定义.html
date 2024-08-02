@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.4.2 渐进符号的正式定义</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_1.4.2_渐进符号的正式定义</h1>
+<pre><code>Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 01_1.4.2_渐进符号的正式定义
+</code></pre>
+<h3>深度分析：渐进符号的正式定义</h3>
+<p>在算法分析中，渐进符号用于描述算法的时间复杂度和空间复杂度。这些符号帮助我们理解和比较不同算法在大规模输入下的性能表现。下面将详细介绍几种常用的渐进符号，包括O符号、Ω符号、Θ符号及其正式定义、直观理解和数学证明。</p>
+<h4>O符号（大O符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ O(g(n)) $（读作“大O的g的n”）定义为：
+$$ O(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ 0 \leq f(n) \leq c \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>O符号提供了一个函数的渐进上界。也就是说，f(n)在n趋于无穷大时不会超过g(n)的某个常数倍。通常用来描述算法的最坏情况复杂度。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ O(n^2)，因为当n足够大时，4n^2是主导项，其他项相对较小。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有0 ≤ 4n^2 + 100n + 500 ≤ c * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ 0 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c $$</p>
+<p>选择n0 = 1时，c = 604；
+选择n0 = 10时，c = 19；
+选择n0 = 100时，c = 5.05。</p>
+<p>可以看出，随着n0的增大，c逐渐接近主导项的系数4。因此，4n^2 + 100n + 500 ∈ O(n^2)。</p>
+<h5>应用</h5>
+<p>在分析算法时，O符号常用来描述最坏情况。例如，快速排序（Quicksort）的最坏情况复杂度是O(n^2)，但其平均情况复杂度是O(n log n)。</p>
+<h4>Ω符号（大Ω符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ Ω(g(n)) $（读作“大Ω的g的n”）定义为：
+$$ Ω(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ f(n) \geq c \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>Ω符号提供了一个函数的渐进下界。即，f(n)在n趋于无穷大时至少是g(n)的某个常数倍。通常用来描述算法的最好情况复杂度。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ Ω(n^2)，因为当n足够大时，4n^2是主导项，使得函数值至少是n^2的某个常数倍。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有f(n) ≥ c * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ 4 + \frac{100}{n} + \frac{500}{n^2} \geq c $$</p>
+<p>选择n0 = 1时，c = 4；
+选择n0 = 100时，c = 4。</p>
+<p>可以看出，主导项系数足以提供渐进下界。因此，4n^2 + 100n + 500 ∈ Ω(n^2)。</p>
+<h5>应用</h5>
+<p>Ω符号常用来描述算法的最好情况。例如，插入排序（Insertion Sort）的最好情况复杂度是Ω(n)，当输入数组已经排序时达到此复杂度。</p>
+<h4>Θ符号（Theta符号）</h4>
+<h5>定义</h5>
+<p>对于给定的函数 $ g(n) $，我们将 $ Θ(g(n)) $（读作“Theta的g的n”）定义为：
+$$ Θ(g(n)) = { f(n) \mid \text{存在正的常数} \ c_1 \ 、c_2 \ 和 \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) } $$</p>
+<h5>直观理解</h5>
+<p>Θ符号表示f(n)与g(n)在n趋于无穷大时是渐进相等的。即f(n)的增长速率与g(n)相同。例如，假设f(n) = 4n^2 + 100n + 500，我们可以说f(n) ∈ Θ(n^2)。</p>
+<h5>数学证明</h5>
+<p>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c1, c2和n0，使得对所有n ≥ n0，有c1 * n^2 ≤ f(n) ≤ c2 * n^2。
+首先，将不等式两边除以n^2，得到：
+$$ c_1 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c_2 $$</p>
+<p>选择n0 = 1时，c1 = 4，c2 = 604；
+选择n0 = 100时，c1 = 4，c2 = 5.05。</p>
+<p>可以看出，这个范围随着n的增大逐渐缩小。因此，4n^2 + 100n + 500 ∈ Θ(n^2)。</p>
+<h5>应用</h5>
+<p>Θ符号用于描述算法的渐进准确复杂度。例如，归并排序（Merge Sort）的时间复杂度是Θ(n log n)，无论最坏情况还是最好情况。</p>
+<h4>渐进符号的正式定义</h4>
+<p>渐进符号的正式定义提供了严格的数学基础，用于分析和比较不同算法的复杂度。以下是这些符号的详细定义及其应用：</p>
+<ol>
+<li>
+<p><strong>大O符号（O符号）</strong>：</p>
+<ul>
+<li>提供上界，表示算法在最坏情况下的复杂度。</li>
+<li>定义：存在正数c和n0，使得对所有n ≥ n0，f(n) ≤ c * g(n)。</li>
+<li>应用：描述最坏情况复杂度。</li>
+</ul>
+</li>
+<li>
+<p><strong>大Ω符号（Ω符号）</strong>：</p>
+<ul>
+<li>提供下界，表示算法在最好情况下的复杂度。</li>
+<li>定义：存在正数c和n0，使得对所有n ≥ n0，f(n) ≥ c * g(n)。</li>
+<li>应用：描述最好情况复杂度。</li>
+</ul>
+</li>
+<li>
+<p><strong>Theta符号（Θ符号）</strong>：</p>
+<ul>
+<li>提供上下界，表示算法在平均情况下的复杂度。</li>
+<li>定义：存在正数c1, c2和n0，使得对所有n ≥ n0，c1 * g(n) ≤ f(n) ≤ c2 * g(n)。</li>
+<li>应用：描述平均情况复杂度。</li>
+</ul>
+</li>
+</ol>
+<p>通过这些符号，算法分析变得更加直观和严谨，帮助我们更好地理解和比较不同算法在大规模输入下的表现。</p>
+<hr>
+<h3>渐进符号的正式定义及其详细说明</h3>
+<p>以下是关于O符号、Ω符号和Θ符号的完整、详细的表格，包含定义、直观理解、数学证明和应用示例：</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>正式定义</th>
+<th>直观理解</th>
+<th>数学证明</th>
+<th>应用示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>O符号（大O符号）</strong></td>
+<td>对于给定的函数 $ g(n) $，我们将 $ O(g(n)) $ 定义为：&lt;br&gt; $ O(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ 0 \leq f(n) \leq c \cdot g(n) } \</td>
+<td>O符号提供了一个函数的渐进上界。即f(n)在n趋于无穷大时不会超过g(n)的某个常数倍。通常用来描述算法的最坏情况复杂度。</td>
+<td>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有0 ≤ 4n^2 + 100n + 500 ≤ c * n^2。&lt;br&gt;将不等式两边除以n^2，得到：&lt;br&gt; $ 0 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c $&lt;br&gt;选择n0 = 1时，c = 604；选择n0 = 10时，c = 19；选择n0 = 100时，c = 5.05。可以看出，随着n0的增大，c逐渐接近主导项的系数4。因此，4n^2 + 100n + 500 ∈ O(n^2)。</td>
+<td>快速排序（Quicksort）的最坏情况复杂度是O(n^2)，但其平均情况复杂度是O(n log n)。</td>
+</tr>
+<tr>
+<td><strong>Ω符号（大Ω符号）</strong></td>
+<td>对于给定的函数 $ g(n) $，我们将 $ Ω(g(n)) $ 定义为：&lt;br&gt; $ Ω(g(n)) = { f(n) \mid \text{存在正的常数} \ c \ \text{和} \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ f(n) \geq c \cdot g(n) } \</td>
+<td>Ω符号提供了一个函数的渐进下界。即f(n)在n趋于无穷大时至少是g(n)的某个常数倍。通常用来描述算法的最好情况复杂度。</td>
+<td>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c和n0，使得对所有n ≥ n0，有f(n) ≥ c * n^2。&lt;br&gt;将不等式两边除以n^2，得到：&lt;br&gt; $ 4 + \frac{100}{n} + \frac{500}{n^2} \geq c $&lt;br&gt;选择n0 = 1时，c = 4；选择n0 = 100时，c = 4。可以看出，主导项系数足以提供渐进下界。因此，4n^2 + 100n + 500 ∈ Ω(n^2)。</td>
+<td>插入排序（Insertion Sort）的最好情况复杂度是Ω(n)，当输入数组已经排序时达到此复杂度。</td>
+</tr>
+<tr>
+<td><strong>Θ符号（Theta符号）</strong></td>
+<td>对于给定的函数 $ g(n) $，我们将 $ Θ(g(n)) $ 定义为：&lt;br&gt; $ Θ(g(n)) = { f(n) \mid \text{存在正的常数} \ c_1 \ 、c_2 \ 和 \ n_0 \ ，使得对所有的} \ n \geq n_0 \ ，有 \ c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) } \</td>
+<td>Θ符号表示f(n)与g(n)在n趋于无穷大时是渐进相等的。即f(n)的增长速率与g(n)相同。</td>
+<td>假设f(n) = 4n^2 + 100n + 500，我们需要找到正的常数c1, c2和n0，使得对所有n ≥ n0，有c1 * n^2 ≤ f(n) ≤ c2 * n^2。&lt;br&gt;将不等式两边除以n^2，得到：&lt;br&gt; $ c_1 \leq 4 + \frac{100}{n} + \frac{500}{n^2} \leq c_2 $&lt;br&gt;选择n0 = 1时，c1 = 4，c2 = 604；选择n0 = 100时，c1 = 4，c2 = 5.05。可以看出，这个范围随着n的增大逐渐缩小。因此，4n^2 + 100n + 500 ∈ Θ(n^2)。</td>
+<td>归并排序（Merge Sort）的时间复杂度是Θ(n log n)，无论最坏情况还是最好情况。</td>
+</tr>
+</tbody>
+</table>
+<h3>渐进符号的正式定义及应用示例</h3>
+<ol>
+<li>
+<p><strong>O符号（大O符号）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：存在正数c和n0，使得对所有n ≥ n0，f(n) ≤ c * g(n)。</li>
+<li><strong>直观理解</strong>：提供上界，表示算法在最坏情况下的复杂度。</li>
+<li><strong>数学证明</strong>：选择合适的c和n0，使得函数满足不等式关系。</li>
+<li><strong>应用示例</strong>：快速排序的最坏情况复杂度是O(n^2)。</li>
+</ul>
+</li>
+<li>
+<p><strong>Ω符号（大Ω符号）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：存在正数c和n0，使得对所有n ≥ n0，f(n) ≥ c * g(n)。</li>
+<li><strong>直观理解</strong>：提供下界，表示算法在最好情况下的复杂度。</li>
+<li><strong>数学证明</strong>：选择合适的c和n0，使得函数满足不等式关系。</li>
+<li><strong>应用示例</strong>：插入排序的最好情况复杂度是Ω(n)。</li>
+</ul>
+</li>
+<li>
+<p><strong>Θ符号（Theta符号）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：存在正数c1, c2和n0，使得对所有n ≥ n0，c1 * g(n) ≤ f(n) ≤ c2 * g(n)。</li>
+<li><strong>直观理解</strong>：提供上下界，表示算法在平均情况下的复杂度。</li>
+<li><strong>数学证明</strong>：选择合适的c1, c2和n0，使得函数满足不等式关系。</li>
+<li><strong>应用示例</strong>：归并排序的时间复杂度是Θ(n log n)。</li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_1.4.2_渐进符号的正式定义
+
+"""
+Lecture: 01._基础知识/1.4_运行时间的表征
+Content: 01_1.4.2_渐进符号的正式定义
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

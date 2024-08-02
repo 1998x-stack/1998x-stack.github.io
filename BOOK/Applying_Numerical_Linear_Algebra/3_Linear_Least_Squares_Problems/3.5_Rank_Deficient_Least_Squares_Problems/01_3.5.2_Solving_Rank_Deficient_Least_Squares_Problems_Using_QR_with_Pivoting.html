@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.5.2 Solving Rank Deficient Least Squares Problems Using QR with Pivoting</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_3.5.2_Solving_Rank-Deficient_Least_Squares_Problems_Using_QR_with_Pivoting</h1>
+<pre><code>Lecture: 3_Linear_Least_Squares_Problems/3.5_Rank-Deficient_Least_Squares_Problems
+Content: 01_3.5.2_Solving_Rank-Deficient_Least_Squares_Problems_Using_QR_with_Pivoting
+</code></pre>
+<h3>3.5.2 使用 QR 分解解决秩缺陷的最小二乘问题</h3>
+<h4>引言</h4>
+<p>秩缺陷问题在数值计算中是非常常见的，尤其是在处理大型矩阵时。解决秩缺陷的最小二乘问题的方法有很多，其中QR分解是一种非常有效的方法。通过对矩阵进行QR分解，我们可以在保持数值稳定性的同时，找到最小范数解。</p>
+<h4>QR 分解及其应用</h4>
+<p>QR分解是一种将矩阵 $ A $ 分解为正交矩阵 $ Q $ 和上三角矩阵 $ R $ 的方法，即：
+$$ A = QR $$
+对于秩缺陷矩阵，我们可以通过列主元选择（pivoting）来进行QR分解，从而提高计算的数值稳定性。这种方法称为QR分解带列主元选择（QR with column pivoting）。</p>
+<h4>具体步骤</h4>
+<ol>
+<li>
+<p><strong>计算QR分解带列主元选择</strong>：
+将矩阵 $ A $ 分解为：
+$$ AP = QR $$
+其中，$ P $ 是一个列置换矩阵，$ Q $ 是一个正交矩阵，$ R $ 是一个上三角矩阵。</p>
+</li>
+<li>
+<p><strong>处理上三角矩阵 $ R $</strong>：
+将 $ R $ 分块为：
+$$
+R = \begin{bmatrix}
+R_{11} &amp; R_{12} \
+0 &amp; R_{22}
+\end{bmatrix}
+$$
+其中 $ R_{11} $ 是非奇异的 $ r \times r $ 矩阵，$ R_{22} $ 是接近零的（或零）小矩阵。</p>
+</li>
+<li>
+<p><strong>构造广义逆矩阵</strong>：
+对于 $ R_{22} $ 的小值部分，将其视为零，从而构造广义逆矩阵 $ R^+ $。</p>
+</li>
+<li>
+<p><strong>计算最小范数解</strong>：
+使用广义逆矩阵 $ R^+ $ 计算最小范数解 $ x $：
+$$ x = P^T R^+ Q^T b $$</p>
+</li>
+</ol>
+<h4>误差分析</h4>
+<p>在实际计算中，舍入误差会影响QR分解的精度。为了减少误差的影响，QR分解带列主元选择提供了一种更为稳定的方法，可以更准确地计算矩阵的秩并找到最小范数解。</p>
+<h4>实例分析</h4>
+<p>考虑一个 3x3 矩阵 $ A $：
+$$ A = \begin{bmatrix}
+1 &amp; 2 &amp; 3 \
+4 &amp; 5 &amp; 6 \
+7 &amp; 8 &amp; 9
+\end{bmatrix} $$
+矩阵 $ A $ 明显是秩缺陷的，因为它的第三行是第一行和第二行的线性组合。我们希望通过QR分解带列主元选择找到最小二乘解。</p>
+<ol>
+<li>
+<p><strong>计算 QR 分解</strong>：
+$$ AP = QR $$
+得到：
+$$ P = \begin{bmatrix}
+0 &amp; 1 &amp; 0 \
+1 &amp; 0 &amp; 0 \
+0 &amp; 0 &amp; 1
+\end{bmatrix}, \quad Q = \begin{bmatrix}
+-0.123 &amp; 0.904 &amp; 0.41 \
+-0.492 &amp; 0.301 &amp; -0.816 \
+-0.861 &amp; -0.301 &amp; 0.41
+\end{bmatrix}, \quad R = \begin{bmatrix}
+-8.124 &amp; -9.601 &amp; -11.077 \
+0 &amp; -1.242 &amp; -2.485 \
+0 &amp; 0 &amp; 0
+\end{bmatrix} $$</p>
+</li>
+<li>
+<p><strong>处理上三角矩阵 $ R $</strong>：
+$$
+R_{11} = \begin{bmatrix}
+-8.124 &amp; -9.601 \
+0 &amp; -1.242
+\end{bmatrix}, \quad R_{22} = \begin{bmatrix}
+0
+\end{bmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>构造广义逆矩阵</strong>：
+$$
+R^+ = \begin{bmatrix}
+-0.123 &amp; 0.904 \
+-0.492 &amp; 0.301 \
+-0.861 &amp; -0.301
+\end{bmatrix}
+$$</p>
+</li>
+<li>
+<p><strong>计算最小范数解</strong>：
+$$
+x = P^T R^+ Q^T b
+$$</p>
+</li>
+</ol>
+<h4>小结</h4>
+<p>使用QR分解带列主元选择可以有效解决秩缺陷的最小二乘问题，并且在数值稳定性上优于传统的QR分解和SVD方法。通过引入列主元选择，我们可以更准确地识别矩阵的秩，并找到最小范数解。</p>
+<h3>总结</h3>
+<p>QR分解带列主元选择提供了一种有效的解决秩缺陷最小二乘问题的方法。在处理大型矩阵时，它的数值稳定性和计算效率都得到了显著提高。通过详细的步骤分析和实例演示，我们可以看到这种方法在实际应用中的优势和重要性。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_3.5.2_Solving_Rank-Deficient_Least_Squares_Problems_Using_QR_with_Pivoting
+
+"""
+Lecture: 3_Linear_Least_Squares_Problems/3.5_Rank-Deficient_Least_Squares_Problems
+Content: 01_3.5.2_Solving_Rank-Deficient_Least_Squares_Problems_Using_QR_with_Pivoting
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

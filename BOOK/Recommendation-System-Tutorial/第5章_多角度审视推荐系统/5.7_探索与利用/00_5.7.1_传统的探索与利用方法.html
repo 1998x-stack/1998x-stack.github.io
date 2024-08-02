@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>5.7.1 传统的探索与利用方法</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_5.7.1 传统的探索与利用方法</h1>
+<pre><code>Lecture: 第5章 多角度审视推荐系统/5.7 探索与利用
+Content: 00_5.7.1 传统的探索与利用方法
+</code></pre>
+<h3>5.7.1 传统的探索与利用方法</h3>
+<h4>多臂老虎机问题</h4>
+<p>传统的探索与利用方法旨在解决多臂老虎机问题（Multi-Armed Bandit problem, MAB）。这个问题可以用以下情景描述：一个人面对一排外表相同但回报期望不同的老虎机，在不知道每个老虎机的回报期望和概率分布的情况下，如何在有限的尝试次数内最大化收益。这与推荐系统中面临的问题类似：推荐系统希望在向用户推荐物品时，通过不断探索找到收益最高的物品，以获得最佳的整体收益。</p>
+<h4>主要算法</h4>
+<p>在传统的探索与利用方法中，常见的算法包括：</p>
+<ol>
+<li>
+<p><strong>ε-Greedy（ε贪婪）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：在这个算法中，以概率ε进行探索，即随机选择一个物品；以概率1-ε进行利用，即选择当前已知回报期望最高的物品。</li>
+<li><strong>优点</strong>：实现简单，适用于多种情景。</li>
+<li><strong>缺点</strong>：ε值的选择非常关键，如果ε值过大，系统会进行过多的随机探索，影响整体收益；如果ε值过小，系统可能会过早陷入局部最优解。</li>
+</ul>
+</li>
+<li>
+<p><strong>Thompson Sampling（汤普森采样）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：基于贝叶斯原理，通过对每个物品的回报率进行采样，然后选择采样值最高的物品进行推荐。每次采样后，根据实际回报更新物品的回报率分布。</li>
+<li><strong>优点</strong>：在理论和实践中表现优异，特别是在处理探索与利用的权衡时，效果显著。</li>
+<li><strong>缺点</strong>：计算复杂度较高，需要维护每个物品的回报率分布。</li>
+</ul>
+</li>
+<li>
+<p><strong>UCB（Upper Confidence Bound）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：在每个物品的平均回报基础上，加上一个基于置信区间的探索值，然后选择得分最高的物品进行推荐。公式如下：
+$$
+\text{UCB}(x_j) = \hat{\mu}_j + \sqrt{\frac{2\ln n}{n_j}}
+$$
+其中，$\hat{\mu}_j$为物品$j$的平均回报，$n_j$为物品$j$被推荐的次数，$n$为所有物品被推荐的总次数。</li>
+<li><strong>优点</strong>：理论基础扎实，能够有效平衡探索和利用。</li>
+<li><strong>缺点</strong>：需要计算置信区间，对于数据量大的情况下，计算复杂度较高。</li>
+</ul>
+</li>
+</ol>
+<h4>传统方法的局限性</h4>
+<p>传统的探索与利用方法虽然能够有效地解决新物品的探索问题，但存在以下局限性：</p>
+<ol>
+<li><strong>缺乏个性化</strong>：这些方法不考虑用户和上下文等因素，属于非个性化的探索与利用方法。这在实际应用中，特别是推荐系统需要针对不同用户进行个性化推荐时，表现出明显的不足。</li>
+<li><strong>不适用于动态环境</strong>：在动态变化的环境中，传统方法难以快速适应新情况。特别是在用户兴趣和物品流行度不断变化的情况下，传统方法可能会滞后于变化，影响推荐效果。</li>
+</ol>
+<h4>结论</h4>
+<p>尽管传统的探索与利用方法在解决推荐系统中的探索问题上具有一定的优势，但其非个性化和动态适应能力差的局限性，使得在实际应用中需要结合其他更为先进的方法，如个性化探索与利用方法和基于模型的探索与利用方法，以提升推荐系统的整体效果和用户体验。</p>
+<hr>
+<h3>传统的探索与利用方法详细表格</h3>
+<table>
+<thead>
+<tr>
+<th><strong>类别</strong></th>
+<th><strong>算法</strong></th>
+<th><strong>算法描述</strong></th>
+<th><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+<th><strong>应用场景</strong></th>
+<th><strong>实例</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>传统的探索与利用方法</strong></td>
+<td>ε-Greedy（ε贪婪）算法</td>
+<td>以概率ε进行探索，即随机选择一个物品；以概率1-ε进行利用，即选择当前已知回报期望最高的物品</td>
+<td>1. 实现简单&lt;br&gt;2. 适用于多种情景</td>
+<td>1. ε值选择关键&lt;br&gt;2. ε值过大导致过多随机探索&lt;br&gt;3. ε值过小可能陷入局部最优解</td>
+<td>适用于需要平衡探索与利用的多种场景</td>
+<td>某电商平台使用ε-Greedy算法，在用户浏览商品时，随机推荐一定比例的新商品，同时推荐热门商品，提高用户点击率和购买率</td>
+</tr>
+<tr>
+<td></td>
+<td>Thompson Sampling（汤普森采样）算法</td>
+<td>基于贝叶斯原理，通过对每个物品的回报率进行采样，然后选择采样值最高的物品进行推荐，每次采样后根据实际回报更新物品的回报率分布</td>
+<td>1. 理论和实践中表现优异&lt;br&gt;2. 处理探索与利用权衡效果显著</td>
+<td>1. 计算复杂度较高&lt;br&gt;2. 需要维护每个物品的回报率分布</td>
+<td>适用于需要实时更新回报率的场景</td>
+<td>某新闻推荐系统使用Thompson Sampling算法，根据用户阅读行为动态调整推荐策略，提高用户阅读时长和满意度</td>
+</tr>
+<tr>
+<td></td>
+<td>UCB（Upper Confidence Bound）算法</td>
+<td>在每个物品的平均回报基础上，加上一个基于置信区间的探索值，然后选择得分最高的物品进行推荐&lt;br&gt;公式：$\text{UCB}(x_j) = \hat{\mu}_j + \sqrt{\frac{2\ln n}{n_j}}$</td>
+<td>1. 理论基础扎实&lt;br&gt;2. 能有效平衡探索和利用</td>
+<td>1. 需要计算置信区间&lt;br&gt;2. 数据量大时计算复杂度高</td>
+<td>适用于需要动态平衡探索与利用的场景</td>
+<td>某视频推荐平台使用UCB算法，在用户观看视频时，动态调整推荐策略，提高用户观看时长和满意度</td>
+</tr>
+</tbody>
+</table>
+<h4>详细说明：</h4>
+<p><strong>ε-Greedy（ε贪婪）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：在这个算法中，以概率ε进行探索，即随机选择一个物品；以概率1-ε进行利用，即选择当前已知回报期望最高的物品。</li>
+<li><strong>优点</strong>：实现简单，适用于多种情景。</li>
+<li><strong>缺点</strong>：ε值的选择非常关键，如果ε值过大，系统会进行过多的随机探索，影响整体收益；如果ε值过小，系统可能会过早陷入局部最优解。</li>
+<li><strong>应用场景</strong>：适用于需要平衡探索与利用的多种场景。</li>
+<li><strong>实例</strong>：某电商平台使用ε-Greedy算法，在用户浏览商品时，随机推荐一定比例的新商品，同时推荐热门商品，提高用户点击率和购买率。</li>
+</ul>
+<p><strong>Thompson Sampling（汤普森采样）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：基于贝叶斯原理，通过对每个物品的回报率进行采样，然后选择采样值最高的物品进行推荐。每次采样后，根据实际回报更新物品的回报率分布。</li>
+<li><strong>优点</strong>：在理论和实践中表现优异，特别是在处理探索与利用的权衡时，效果显著。</li>
+<li><strong>缺点</strong>：计算复杂度较高，需要维护每个物品的回报率分布。</li>
+<li><strong>应用场景</strong>：适用于需要实时更新回报率的场景。</li>
+<li><strong>实例</strong>：某新闻推荐系统使用Thompson Sampling算法，根据用户阅读行为动态调整推荐策略，提高用户阅读时长和满意度。</li>
+</ul>
+<p><strong>UCB（Upper Confidence Bound）算法</strong>：</p>
+<ul>
+<li><strong>算法描述</strong>：在每个物品的平均回报基础上，加上一个基于置信区间的探索值，然后选择得分最高的物品进行推荐。公式如下：
+$$
+\text{UCB}(x_j) = \hat{\mu}_j + \sqrt{\frac{2\ln n}{n_j}}
+$$
+其中，$\hat{\mu}_j$为物品$j$的平均回报，$n_j$为物品$j$被推荐的次数，$n$为所有物品被推荐的总次数。</li>
+<li><strong>优点</strong>：理论基础扎实，能够有效平衡探索和利用。</li>
+<li><strong>缺点</strong>：需要计算置信区间，对于数据量大的情况下，计算复杂度较高。</li>
+<li><strong>应用场景</strong>：适用于需要动态平衡探索与利用的场景。</li>
+<li><strong>实例</strong>：某视频推荐平台使用UCB算法，在用户观看视频时，动态调整推荐策略，提高用户观看时长和满意度。</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_5.7.1 传统的探索与利用方法
+
+"""
+Lecture: 第5章 多角度审视推荐系统/5.7 探索与利用
+Content: 00_5.7.1 传统的探索与利用方法
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

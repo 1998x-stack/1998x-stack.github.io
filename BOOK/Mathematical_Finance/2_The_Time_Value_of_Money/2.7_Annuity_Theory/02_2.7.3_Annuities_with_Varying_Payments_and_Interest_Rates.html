@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.7.3 Annuities with Varying Payments and Interest Rates</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_2.7.3_Annuities_with_Varying_Payments_and_Interest_Rates</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 02_2.7.3_Annuities_with_Varying_Payments_and_Interest_Rates
+
+</code></pre>
+<h3>2.7.3 具有不同支付和利率的年金</h3>
+<h4>概述</h4>
+<p>在具有不同支付和利率的年金模型中，支付金额和利率在每个支付期和利息期都会变化。这种年金比固定支付和利率的年金更复杂。我们假设每个支付期结束时进行支付，并在每个利息期结束时计算利息。</p>
+<h4>基本概念与公式推导</h4>
+<h5>未来价值的推导</h5>
+<p>为了推导具有不同支付和利率的年金的未来价值，我们从基础概念入手，逐步建立公式。</p>
+<ol>
+<li>
+<p><strong>第一个支付期</strong>：
+在第一个支付期末，进行第一次支付 $ P_1 $。此时没有之前的余额，因此期末总额为：
+$$ S_1 = P_1 $$</p>
+</li>
+<li>
+<p><strong>第二个支付期</strong>：
+在第二个支付期末，进行第二次支付 $ P_2 $。之前的余额为 $ S_1 $，且 $ S_1 $ 在这一期间产生的利息为 $ S_1 \times \frac{r_2}{k} $。因此，第二个支付期末的总余额为：
+$$ S_2 = P_2 + S_1 \left( 1 + \frac{r_2}{k} \right) = P_2 + P_1 \left( 1 + \frac{r_2}{k} \right) $$</p>
+</li>
+<li>
+<p><strong>第三个支付期及之后</strong>：
+类似地，在第三个支付期末，进行第三次支付 $ P_3 $，之前的余额 $ S_2 $ 会产生利息 $ S_2 \times \frac{r_3}{k} $。因此，第三个支付期末的总余额为：
+$$ S_3 = P_3 + S_2 \left( 1 + \frac{r_3}{k} \right) = P_3 + \left( P_2 + P_1 \left( 1 + \frac{r_2}{k} \right) \right) \left( 1 + \frac{r_3}{k} \right) $$
+经过几次递推后，可以得到一个一般性的递推关系：
+$$ S_n = P_n + S_{n-1} \left( 1 + \frac{r_n}{k} \right) $$</p>
+</li>
+<li>
+<p><strong>总结</strong>：
+最终，第 $ n $ 个支付期末的总余额 $ S_n $ 可以表示为：
+$$ S_n = \sum_{i=1}^n P_i \prod_{j=i+1}^n \left( 1 + \frac{r_j}{k} \right) $$</p>
+</li>
+</ol>
+<h5>现值的推导</h5>
+<p>为了推导具有不同支付和利率的年金的现值，我们采用反复应用复利思想的办法，计算每个支付的现值。</p>
+<ol>
+<li>
+<p><strong>每个支付的现值</strong>：
+假设支付 $ P_i $ 发生在第 $ i $ 个支付期末，并且利率 $ r_i $ 应用于从第 $ i-1 $ 期末到第 $ i $ 期末的余额。支付 $ P_i $ 的现值为：
+$$ PV_i = \frac{P_i}{\left( 1 + \frac{r_i}{k} \right)^i} $$</p>
+</li>
+<li>
+<p><strong>总现值</strong>：
+将所有支付的现值求和，即得到年金的总现值：
+$$ PV = \sum_{i=1}^n \frac{P_i}{\prod_{j=1}^i \left( 1 + \frac{r_j}{k} \right)} $$
+或者更简化的形式：
+$$ PV = \sum_{i=1}^n P_i \left( \prod_{j=1}^i \left( 1 + \frac{r_j}{k} \right) \right)^{-1} $$</p>
+</li>
+</ol>
+<h4>例子与应用</h4>
+<h5>例子1：变动支付年金</h5>
+<p>假设一个年金的支付随着时间逐渐增加，比如养老金支付。具体情形如下：</p>
+<ul>
+<li>第一年的支付为 $ P_1 = 1000 $ 元，利率 $ r_1 = 5% $。</li>
+<li>第二年的支付为 $ P_2 = 1500 $ 元，利率 $ r_2 = 4% $。</li>
+<li>第三年的支付为 $ P_3 = 2000 $ 元，利率 $ r_3 = 6% $。</li>
+</ul>
+<p>计算该年金的未来价值和现值：</p>
+<ol>
+<li>
+<p><strong>未来价值</strong>：
+$$ S_3 = 2000 + 1500 \left( 1 + \frac{0.06}{1} \right) + 1000 \left( 1 + \frac{0.04}{1} \right) \left( 1 + \frac{0.06}{1} \right) $$</p>
+</li>
+<li>
+<p><strong>现值</strong>：
+$$ PV = \frac{2000}{(1.06)^3} + \frac{1500}{(1.04)^2 \cdot 1.06} + \frac{1000}{1.05 \cdot 1.04 \cdot 1.06} $$</p>
+</li>
+</ol>
+<h5>例子2：变动利率年金</h5>
+<p>假设年金的支付保持固定，但利率随着时间变化。具体情形如下：</p>
+<ul>
+<li>每年的支付均为 $ P = 2000 $ 元。</li>
+<li>第一年的利率 $ r_1 = 5% $。</li>
+<li>第二年的利率 $ r_2 = 6% $。</li>
+<li>第三年的利率 $ r_3 = 7% $。</li>
+</ul>
+<p>计算该年金的未来价值和现值：</p>
+<ol>
+<li>
+<p><strong>未来价值</strong>：
+$$ S_3 = 2000 + 2000 \left( 1 + \frac{0.07}{1} \right) + 2000 \left( 1 + \frac{0.06}{1} \right) \left( 1 + \frac{0.07}{1} \right) $$</p>
+</li>
+<li>
+<p><strong>现值</strong>：
+$$ PV = \frac{2000}{(1.07)^3} + \frac{2000}{(1.06)^2 \cdot 1.07} + \frac{2000}{1.05 \cdot 1.06 \cdot 1.07} $$</p>
+</li>
+</ol>
+<h4>总结</h4>
+<p>具有不同支付和利率的年金在财务规划中具有重要意义。通过上述推导和公式，我们可以更精确地计算和预测年金的未来价值和现值。这为个人理财、企业财务管理以及其他金融决策提供了科学依据。在实际应用中，这些公式帮助我们应对复杂的财务场景，如变动支付计划、利率调整、贷款分期付款等。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_2.7.3_Annuities_with_Varying_Payments_and_Interest_Rates
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 02_2.7.3_Annuities_with_Varying_Payments_and_Interest_Rates
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

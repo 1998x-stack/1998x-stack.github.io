@@ -1,0 +1,126 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>04-search matrix</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>行列递增矩阵查找数字</p>
+</blockquote>
+<p>在一个行列递增矩阵中查找目标值是一个经典的问题，通常可以通过有效的算法快速找到目标值。行列递增矩阵的特点是每一行和每一列都是递增的。</p>
+<h3>方法：从右上角开始搜索</h3>
+<p>从右上角开始搜索是一种高效的方法。因为在右上角的位置：</p>
+<ul>
+<li>如果当前值比目标值大，可以排除当前列。</li>
+<li>如果当前值比目标值小，可以排除当前行。</li>
+</ul>
+<h3>算法步骤</h3>
+<ol>
+<li>初始化行索引 <code>row</code> 为 0，列索引 <code>col</code> 为矩阵的最后一列索引。</li>
+<li>循环直到 <code>row</code> 超过矩阵的行数或 <code>col</code> 小于 0：
+<ul>
+<li>如果矩阵元素 <code>matrix[row][col]</code> 等于目标值，则返回 <code>[row, col]</code>。</li>
+<li>如果 <code>matrix[row][col]</code> 大于目标值，向左移动一列（<code>col -= 1</code>）。</li>
+<li>如果 <code>matrix[row][col]</code> 小于目标值，向下移动一行（<code>row += 1</code>）。</li>
+</ul>
+</li>
+<li>如果循环结束还没有找到目标值，返回 <code>[-1, -1]</code> 表示目标值不在矩阵中。</li>
+</ol>
+<h3>代码实现</h3>
+<pre><code class="language-python">def search_matrix(matrix, target):
+    if not matrix or not matrix[0]:
+        return [-1, -1]
+
+    rows, cols = len(matrix), len(matrix[0])
+    row, col = 0, cols - 1
+
+    while row &lt; rows and col &gt;= 0:
+        if matrix[row][col] == target:
+            return [row, col]
+        elif matrix[row][col] &gt; target:
+            col -= 1
+        else:
+            row += 1
+
+    return [-1, -1]
+
+# 示例使用
+matrix = [
+    [1, 4, 7, 11, 15],
+    [2, 5, 8, 12, 19],
+    [3, 6, 9, 16, 22],
+    [10, 13, 14, 17, 24],
+    [18, 21, 23, 26, 30]
+]
+target = 5
+print(search_matrix(matrix, target))  # 输出: [1, 1]
+
+target = 20
+print(search_matrix(matrix, target))  # 输出: [-1, -1]
+</code></pre>
+<h3>解释</h3>
+<ol>
+<li>
+<p><strong>初始化</strong>：</p>
+<ul>
+<li><code>row</code> 设置为 0，从第一行开始。</li>
+<li><code>col</code> 设置为 <code>cols - 1</code>，从最后一列开始。</li>
+</ul>
+</li>
+<li>
+<p><strong>循环搜索</strong>：</p>
+<ul>
+<li>比较当前元素与目标值。</li>
+<li>如果相等，返回当前索引 <code>[row, col]</code>。</li>
+<li>如果当前值大于目标值，向左移动一列。</li>
+<li>如果当前值小于目标值，向下移动一行。</li>
+</ul>
+</li>
+<li>
+<p><strong>结束条件</strong>：</p>
+<ul>
+<li>当 <code>row</code> 超过矩阵的行数或 <code>col</code> 小于 0 时，搜索结束，返回 <code>[-1, -1]</code> 表示未找到目标值。</li>
+</ul>
+</li>
+</ol>
+<h3>时间复杂度和空间复杂度</h3>
+<ul>
+<li><strong>时间复杂度</strong>：O(m + n)，其中 m 为矩阵的行数，n 为矩阵的列数。每次移动都会排除一行或一列，因此最多需要 m + n 步。</li>
+<li><strong>空间复杂度</strong>：O(1)，只使用了常数额外空间。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Search in a row wise and column wise sorted matrix</strong>：</p>
+<ul>
+<li>提供了详细的行列递增矩阵查找方法和实现。</li>
+<li><a href="https://www.geeksforgeeks.org/search-in-row-wise-and-column-wise-sorted-matrix/">链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Problem - Search a 2D Matrix II</strong>：</p>
+<ul>
+<li>提供了行列递增矩阵查找问题的详细描述和解决方案。</li>
+<li><a href="https://leetcode.com/problems/search-a-2d-matrix-ii/">LeetCode链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,211 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.3.5 Sequential estimation</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h4>高斯分布的序列估计</h4>
+<p>在2.3.5节中，探讨了如何通过序列估计方法来进行高斯分布参数的最大似然估计。序列方法允许一次处理一个数据点，然后丢弃这些数据点，对于在线应用和大数据集的情况尤其重要。</p>
+<h4>序列估计的数学推导</h4>
+<p>假设我们有一个从高斯分布中抽取的数据集 $ X = {x_1, x_2, \ldots, x_N} $，其均值向量为 $\mathbf{\mu}$，协方差矩阵为 $\mathbf{\Sigma}$。</p>
+<ol>
+<li>
+<p><strong>均值的序列估计</strong>：
+在给定 $ N $ 个观察值时，均值的最大似然估计为：
+$$
+\mu_{ML}^{(N)} = \frac{1}{N} \sum_{n=1}^{N} x_n
+$$
+可以拆分最后一个数据点的贡献：
+$$
+\mu_{ML}^{(N)} = \frac{1}{N} x_N + \frac{N-1}{N} \mu_{ML}^{(N-1)}
+$$
+简化为递归形式：
+$$
+\mu_{ML}^{(N)} = \mu_{ML}^{(N-1)} + \frac{1}{N} (x_N - \mu_{ML}^{(N-1)})
+$$</p>
+</li>
+<li>
+<p><strong>协方差矩阵的序列估计</strong>：
+对协方差矩阵进行类似的处理，可以得到协方差矩阵的递归更新公式：
+$$
+\Sigma_{ML}^{(N)} = \frac{N-1}{N} \Sigma_{ML}^{(N-1)} + \frac{1}{N} (x_N - \mu_{ML}^{(N-1)})(x_N - \mu_{ML}^{(N-1)})^T
+$$</p>
+</li>
+</ol>
+<h4>序列估计的优点</h4>
+<ol>
+<li><strong>内存高效</strong>：不需要将整个数据集存储在内存中，适用于大数据集。</li>
+<li><strong>实时更新</strong>：能够处理实时到达的数据点，适用于在线学习和实时预测。</li>
+</ol>
+<h3>代码实现</h3>
+<p>以下是一个基于numpy和scipy实现高斯分布序列估计的Python代码。代码按照工业标准进行了设计，包含了详细的中文注释、类型注解以及边界条件的检查。</p>
+<pre><code class="language-python">import numpy as np
+from typing import Tuple
+
+class GaussianSequentialEstimator:
+    def __init__(self, n_features: int):
+        ```
+        初始化高斯分布的序列估计类
+        
+        参数:
+        n_features (int): 数据的特征数量
+        ```
+        self.n_features = n_features
+        self.n_samples = 0
+        self.mu_ml = np.zeros(n_features)
+        self.sigma_ml = np.zeros((n_features, n_features))
+    
+    def update(self, x: np.ndarray) -&gt; None:
+        ```
+        使用新的数据点更新均值向量和协方差矩阵
+        
+        参数:
+        x (np.ndarray): 新的数据点
+        ```
+        assert x.shape[0] == self.n_features, &quot;数据点的特征数量应与初始化时指定的一致&quot;
+        
+        self.n_samples += 1
+        if self.n_samples == 1:
+            self.mu_ml = x
+            self.sigma_ml = np.zeros((self.n_features, self.n_features))
+        else:
+            prev_mu_ml = self.mu_ml.copy()
+            self.mu_ml += (x - self.mu_ml) / self.n_samples
+            self.sigma_ml = ((self.n_samples - 1) * self.sigma_ml + np.outer(x - prev_mu_ml, x - self.mu_ml)) / self.n_samples
+    
+    def get_estimates(self) -&gt; Tuple[np.ndarray, np.ndarray]:
+        ```
+        获取当前的均值向量和协方差矩阵估计值
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 均值向量和协方差矩阵
+        ```
+        return self.mu_ml, self.sigma_ml
+
+# 示例用法
+if __name__ == &quot;__main__&quot;:
+    np.random.seed(0)
+    n_features = 2
+    data = np.random.multivariate_normal(mean=[0, 0], cov=[[1, 0.5], [0.5, 1]], size=100)
+    
+    estimator = GaussianSequentialEstimator(n_features)
+    
+    for x in data:
+        estimator.update(x)
+    
+    mu_ml, sigma_ml = estimator.get_estimates()
+    
+    print(&quot;均值的最大似然估计:&quot;, mu_ml)
+    print(&quot;协方差矩阵的最大似然估计:\n&quot;, sigma_ml)
+</code></pre>
+<h3>代码解释</h3>
+<ol>
+<li>
+<p><strong>类初始化</strong>:</p>
+<ul>
+<li><code>GaussianSequentialEstimator</code>类接受数据特征数量作为输入，并在初始化时设置样本数量为0，均值向量和协方差矩阵为零矩阵。</li>
+</ul>
+</li>
+<li>
+<p><strong>参数更新</strong>:</p>
+<ul>
+<li><code>update</code>方法用于使用新的数据点更新均值向量和协方差矩阵。</li>
+<li>通过递归公式更新均值和协方差矩阵，实现序列估计。</li>
+</ul>
+</li>
+<li>
+<p><strong>获取估计值</strong>:</p>
+<ul>
+<li><code>get_estimates</code>方法返回当前的均值向量和协方差矩阵的估计值。</li>
+</ul>
+</li>
+<li>
+<p><strong>示例用法</strong>:</p>
+<ul>
+<li>代码最后部分提供了一个使用示例，展示了如何生成示例数据并使用序列估计类进行更新和获取参数估计值。</li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 04_2.3.5_Sequential_estimation
+
+"""
+Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 04_2.3.5_Sequential_estimation
+"""
+
+import numpy as np
+from typing import Tuple
+
+class GaussianSequentialEstimator:
+    def __init__(self, n_features: int):
+        """
+        初始化高斯分布的序列估计类
+        
+        参数:
+        n_features (int): 数据的特征数量
+        """
+        self.n_features = n_features
+        self.n_samples = 0
+        self.mu_ml = np.zeros(n_features)
+        self.sigma_ml = np.zeros((n_features, n_features))
+    
+    def update(self, x: np.ndarray) -> None:
+        """
+        使用新的数据点更新均值向量和协方差矩阵
+        
+        参数:
+        x (np.ndarray): 新的数据点
+        """
+        assert x.shape[0] == self.n_features, "数据点的特征数量应与初始化时指定的一致"
+        
+        self.n_samples += 1
+        if self.n_samples == 1:
+            self.mu_ml = x
+            self.sigma_ml = np.zeros((self.n_features, self.n_features))
+        else:
+            prev_mu_ml = self.mu_ml.copy()
+            self.mu_ml += (x - self.mu_ml) / self.n_samples
+            self.sigma_ml = ((self.n_samples - 1) * self.sigma_ml + np.outer(x - prev_mu_ml, x - self.mu_ml)) / self.n_samples
+    
+    def get_estimates(self) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        获取当前的均值向量和协方差矩阵估计值
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 均值向量和协方差矩阵
+        """
+        return self.mu_ml, self.sigma_ml
+
+# 示例用法
+if __name__ == "__main__":
+    np.random.seed(0)
+    n_features = 2
+    data = np.random.multivariate_normal(mean=[0, 0], cov=[[1, 0.5], [0.5, 1]], size=100)
+    
+    estimator = GaussianSequentialEstimator(n_features)
+    
+    for x in data:
+        estimator.update(x)
+    
+    mu_ml, sigma_ml = estimator.get_estimates()
+    
+    print("均值的最大似然估计:", mu_ml)
+    print("协方差矩阵的最大似然估计:\n", sigma_ml)</code></pre>
+  </div>
+</body>
+</html>
+  

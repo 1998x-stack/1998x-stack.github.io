@@ -1,0 +1,123 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>05-print reverse list</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>逆序打印链表</p>
+</blockquote>
+<p>逆序打印链表是一个常见的编程问题，可以通过多种方法来实现。以下是几种常见的解决方案，包括递归法和使用栈的方法。</p>
+<h3>方法一：递归法</h3>
+<p>递归方法利用系统调用栈的特性，可以方便地实现逆序打印链表。递归调用将链表节点压栈，递归返回时依次打印节点。</p>
+<h4>算法步骤</h4>
+<ol>
+<li>定义递归函数 <code>print_reverse</code>，参数为当前节点。</li>
+<li>在递归函数中，先递归调用 <code>print_reverse</code> 打印下一个节点。</li>
+<li>打印当前节点的值。</li>
+</ol>
+<h4>代码实现</h4>
+<pre><code class="language-python">class ListNode:
+    def __init__(self, value=0, next=None):
+        self.value = value
+        self.next = next
+
+def print_reverse(node):
+    if node is None:
+        return
+    print_reverse(node.next)
+    print(node.value)
+
+# 示例使用
+# 构建链表 1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; None
+head = ListNode(1, ListNode(2, ListNode(3, ListNode(4, ListNode(5)))))
+
+print(&quot;逆序打印链表（递归法）:&quot;)
+print_reverse(head)
+</code></pre>
+<h3>方法二：使用栈</h3>
+<p>使用栈可以模拟递归的行为，栈的特性是后进先出（LIFO），可以实现逆序打印链表。</p>
+<h4>算法步骤</h4>
+<ol>
+<li>初始化一个空栈 <code>stack</code>。</li>
+<li>遍历链表，将每个节点压入栈中。</li>
+<li>遍历栈，依次弹出节点并打印其值。</li>
+</ol>
+<h4>代码实现</h4>
+<pre><code class="language-python">def print_reverse_stack(node):
+    stack = []
+    while node:
+        stack.append(node)
+        node = node.next
+    while stack:
+        node = stack.pop()
+        print(node.value)
+
+# 示例使用
+print(&quot;逆序打印链表（使用栈）:&quot;)
+print_reverse_stack(head)
+</code></pre>
+<h3>解释</h3>
+<ol>
+<li>
+<p><strong>递归法</strong>：</p>
+<ul>
+<li>递归函数 <code>print_reverse</code> 先递归调用自己打印下一个节点，递归返回时再打印当前节点的值。</li>
+<li>利用系统调用栈，实现逆序打印。</li>
+</ul>
+</li>
+<li>
+<p><strong>使用栈</strong>：</p>
+<ul>
+<li>遍历链表，将节点依次压入栈中。</li>
+<li>遍历栈，依次弹出节点并打印其值，实现逆序打印。</li>
+</ul>
+</li>
+</ol>
+<h3>优缺点</h3>
+<p><strong>递归法</strong>：</p>
+<ul>
+<li><strong>优点</strong>：代码简洁，逻辑清晰。</li>
+<li><strong>缺点</strong>：对于链表长度较大时，递归深度可能导致栈溢出（Stack Overflow）。</li>
+</ul>
+<p><strong>使用栈</strong>：</p>
+<ul>
+<li><strong>优点</strong>：避免了递归深度限制，适用于较长链表。</li>
+<li><strong>缺点</strong>：需要额外的栈空间，空间复杂度为 $O(n)$。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Reverse a linked list</strong>：</p>
+<ul>
+<li>提供了链表逆序打印的详细解释和代码实现。</li>
+<li><a href="https://www.geeksforgeeks.org/reverse-a-linked-list/">链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Discuss - Print a linked list in reverse order</strong>：</p>
+<ul>
+<li>提供了链表逆序打印问题的详细描述和多种解决方案。</li>
+<li><a href="https://leetcode.com/discuss/interview-question/356150/print-a-linked-list-in-reverse-order">LeetCode链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

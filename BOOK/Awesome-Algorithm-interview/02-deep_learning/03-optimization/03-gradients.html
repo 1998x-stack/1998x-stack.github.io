@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03-gradients</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>梯度消失和梯度爆炸的原因</h2>
+<h3>一、梯度消失（Vanishing Gradient）</h3>
+<h4>1. 原因分析</h4>
+<p>梯度消失主要发生在深层神经网络的训练过程中，尤其是使用Sigmoid或Tanh等饱和非线性激活函数时。其原因可以归结为以下几点：</p>
+<ol>
+<li>
+<p><strong>激活函数的性质</strong>：</p>
+<ul>
+<li><strong>Sigmoid和Tanh函数</strong>：这些函数在输入值绝对值很大时，会饱和，梯度接近于零。</li>
+<li><strong>公式</strong>：以Sigmoid为例，当输入 $ z $ 绝对值很大时，导数 $ \sigma'(z) = \sigma(z)(1 - \sigma(z)) $ 接近于零。</li>
+</ul>
+</li>
+<li>
+<p><strong>链式法则</strong>：</p>
+<ul>
+<li>反向传播算法通过链式法则计算梯度，梯度是多个梯度连乘的结果。</li>
+<li>在深层网络中，这些梯度连乘可能导致梯度逐渐变小，最终趋近于零。</li>
+</ul>
+</li>
+<li>
+<p><strong>权重初始化不当</strong>：</p>
+<ul>
+<li>如果权重初始化较大，会导致激活函数输出饱和，梯度趋于零。</li>
+<li>如果权重初始化较小，反向传播的梯度在层与层之间传递时会迅速衰减。</li>
+</ul>
+</li>
+</ol>
+<h4>2. 解决方法</h4>
+<ol>
+<li>
+<p><strong>使用ReLU激活函数</strong>：</p>
+<ul>
+<li>ReLU函数在正半轴上保持线性，有效避免梯度消失问题。</li>
+<li>公式：$ \text{ReLU}(z) = \max(0, z) $。</li>
+</ul>
+</li>
+<li>
+<p><strong>权重初始化技巧</strong>：</p>
+<ul>
+<li>使用如He初始化或Xavier初始化等方法，根据网络层数和激活函数特点合理初始化权重。</li>
+</ul>
+</li>
+<li>
+<p><strong>批归一化（Batch Normalization）</strong>：</p>
+<ul>
+<li>对每层输出进行归一化，减小内部协变量偏移，保持激活值在合理范围内。</li>
+</ul>
+</li>
+</ol>
+<h3>二、梯度爆炸（Exploding Gradient）</h3>
+<h4>1. 原因分析</h4>
+<p>梯度爆炸也是深层神经网络训练中的问题，通常发生在反向传播过程中，梯度在每层间的累积乘积迅速增大，导致数值不稳定。其原因如下：</p>
+<ol>
+<li>
+<p><strong>权重初始化不当</strong>：</p>
+<ul>
+<li>如果权重初始化过大，每层计算出的梯度会迅速增大，导致梯度爆炸。</li>
+</ul>
+</li>
+<li>
+<p><strong>激活函数的累积效应</strong>：</p>
+<ul>
+<li>在没有激活函数的网络或激活函数为线性函数的网络中，层数较多时，梯度可能会累积到非常大的值。</li>
+</ul>
+</li>
+<li>
+<p><strong>RNNs中的时间步长过长</strong>：</p>
+<ul>
+<li>在循环神经网络（RNN）中，长时间步长会导致梯度在时间步长之间不断累积，可能会引发梯度爆炸。</li>
+</ul>
+</li>
+</ol>
+<h4>2. 解决方法</h4>
+<ol>
+<li>
+<p><strong>梯度剪裁（Gradient Clipping）</strong>：</p>
+<ul>
+<li>将梯度限制在某个范围内，避免梯度值过大。</li>
+<li>公式：当梯度 $ g $ 超过设定阈值 $ \theta $ 时，进行剪裁：$ g = \frac{\theta}{| g |} g $</li>
+</ul>
+</li>
+<li>
+<p><strong>权重初始化技巧</strong>：</p>
+<ul>
+<li>使用较小的权重初始值，避免初始阶段就出现梯度爆炸问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>使用合适的优化算法</strong>：</p>
+<ul>
+<li>使用如Adam、RMSprop等自适应学习率优化算法，能动态调整学习率，避免梯度爆炸。</li>
+</ul>
+</li>
+</ol>
+<h3>三、总结</h3>
+<p>梯度消失和梯度爆炸问题在深层神经网络的训练中常见，需要根据具体情况采取不同的方法进行缓解和解决。通过合理选择激活函数、权重初始化方法、使用批归一化和梯度剪裁等技术，可以有效地缓解这些问题，提升模型的训练效果。</p>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Vanishing_gradient_problem">Understanding the vanishing gradient problem</a></li>
+<li><a href="https://www.deeplearning.ai/ai-notes/initialization/">Exploding and Vanishing Gradients</a></li>
+<li><a href="https://arxiv.org/abs/1502.03167">Batch Normalization: Accelerating Deep Network Training by Reducing Internal Covariate Shift</a></li>
+<li><a href="https://towardsdatascience.com/gradient-clipping-82a5e00b0ebc">Gradient Clipping</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

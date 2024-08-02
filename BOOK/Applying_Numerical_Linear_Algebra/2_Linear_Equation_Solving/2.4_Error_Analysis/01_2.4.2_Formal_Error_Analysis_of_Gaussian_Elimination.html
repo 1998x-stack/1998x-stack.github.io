@@ -1,0 +1,87 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.4.2 Formal Error Analysis of Gaussian Elimination</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_2.4.2_Formal_Error_Analysis_of_Gaussian_Elimination</h1>
+<pre><code>Lecture: 2_Linear_Equation_Solving/2.4_Error_Analysis
+Content: 01_2.4.2_Formal_Error_Analysis_of_Gaussian_Elimination
+</code></pre>
+<h3>2.4.2 高斯消去法的正式误差分析 (Formal Error Analysis of Gaussian Elimination)</h3>
+<h4>引言</h4>
+<p>在上一节中，我们介绍了使用部分主元（GEPP）和完全主元（GECP）策略在高斯消去法中提高数值稳定性的重要性。本节将对高斯消去法的误差进行正式分析，以便更好地理解舍入误差对计算结果的影响，并给出实际应用中的误差界限。</p>
+<h4>误差分析的直观解释</h4>
+<p>在 LU 分解过程中，如果 $ L $ 和 $ U $ 中的中间量相对于 $ |A| $ 很大，那么当这些大值从 $ A $ 的条目中减去时，信息就会“丢失”。这在 2.4.1 节的示例中表现得尤为明显。如果 $ L \cdot U $ 中的中间量与 $ A $ 的条目相当，我们期望分解中的向后误差 $ A - LU $ 很小。因此，我们需要对 $ L \cdot U $ 中最大的中间量进行约束。</p>
+<p>我们将通过约束矩阵 $ |L| \cdot |U| $ 的条目来实现这一目标。我们的分析类似于我们在 1.6 节中对多项式求值的分析。我们考虑了 $ p = \sum_i a_i x_i $ 并表明，如果 $ |p| $ 与绝对值的总和 $ \sum_i |a_i x_i| $ 相当，那么 $ p $ 的计算将是准确的。</p>
+<h4>高斯消去法的通用误差分析</h4>
+<p>设 $ A $ 已经经过主元选择，算法 2.2 简化为两个公式，一个用于 $ a_{jk} $ （当 $ j \leq k $ 时）和一个用于 $ j &gt; k $。我们首先跟踪算法 2.2 对 $ a_{jk} $ 的处理（当 $ j \leq k $ 时）：此元素通过减去 $ l_{ji} u_{ik} $ 进行更新，最后赋值给 $ u_{jk} $：</p>
+<p>$$
+u_{jk} = a_{jk} - \sum_{i=1}^{j-1} l_{ji} u_{ik}
+$$</p>
+<p>当 $ j &gt; k $ 时，$ a_{jk} $ 再次减去 $ l_{ji} u_{ik} $，然后将结果除以 $ u_{kk} $ 并赋值给 $ l_{jk} $：</p>
+<p>$$
+l_{jk} = \frac{a_{jk} - \sum_{i=1}^{k-1} l_{ji} u_{ik}}{u_{kk}}
+$$</p>
+<p>为了对这些公式进行舍入误差分析，我们使用了第 1.10 问题的结果，浮点运算中的点积满足：</p>
+<p>$$
+fl\left(\sum_{i=1}^{d} x_i y_i\right) = \sum_{i=1}^{d} x_i y_i (1 + \delta_i) \quad \text{其中} \quad |\delta_i| \leq d\epsilon
+$$</p>
+<p>因此，我们可以总结这一误差分析为简单的公式：</p>
+<p>$$
+A = LU + E \quad \text{其中} \quad |E| \leq n\epsilon |L| \cdot |U|
+$$</p>
+<p>取范数我们得到 $ |E| \leq n\epsilon | |L| | \cdot | |U| | $。如果范数不依赖于矩阵条目的符号（如 Frobenius 范数、无穷范数和一范数，但不适用于二范数），我们可以简化为 $ |E| \leq n\epsilon |L| \cdot |U| $。</p>
+<h4>实际误差界限</h4>
+<p>在实际应用中，最佳的 $ | \delta A | $ 界限通常比实践中遇到的误差要大得多。因此，我们使用基于计算残差 $ r $ 和界限 (2.5)（或界限 (2.9)）的实际误差界限，而不是本节中的严格但悲观的界限。</p>
+<p>考虑矩阵 $ A $ 已经经过主元选择，我们简化了算法 2.2，追踪 $ a_{jk} $ 的更新过程（当 $ j \leq k $ 时）：</p>
+<p>$$
+u_{jk} = a_{jk} - \sum_{i=1}^{j-1} l_{ji} u_{ik}
+$$</p>
+<p>当 $ j &gt; k $ 时：</p>
+<p>$$
+l_{jk} = \frac{a_{jk} - \sum_{i=1}^{k-1} l_{ji} u_{ik}}{u_{kk}}
+$$</p>
+<p>使用浮点运算中的点积公式进行舍入误差分析，得到 $ \delta A $ 的界限：</p>
+<p>$$
+| \delta A | \leq 3n\epsilon | L | \cdot | U |
+$$</p>
+<h4>向后误差分析</h4>
+<p>为了进一步分析，我们使用向后误差分析的方法，即将计算结果视为某个近似输入问题的精确解。通过适当的主元选择策略，可以将 $ \delta A $ 和 $ \delta b $ 保持在尽可能小的范围内。</p>
+<p>我们的主要经验观察是，GEPP 几乎总是保持 $ | L | \cdot | U | \approx | A | $。GEPP 确保了 $ L $ 的每个条目在绝对值上不超过 1，因此我们只需考虑 $ | U | $。</p>
+<h3>深入分析</h3>
+<h4>高斯消去法的实际应用</h4>
+<p>在实际应用中，高斯消去法的误差分析对于保证计算结果的可靠性至关重要。通过详细分析舍入误差和向后误差，可以设计更稳定和高效的算法。</p>
+<ol>
+<li><strong>误差控制</strong>：通过分析 $ L $ 和 $ U $ 的中间量，可以确保分解过程中的误差不会过大。</li>
+<li><strong>数值稳定性</strong>：通过使用部分主元和完全主元策略，可以显著提高高斯消去法的数值稳定性。</li>
+<li><strong>实际误差界限</strong>：基于计算残差的实际误差界限提供了更紧的误差估计，特别是在矩阵缩放不良的情况下。</li>
+</ol>
+<h4>进一步研究</h4>
+<p>高斯消去法的误差分析不仅在理论上有重要意义，而且在实践中也能指导算法的改进和优化。通过深入理解误差来源和传播机制，可以开发出更高效、更可靠的数值算法，解决复杂的实际问题。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_2.4.2_Formal_Error_Analysis_of_Gaussian_Elimination
+
+"""
+Lecture: 2_Linear_Equation_Solving/2.4_Error_Analysis
+Content: 01_2.4.2_Formal_Error_Analysis_of_Gaussian_Elimination
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

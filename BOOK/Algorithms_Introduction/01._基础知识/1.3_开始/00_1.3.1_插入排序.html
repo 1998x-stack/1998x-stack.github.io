@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.3.1 插入排序</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_1.3.1_插入排序</h1>
+<pre><code>Lecture: 01._基础知识/1.3_开始
+Content: 00_1.3.1_插入排序
+</code></pre>
+<h3>1.3.1_插入排序</h3>
+<h4>引言</h4>
+<p>插入排序是一种简单而直观的排序算法，常用于少量元素的排序。它的工作方式类似于人们整理一手扑克牌。通过将每张牌插入到已排序的牌组中，最终形成一个有序的牌组。</p>
+<h4>算法描述</h4>
+<p>插入排序的过程可以描述如下：</p>
+<ol>
+<li>从第一个元素开始，认为当前元素已经被排序。</li>
+<li>取出下一个元素，在已经排序的元素序列中从后向前扫描。</li>
+<li>如果该元素（已排序）大于新元素，将该元素移到下一位置。</li>
+<li>重复步骤3，直到找到已排序的元素小于或者等于新元素的位置。</li>
+<li>将新元素插入到该位置后。</li>
+<li>重复步骤2~5。</li>
+</ol>
+<h5>伪代码</h5>
+<p>插入排序的伪代码如下：</p>
+<pre><code>INSERTION-SORT(A, n)
+1. for i = 2 to n
+2.    key = A[i]
+3.    // 将 A[i] 插入到 A[1...i-1] 中
+4.    j = i - 1
+5.    while j &gt; 0 and A[j] &gt; key
+6.        A[j + 1] = A[j]
+7.        j = j - 1
+8.    A[j + 1] = key
+</code></pre>
+<p>在上述伪代码中，<code>A</code> 是一个数组，<code>n</code> 是数组的长度。<code>key</code> 是当前需要插入的元素，<code>j</code> 是已排序部分的索引。</p>
+<h4>算法分析</h4>
+<h5>时间复杂度</h5>
+<p>插入排序的时间复杂度取决于输入数据的初始顺序：</p>
+<ul>
+<li>最佳情况：当输入数据已经是有序的，时间复杂度为 O(n)。</li>
+<li>最坏情况：当输入数据是逆序的，时间复杂度为 O(n^2)。</li>
+<li>平均情况：时间复杂度为 O(n^2)。</li>
+</ul>
+<h5>空间复杂度</h5>
+<p>插入排序是一种就地排序算法（in-place sorting algorithm），它只需要一个额外的空间 <code>key</code>，因此空间复杂度为 O(1)。</p>
+<h4>算法的正确性</h4>
+<p>为了证明插入排序的正确性，可以使用循环不变式：</p>
+<ol>
+<li><strong>初始化</strong>：在第一次迭代之前，子数组 <code>A[1...1]</code> 只包含一个元素，自然是有序的。</li>
+<li><strong>保持</strong>：在每次迭代开始时，子数组 <code>A[1...i-1]</code> 是有序的。在第 <code>i</code> 次迭代中，将 <code>A[i]</code> 插入到正确的位置，使 <code>A[1...i]</code> 变得有序。</li>
+<li><strong>终止</strong>：当 <code>i</code> 等于 <code>n</code> 时，整个数组 <code>A[1...n]</code> 是有序的。</li>
+</ol>
+<p>通过上述循环不变式，我们可以证明插入排序在每一步都能保持有序性，最终得到一个有序的数组。</p>
+<h4>插入排序的优缺点</h4>
+<h5>优点</h5>
+<ol>
+<li><strong>简单易实现</strong>：插入排序的算法思想简单，实现起来容易。</li>
+<li><strong>适用于小规模数据</strong>：对于小规模数据集，插入排序的效率非常高。</li>
+<li><strong>稳定性</strong>：插入排序是一个稳定的排序算法，即相同元素的相对顺序不会改变。</li>
+</ol>
+<h5>缺点</h5>
+<ol>
+<li><strong>效率低下</strong>：对于大规模数据集，插入排序的效率较低，时间复杂度为 O(n^2)。</li>
+<li><strong>不适合逆序数据</strong>：当输入数据是逆序时，插入排序的效率最差。</li>
+</ol>
+<h4>实际应用</h4>
+<p>尽管插入排序在大规模数据集上的效率较低，但由于其简单性和在小规模数据集上的高效性，插入排序仍然在许多实际应用中得到广泛使用。例如：</p>
+<ol>
+<li><strong>小型数据集排序</strong>：在处理小型数据集时，插入排序非常高效。</li>
+<li><strong>部分有序数据</strong>：当数据集已经部分有序时，插入排序的性能接近 O(n)。</li>
+<li><strong>在线算法</strong>：插入排序可以作为在线算法，即数据在到达时立即进行排序，而不需要等待所有数据到齐。</li>
+</ol>
+<p>总结，插入排序是一种简单而有效的排序算法，适用于小规模和部分有序的数据集。尽管在大规模数据集上的效率较低，但其易实现和稳定性的特点使其在许多实际应用中仍然具有重要价值。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_1.3.1_插入排序
+
+"""
+Lecture: 01._基础知识/1.3_开始
+Content: 00_1.3.1_插入排序
+"""
+
+from typing import List
+
+class InsertionSort:
+    """插入排序类，提供对数组进行排序的方法。
+    
+    Attributes:
+        data (List[int]): 待排序的整数列表。
+    """
+    
+    def __init__(self, data: List[int]):
+        """初始化插入排序类。
+        
+        Args:
+            data (List[int]): 待排序的整数列表。
+        """
+        self.data = data
+
+    def sort(self) -> List[int]:
+        """对数据进行插入排序。
+        
+        Returns:
+            List[int]: 排序后的整数列表。
+        """
+        n = len(self.data)
+        for i in range(1, n):
+            key = self.data[i]
+            j = i - 1
+            
+            # 从已排序部分的最后一个元素开始，向前扫描并寻找插入位置
+            while j >= 0 and self.data[j] > key:
+                self.data[j + 1] = self.data[j]
+                j -= 1
+            self.data[j + 1] = key
+            
+            # 打印当前步骤的中间结果
+            print(f"插入元素 {key} 后的数组: {self.data}")
+        
+        return self.data
+
+def main():
+    """主函数，用于测试插入排序功能。
+    """
+    # 示例数据
+    data = [34, 8, 64, 51, 32, 21]
+    print("原始数组: ", data)
+    
+    # 初始化排序类并进行排序
+    sorter = InsertionSort(data)
+    sorted_data = sorter.sort()
+    
+    # 打印排序结果
+    print("排序后的数组: ", sorted_data)
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

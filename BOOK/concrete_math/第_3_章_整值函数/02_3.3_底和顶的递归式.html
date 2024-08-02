@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3 底和顶的递归式</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_3.3_底和顶的递归式</h1>
+<pre><code>Lecture: /第_3_章_整值函数
+Content: 02_3.3_底和顶的递归式
+</code></pre>
+<h3>02_3.3 底和顶的递归式</h3>
+<h4>章节内容概述</h4>
+<p>本节讨论了底函数（floor function）和顶函数（ceiling function）的递归式。这些递归式在处理数论问题、组合数学、算法设计等领域有广泛应用。通过了解这些递归式，可以更深入地理解底和顶函数的性质及其在各种复杂问题中的应用。</p>
+<h4>详细分析</h4>
+<ol>
+<li>
+<p><strong>底和顶函数的递归定义</strong></p>
+<ul>
+<li><strong>底函数的递归定义</strong>：
+$$ \lfloor x \rfloor = n \iff n \leq x &lt; n+1 $$
+<ul>
+<li>这意味着 $ x $ 可以通过不断减去1，直到剩余部分小于1为止来确定其底函数值。</li>
+</ul>
+</li>
+<li><strong>顶函数的递归定义</strong>：
+$$ \lceil x \rceil = n \iff n-1 &lt; x \leq n $$
+<ul>
+<li>这意味着 $ x $ 可以通过不断增加1，直到超过 $ x $ 的整数为止来确定其顶函数值。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>递归式的基本性质</strong></p>
+<ul>
+<li><strong>底函数的递归性质</strong>：
+<ul>
+<li>底函数在整数上的值不变，对于实数部分小于1的数，底函数通过递归减法确定。</li>
+<li>例如，求解 $\lfloor 3.7 \rfloor $ 的过程：
+$$
+\lfloor 3.7 \rfloor = 3
+$$
+因为 $ 3 \leq 3.7 &lt; 4 $。</li>
+</ul>
+</li>
+<li><strong>顶函数的递归性质</strong>：
+<ul>
+<li>顶函数在整数上的值不变，对于实数部分大于0的数，顶函数通过递归加法确定。</li>
+<li>例如，求解 $\lceil 3.7 \rceil $ 的过程：
+$$
+\lceil 3.7 \rceil = 4
+$$
+因为 $ 3.7 \leq 4 $。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>底和顶函数在递归式中的应用</strong></p>
+<ul>
+<li><strong>斐波那契数列</strong>：底和顶函数在斐波那契数列的递归关系中有应用。
+<ul>
+<li>斐波那契数列的递归公式为：
+$$
+F_n = F_{n-1} + F_{n-2}
+$$</li>
+<li>底函数和顶函数可以用于处理斐波那契数列中的非整数问题。</li>
+</ul>
+</li>
+<li><strong>排列组合</strong>：在排列和组合问题中，底和顶函数用于处理递归关系式。
+<ul>
+<li>例如，组合数的递归公式：
+$$
+C(n, k) = C(n-1, k-1) + C(n-1, k)
+$$</li>
+<li>底和顶函数用于确保组合数的整数性质。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>具体例子分析</strong></p>
+<ul>
+<li><strong>整数拆分</strong>：在整数拆分问题中，底和顶函数用于处理递归关系。
+<ul>
+<li>例如，将整数 $ n $ 拆分为不超过 $ k $ 的部分，递归公式为：
+$$
+P(n, k) = P(n-k, k) + P(n, k-1)
+$$
+其中，底函数用于确定递归的终止条件。</li>
+</ul>
+</li>
+<li><strong>求解方程</strong>：在求解递归方程时，底和顶函数用于处理边界条件。
+<ul>
+<li>例如，求解二分查找的时间复杂度，递归公式为：
+$$
+T(n) = T(\lfloor n/2 \rfloor) + O(1)
+$$
+底函数用于处理每次递归时的整数部分。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>递归算法中的应用</strong></p>
+<ul>
+<li><strong>快速排序</strong>：在快速排序算法中，顶函数用于处理枢轴选择的递归关系。
+<ul>
+<li>快速排序的递归公式为：
+$$
+Q(n) = Q(\lceil n/2 \rceil) + Q(\lfloor n/2 \rfloor) + O(n)
+$$
+其中，顶函数和底函数用于确保每次递归处理的子数组大小为整数。</li>
+</ul>
+</li>
+<li><strong>动态规划</strong>：在动态规划问题中，底和顶函数用于处理状态转移方程。
+<ul>
+<li>例如，最长公共子序列问题，递归公式为：
+$$
+LCS(X, Y) = \max(LCS(X-1, Y), LCS(X, Y-1), LCS(X-1, Y-1) + 1)
+$$
+底和顶函数用于确保每次递归处理的状态为整数。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>数学证明中的应用</strong></p>
+<ul>
+<li><strong>数学归纳法</strong>：在数学归纳法中，底和顶函数用于处理递归证明。
+<ul>
+<li>例如，证明某个数列的性质，递归公式为：
+$$
+P(n) = P(n-1) + f(n)
+$$
+其中，底函数用于处理归纳步的整数部分。</li>
+</ul>
+</li>
+<li><strong>不等式证明</strong>：在不等式证明中，底和顶函数用于处理边界条件。
+<ul>
+<li>例如，证明某个不等式，递归公式为：
+$$
+I(n) \leq I(n-1) + g(n)
+$$
+顶函数用于确保递归步的非整数部分。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4>扩展讨论</h4>
+<ol>
+<li>
+<p><strong>底和顶函数的历史背景</strong></p>
+<ul>
+<li>底和顶函数的概念可以追溯到古代数学家对整数和实数的研究。</li>
+<li>现代数学中，底和顶函数被广泛应用于数论、解析数论等领域。</li>
+</ul>
+</li>
+<li>
+<p><strong>底和顶函数在现代数学中的地位</strong></p>
+<ul>
+<li>底和顶函数是离散数学和计算机科学中的基础工具。</li>
+<li>它们不仅用于理论研究，还用于解决实际问题，如算法设计、数据分析等。</li>
+</ul>
+</li>
+<li>
+<p><strong>底和顶函数的计算方法</strong></p>
+<ul>
+<li>在计算机实现中，底和顶函数通常由语言内建函数提供，如Python中的 <code>math.floor</code> 和 <code>math.ceil</code>。</li>
+<li>对于更复杂的应用，可以结合其他数学工具，如模运算、整除运算等。</li>
+</ul>
+</li>
+</ol>
+<h4>结论</h4>
+<p>“底和顶的递归式”这一节通过详细介绍底函数和顶函数在递归关系中的应用，展示了这两个整值函数在处理复杂数学和计算问题中的重要性。通过学习和掌握底和顶函数的递归式，可以极大地提高解决整数处理和离散问题的能力。这些方法不仅在理论研究中有重要意义，而且在实际应用中也有广泛的应用价值，是学习和理解高等数学和算法设计的基础工具之一。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_3.3_底和顶的递归式
+
+"""
+Lecture: /第_3_章_整值函数
+Content: 02_3.3_底和顶的递归式
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

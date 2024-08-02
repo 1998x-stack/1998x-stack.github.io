@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.4 阶乘的因子</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_4.4_阶乘的因子</h1>
+<pre><code>Lecture: /第_4_章_数论
+Content: 03_4.4_阶乘的因子
+</code></pre>
+<h3>03_4.4 阶乘的因子</h3>
+<h4>章节内容概述</h4>
+<p>本节讨论了阶乘的因子，即阶乘数中的素因子分解。这些知识在数论、组合数学、算法设计中有重要应用。通过学习本节内容，可以深入理解阶乘数的性质及其因子分解的方法和应用。</p>
+<h4>详细分析</h4>
+<ol>
+<li>
+<p><strong>阶乘的定义</strong></p>
+<ul>
+<li><strong>阶乘</strong>：一个正整数 $ n $ 的阶乘记作 $ n! $，定义为：
+$$
+n! = n \times (n-1) \times (n-2) \times \cdots \times 1
+$$</li>
+<li>例如：
+$$
+5! = 5 \times 4 \times 3 \times 2 \times 1 = 120
+$$</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘的素因子分解</strong></p>
+<ul>
+<li><strong>素因子分解</strong>：将一个整数表示为素数的乘积。</li>
+<li><strong>阶乘的素因子分解</strong>：将阶乘数表示为多个素数的幂次乘积。
+<ul>
+<li>例如，$ 5! = 120 $ 的素因子分解：
+$$
+120 = 2^3 \times 3 \times 5
+$$</li>
+</ul>
+</li>
+<li>阶乘的素因子分解方法：
+<ol>
+<li>选择一个素数 $ p $。</li>
+<li>计算 $ n! $ 中 $ p $ 的幂次，通过累加 $ n $ 整除 $ p^k $ 的次数。
+$$
+e_p(n!) = \left\lfloor \frac{n}{p} \right\rfloor + \left\lfloor \frac{n}{p^2} \right\rfloor + \left\lfloor \frac{n}{p^3} \right\rfloor + \cdots
+$$</li>
+<li>对所有素数重复上述步骤，得到 $ n! $ 的完全素因子分解。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘的素因子分解例子</strong></p>
+<ul>
+<li>例子1：计算 $ 5! $ 的素因子分解：
+<ul>
+<li>对素数2：
+$$
+e_2(5!) = \left\lfloor \frac{5}{2} \right\rfloor + \left\lfloor \frac{5}{4} \right\rfloor = 2 + 1 = 3
+$$</li>
+<li>对素数3：
+$$
+e_3(5!) = \left\lfloor \frac{5}{3} \right\rfloor = 1
+$$</li>
+<li>对素数5：
+$$
+e_5(5!) = \left\lfloor \frac{5}{5} \right\rfloor = 1
+$$</li>
+<li>综合：
+$$
+5! = 2^3 \times 3 \times 5
+$$</li>
+</ul>
+</li>
+<li>例子2：计算 $ 10! $ 的素因子分解：
+<ul>
+<li>对素数2：
+$$
+e_2(10!) = \left\lfloor \frac{10}{2} \right\rfloor + \left\lfloor \frac{10}{4} \right\rfloor + \left\lfloor \frac{10}{8} \right\rfloor = 5 + 2 + 1 = 8
+$$</li>
+<li>对素数3：
+$$
+e_3(10!) = \left\lfloor \frac{10}{3} \right\rfloor + \left\lfloor \frac{10}{9} \right\rfloor = 3 + 1 = 4
+$$</li>
+<li>对素数5：
+$$
+e_5(10!) = \left\lfloor \frac{10}{5} \right\rfloor = 2
+$$</li>
+<li>对素数7：
+$$
+e_7(10!) = \left\lfloor \frac{10}{7} \right\rfloor = 1
+$$</li>
+<li>综合：
+$$
+10! = 2^8 \times 3^4 \times 5^2 \times 7
+$$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘因子的应用</strong></p>
+<ul>
+<li><strong>最大公约数与最小公倍数</strong>：利用阶乘的素因子分解，可以方便地计算多个数的最大公约数和最小公倍数。
+<ul>
+<li>例如，计算 $ \gcd(6!, 8!) $：
+$$
+6! = 2^4 \times 3^2 \times 5
+$$
+$$
+8! = 2^7 \times 3^2 \times 5 \times 7
+$$
+$$
+\gcd(6!, 8!) = 2^4 \times 3^2 \times 5 = 1440
+$$</li>
+<li>计算 $ \text{lcm}(6!, 8!) $：
+$$
+\text{lcm}(6!, 8!) = 2^7 \times 3^2 \times 5 \times 7 = 20160
+$$</li>
+</ul>
+</li>
+<li><strong>组合数学</strong>：阶乘在组合数学中广泛应用于计算排列和组合。
+<ul>
+<li>例如，计算组合数 $ \binom{n}{k} = \frac{n!}{k!(n-k)!} $，可以通过阶乘的素因子分解简化计算。</li>
+</ul>
+</li>
+<li><strong>数论</strong>：阶乘的素因子分解在求解数论中的问题时也有重要作用。
+<ul>
+<li>例如，计算一个数的阶乘是否可以被某个素数的幂次整除。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘在算法设计中的应用</strong></p>
+<ul>
+<li><strong>大数计算</strong>：在涉及大数计算的问题中，阶乘的素因子分解有助于提高计算效率和准确性。
+<ul>
+<li>例如，在计算大整数的阶乘时，通过素因子分解可以避免直接计算大数乘积，减少计算复杂度。</li>
+</ul>
+</li>
+<li><strong>动态规划</strong>：在动态规划算法中，利用阶乘和组合数可以解决路径问题、分配问题等。
+<ul>
+<li>例如，利用组合数计算最短路径的数量：
+$$
+C(m+n, m) = \frac{(m+n)!}{m! \times n!}
+$$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘的高阶应用</strong></p>
+<ul>
+<li><strong>斯特林公式</strong>：斯特林公式是阶乘的一个渐近公式，用于近似计算大数的阶乘：
+$$
+n! \approx \sqrt{2 \pi n} \left( \frac{n}{e} \right)^n
+$$
+<ul>
+<li>应用：斯特林公式在概率论和统计学中用于近似计算大数的阶乘值。</li>
+</ul>
+</li>
+<li><strong>伽玛函数</strong>：伽玛函数是阶乘的推广，定义为：
+$$
+\Gamma(n) = \int_0^{\infty} t^{n-1} e^{-t} , dt
+$$
+<ul>
+<li>对于正整数 $ n $，有 $ \Gamma(n) = (n-1)! $。</li>
+<li>应用：伽玛函数在高等数学、物理学和工程学中有广泛应用。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h4>扩展讨论</h4>
+<ol>
+<li>
+<p><strong>阶乘因子的历史背景</strong></p>
+<ul>
+<li>阶乘的概念可以追溯到古代数学家对排列和组合问题的研究。</li>
+<li>现代数学中，阶乘的素因子分解被广泛应用于数论、组合数学和计算机科学等领域。</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘在现代数学中的地位</strong></p>
+<ul>
+<li>阶乘是数论和组合数学中的基础概念，对理解整数的性质和排列组合问题有重要作用。</li>
+<li>它不仅用于理论研究，还用于解决实际问题，如算法设计、数据分析等。</li>
+</ul>
+</li>
+<li>
+<p><strong>阶乘因子的计算方法</strong></p>
+<ul>
+<li>在计算机实现中，阶乘和素因子分解通常由高效的算法提供，如递归法、动态规划等。</li>
+<li>对于更复杂的应用，可以结合其他数学工具，如斯特林公式、伽玛函数等。</li>
+</ul>
+</li>
+</ol>
+<h4>结论</h4>
+<p>“阶乘的因子”这一节通过详细介绍阶乘的定义、素因子分解方法及其在数论、组合数学、算法设计中的广泛应用，展示了阶乘在数学中的重要性。通过学习和掌握阶乘的基本概念和应用方法，可以极大地提高解决整数处理、数论问题和组合问题的能力。这些方法不仅在理论研究中有重要意义，而且在实际应用中也有广泛的应用价值，是学习和理解高等数学和算法设计的基础工具之一。</p>
+<hr>
+<p>斯特林公式是一个用来近似计算大数阶乘的公式，它在数学和统计学中具有重要应用。斯特林公式的经典形式是：</p>
+<p>$$ n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n $$</p>
+<p>推导斯特林公式的方法有多种，这里介绍一种常见的推导方法，利用了积分、对数和渐近分析的技术。</p>
+<h3>推导过程</h3>
+<ol>
+<li>
+<p><strong>阶乘的对数形式</strong>：</p>
+<p>首先考虑阶乘的对数形式，因为对数函数将乘法转换为加法，更易处理：</p>
+<p>$$ \ln(n!) = \ln(1 \cdot 2 \cdot 3 \cdots n) = \sum_{k=1}^{n} \ln k $$</p>
+</li>
+<li>
+<p><strong>积分近似</strong>：</p>
+<p>$\sum_{k=1}^{n} \ln k$ 可以用积分来近似。根据积分的定义，函数的和可以用积分表示：</p>
+<p>$$ \sum_{k=1}^{n} \ln k \approx \int_{1}^{n} \ln x , dx $$</p>
+</li>
+<li>
+<p><strong>计算积分</strong>：</p>
+<p>计算 $\int_{1}^{n} \ln x , dx$：</p>
+<p>$$ \int \ln x , dx = x \ln x - x $$</p>
+<p>所以：</p>
+<p>$$ \int_{1}^{n} \ln x , dx = \left[ x \ln x - x \right]_{1}^{n} = (n \ln n - n) - (1 \ln 1 - 1) = n \ln n - n + 1 $$</p>
+</li>
+<li>
+<p><strong>引入误差修正</strong>：</p>
+<p>积分近似并不完全精确，我们需要引入一个修正项来提高近似的精度。我们知道：</p>
+<p>$$ \ln(n!) \approx n \ln n - n + 1 $$</p>
+<p>然后引入一个渐近展开的修正项 $\frac{1}{2} \ln (2\pi n)$，这是通过更高阶积分逼近得到的：</p>
+<p>$$ \ln(n!) \approx n \ln n - n + \frac{1}{2} \ln (2\pi n) $$</p>
+</li>
+<li>
+<p><strong>指数形式</strong>：</p>
+<p>现在，我们将其转换回指数形式，得到：</p>
+<p>$$ n! \approx e^{n \ln n - n + \frac{1}{2} \ln (2\pi n)} $$</p>
+<p>利用指数函数的性质：</p>
+<p>$$ e^{a + b} = e^a \cdot e^b $$</p>
+<p>我们可以将其分解为：</p>
+<p>$$ n! \approx e^{n \ln n} \cdot e^{-n} \cdot e^{\frac{1}{2} \ln (2\pi n)} $$</p>
+<p>$$ n! \approx \left(\frac{n}{e}\right)^n \cdot \sqrt{2\pi n} $$</p>
+<p>所以，最终得到斯特林公式：</p>
+<p>$$ n! \approx \sqrt{2\pi n} \left(\frac{n}{e}\right)^n $$</p>
+</li>
+</ol>
+<h3>结论</h3>
+<p>斯特林公式通过对数、积分近似和渐近分析的方法推导得出，它为阶乘的近似计算提供了一个非常有效的工具，尤其适用于大数情况下的阶乘计算。斯特林公式不仅在理论上有重要意义，也在统计学、物理学和工程学中有广泛的应用。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_4.4_阶乘的因子
+
+"""
+Lecture: /第_4_章_数论
+Content: 03_4.4_阶乘的因子
+"""
+
+from typing import List, Dict
+from math import floor
+
+def prime_factors_exponents(n: int) -> Dict[int, int]:
+    """
+    计算 n! 中所有素数的幂次（阶乘的素因子分解）。
+
+    参数:
+    n (int): 阶乘的数
+
+    返回:
+    Dict[int, int]: n! 的素因子及其幂次的字典
+
+    示例:
+    >>> prime_factors_exponents(5)
+    {2: 3, 3: 1, 5: 1}
+    >>> prime_factors_exponents(10)
+    {2: 8, 3: 4, 5: 2, 7: 1}
+    """
+    def sieve_of_eratosthenes(limit: int) -> List[int]:
+        is_prime = [True] * (limit + 1)
+        p = 2
+        while (p * p <= limit):
+            if (is_prime[p] == True):
+                for i in range(p * p, limit + 1, p):
+                    is_prime[i] = False
+            p += 1
+        return [p for p in range(2, limit + 1) if is_prime[p]]
+
+    def exponent_in_factorial(n: int, p: int) -> int:
+        count = 0
+        power = p
+        while power <= n:
+            count += n // power
+            power *= p
+        return count
+
+    primes = sieve_of_eratosthenes(n)
+    factors_exponents = {}
+
+    for prime in primes:
+        exponent = exponent_in_factorial(n, prime)
+        if exponent > 0:
+            factors_exponents[prime] = exponent
+
+    return factors_exponents
+
+# 示例
+if __name__ == "__main__":
+    n = 10
+    factors_exponents = prime_factors_exponents(n)
+    print(f"{n}! 的素因子分解：")
+    for prime, exponent in factors_exponents.items():
+        print(f"{prime}^{exponent}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

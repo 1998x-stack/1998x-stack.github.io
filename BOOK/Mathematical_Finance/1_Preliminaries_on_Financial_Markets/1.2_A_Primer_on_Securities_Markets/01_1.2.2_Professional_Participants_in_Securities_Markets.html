@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.2.2 Professional Participants in Securities Markets</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_1.2.2_Professional_Participants_in_Securities_Markets</h1>
+<pre><code>
+Lecture: 1_Preliminaries_on_Financial_Markets/1.2_A_Primer_on_Securities_Markets
+Content: 01_1.2.2_Professional_Participants_in_Securities_Markets
+
+</code></pre>
+<h3>01_1.2.2_证券市场中的专业参与者</h3>
+<p><strong>讲座</strong>: 1_金融市场初步/1.2_证券市场概述<br>
+<strong>内容</strong>: 01_1.2.2_证券市场中的专业参与者</p>
+<h4>一、清算所和证券存管机构</h4>
+<p>清算所和证券存管机构是证券市场中的重要专业参与者。这些中央组织提供支持交易的基础设施。</p>
+<h5>1. 清算所</h5>
+<p>清算所（Clearing Houses）是交易的集中对手方，负责交易的结算。买卖双方不直接交易，而是通过清算所进行。清算所作为所有交易对手的中央对手方，确保每笔交易的完成，降低交易对手风险。</p>
+<h5>2. 证券存管机构</h5>
+<p>证券存管机构（Central Securities Depositories）通过记账系统（book-entry system）实现证券所有权的转移，投资者不需要持有纸质证书。这种无纸化的所有权转移方式提高了交易效率，降低了管理成本。</p>
+<h4>二、经纪商和交易商</h4>
+<p>经纪商和交易商是连接投资者和金融市场的中介。</p>
+<h5>1. 经纪商</h5>
+<p>经纪商（Brokers）为客户安排交易，包括交易的清算和结算。他们通过佣金获取报酬。经纪商是投资者进入金融市场的主要接触点。设立经纪账户是使用经纪商服务进行交易的必要步骤。</p>
+<p>经纪商可以分为传统经纪商和电子经纪商。传统经纪商不仅提供交易执行服务，还能为客户提供投资信息和建议。而电子经纪商则是自动化的订单驱动执行系统，主要提供快速的交易执行服务。</p>
+<h5>2. 交易商</h5>
+<p>交易商（Dealers）与客户直接进行交易，通过买卖价差（bid-ask spread）赚钱。买卖价差是交易商报出的买入价和卖出价之间的差额。根据不同的交易所，交易商可能被称为做市商（Market Makers）或场内交易员（Floor Traders）。交易商通常有义务提供流动性，以稳定市场。他们面临库存风险和逆向选择风险，因此通常会对其投资组合进行对冲。</p>
+<h4>三、共同基金和对冲基金</h4>
+<p>共同基金和对冲基金是证券市场中的重要机构投资者。</p>
+<h5>1. 共同基金</h5>
+<p>共同基金（Mutual Funds）通过将许多投资者的资金集中起来，投资于多种证券，分散风险。这些基金由专业的基金经理管理，他们根据基金的投资目标进行证券选择和组合管理。</p>
+<h5>2. 对冲基金</h5>
+<p>对冲基金（Hedge Funds）也是一种集合投资工具，但与共同基金不同，对冲基金通常采用更复杂的投资策略，如杠杆、卖空和衍生品交易，以追求高回报。对冲基金的投资策略更加灵活，但风险也相对较高。</p>
+<h4>四、市场流动性和买卖价差</h4>
+<p>市场流动性（Market Liquidity）是指市场中证券能够快速买卖而不显著影响其价格的能力。流动性高的市场买卖价差（bid-ask spread）较小，交易量大。</p>
+<h5>1. 买卖价差</h5>
+<p>买卖价差是当前最低卖价（ask price）和最高买价（bid price）之间的差额。较小的买卖价差和较大的买卖量通常意味着市场流动性较高。</p>
+<h5>2. 流动性的意义</h5>
+<p>流动性对于证券市场的健康运作至关重要。高流动性意味着市场更稳定，投资者能够更容易地买卖证券，减少交易成本和市场波动性。</p>
+<h4>五、案例分析：微软股票的买卖价差</h4>
+<p>假设微软公司（MSFT）的最佳买价为$50，最佳卖价为$50.02，则买卖价差为$0.02。如果市场经销商可以在最佳买价和最佳卖价处买卖一百万股微软股票，那么他或她可以在短时间内获得$20,000的利润。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_1.2.2_Professional_Participants_in_Securities_Markets
+
+"""
+
+Lecture: 1_Preliminaries_on_Financial_Markets/1.2_A_Primer_on_Securities_Markets
+Content: 01_1.2.2_Professional_Participants_in_Securities_Markets
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

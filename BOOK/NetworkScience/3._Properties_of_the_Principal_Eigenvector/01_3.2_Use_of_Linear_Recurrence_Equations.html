@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.2 Use of Linear Recurrence Equations</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_3.2_Use_of_Linear_Recurrence_Equations</h1>
+<pre><code>Lecture: /3._Properties_of_the_Principal_Eigenvector
+Content: 01_3.2_Use_of_Linear_Recurrence_Equations
+</code></pre>
+<h3>比例引理和根积的极详细分析</h3>
+<p>在《谱半径与图》的第三章第一节中，讨论了比例引理和根积。这些概念在图论中具有重要意义，特别是在理解主特征向量和谱半径的应用时。以下是对这些概念的详细解析和深入分析。</p>
+<h3>比例引理 (Proportionality Lemma)</h3>
+<h4>1. 定义</h4>
+<p>比例引理主要用于描述两个向量在特定条件下的比例关系。在图论中，特别是在研究图的特征向量时，比例引理有助于揭示特征向量的性质。</p>
+<p><strong>形式化定义</strong>：
+设 $ A $ 是一个图的邻接矩阵，$ \mathbf{x} $ 是对应于特征值 $ \lambda $ 的特征向量。比例引理指出，如果两个向量 $ \mathbf{u} $ 和 $ \mathbf{v} $ 满足 $ A \mathbf{u} = \lambda \mathbf{u} $ 和 $ A \mathbf{v} = \lambda \mathbf{v} $，并且 $ \mathbf{u} $ 和 $ \mathbf{v} $ 在某个子空间内成比例，那么在整个空间内 $ \mathbf{u} $ 和 $ \mathbf{v} $ 也成比例。</p>
+<h4>2. 性质</h4>
+<ol>
+<li>
+<p><strong>线性组合性质</strong>：</p>
+<ul>
+<li>若 $ \mathbf{u} $ 和 $ \mathbf{v} $ 是特征值 $ \lambda $ 对应的两个特征向量，那么它们的任意线性组合也是特征值 $ \lambda $ 的特征向量。</li>
+<li>形式上：若 $ A \mathbf{u} = \lambda \mathbf{u} $ 且 $ A \mathbf{v} = \lambda \mathbf{v} $，则对任意标量 $ \alpha, \beta $，有 $ A (\alpha \mathbf{u} + \beta \mathbf{v}) = \lambda (\alpha \mathbf{u} + \beta \mathbf{v}) $。</li>
+</ul>
+</li>
+<li>
+<p><strong>对称性</strong>：</p>
+<ul>
+<li>对称矩阵的特征向量可以选为互相正交的，这使得比例引理在对称矩阵的谱分解中尤为重要。</li>
+</ul>
+</li>
+</ol>
+<h4>3. 应用</h4>
+<ol>
+<li>
+<p><strong>图的对称性分析</strong>：</p>
+<ul>
+<li>通过比例引理，可以分析图的对称性质。例如，对于对称图，不同特征向量之间的比例关系反映了图的对称结构。</li>
+</ul>
+</li>
+<li>
+<p><strong>特征向量的分解</strong>：</p>
+<ul>
+<li>比例引理有助于将复杂特征向量分解为若干简单特征向量的线性组合，简化计算过程。</li>
+</ul>
+</li>
+</ol>
+<h3>根积 (Rooted Product)</h3>
+<h4>1. 定义</h4>
+<p>根积是一种图的运算，用于生成新的图。给定两个图 $ G $ 和 $ H $，根积 $ G \circ H $ 是通过将 $ G $ 的每个顶点替换为一个 $ H $ 图，并将这些 $ H $ 图的根节点按照 $ G $ 中的边连接起来生成的。</p>
+<p><strong>形式化定义</strong>：
+设 $ G $ 是一个包含顶点集 $ {v_1, v_2, \ldots, v_n} $ 的图，$ H $ 是一个包含根节点 $ r $ 的图。根积 $ G \circ H $ 是一个包含 $ n \times |V(H)| $ 个顶点的图，其中每个 $ v_i $ 被替换为一个 $ H $ 图，并且 $ G $ 中的每条边 $ (v_i, v_j) $ 变为 $ H $ 图的根节点 $ r_i $ 和 $ r_j $ 之间的边。</p>
+<h4>2. 性质</h4>
+<ol>
+<li>
+<p><strong>谱半径的变化</strong>：</p>
+<ul>
+<li>根积图的谱半径可以通过原图 $ G $ 和 $ H $ 的谱半径进行分析。通常情况下，根积图的谱半径是原图谱半径的一个函数。</li>
+</ul>
+</li>
+<li>
+<p><strong>特征值的分布</strong>：</p>
+<ul>
+<li>根积图的特征值分布与原图的特征值分布相关联。通过分析根积图的特征值，可以获得对原图结构的更深理解。</li>
+</ul>
+</li>
+</ol>
+<h4>3. 应用</h4>
+<ol>
+<li>
+<p><strong>图的扩展</strong>：</p>
+<ul>
+<li>根积运算可以用于生成更复杂的图，广泛应用于网络设计和图论研究中。</li>
+</ul>
+</li>
+<li>
+<p><strong>谱分析</strong>：</p>
+<ul>
+<li>通过根积运算，可以分析复杂图的谱性质，例如在大型网络中的传播特性和连通性分析。</li>
+</ul>
+</li>
+</ol>
+<h3>比例引理与根积的联系</h3>
+<p>比例引理和根积在图论中的应用紧密相关。通过根积生成的新图，其特征值和特征向量可以通过比例引理进行分析和简化。这种方法有助于将复杂图的谱性质分解为若干简单图的谱性质，从而大大简化计算过程。</p>
+<h3>比例引理和根积在实际中的应用</h3>
+<ol>
+<li>
+<p><strong>网络设计</strong>：</p>
+<ul>
+<li>在设计大型通信网络时，可以通过根积生成新的网络结构，并利用比例引理分析其特征值和特征向量，从而优化网络性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>图像处理</strong>：</p>
+<ul>
+<li>在图像处理和计算机视觉中，图的谱分析被广泛应用。通过比例引理和根积，可以有效地处理图像的分割和特征提取问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>社会网络分析</strong>：</p>
+<ul>
+<li>在社交网络分析中，比例引理和根积用于分析用户之间的关系结构，帮助识别关键节点和社区结构。</li>
+</ul>
+</li>
+</ol>
+<h3>总结</h3>
+<p>比例引理和根积是图论中重要的工具，帮助我们理解和分析图的谱性质和结构特征。通过深入理解这些工具，可以有效地解决复杂图的谱分析问题，并在实际应用中实现图的优化和改进。这些工具在网络设计、图像处理和社会网络分析等多个领域中具有广泛的应用前景。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_3.2_Use_of_Linear_Recurrence_Equations
+
+"""
+Lecture: /3._Properties_of_the_Principal_Eigenvector
+Content: 01_3.2_Use_of_Linear_Recurrence_Equations
+"""
+
+import networkx as nx
+import numpy as np
+import matplotlib.pyplot as plt
+from typing import Any
+
+class RootedProductGraph:
+    """
+    A class to construct and manage the rooted product of two graphs and analyze spectral radius changes.
+    """
+    
+    def __init__(self, base_graph: nx.Graph, root_graph: nx.Graph, root_node: Any):
+        """
+        Initialize the RootedProductGraph object.
+
+        Args:
+            base_graph (nx.Graph): The base graph G.
+            root_graph (nx.Graph): The root graph H.
+            root_node (Any): The root node of the root graph H.
+        """
+        self.base_graph = base_graph
+        self.root_graph = root_graph
+        self.root_node = root_node
+        self.product_graph = self.construct_rooted_product()
+    
+    def construct_rooted_product(self) -> nx.Graph:
+        """
+        Construct the rooted product of the base graph and the root graph.
+
+        Returns:
+            nx.Graph: The rooted product graph.
+        """
+        product_graph = nx.Graph()
+        
+        # Add nodes and edges for each copy of H replacing each node in G
+        for node in self.base_graph.nodes():
+            mapping = {n: (node, n) for n in self.root_graph.nodes()}
+            H_copy = nx.relabel_nodes(self.root_graph, mapping)
+            product_graph = nx.compose(product_graph, H_copy)
+        
+        # Add edges between root nodes of H copies according to the edges in G
+        for u, v in self.base_graph.edges():
+            product_graph.add_edge((u, self.root_node), (v, self.root_node))
+        
+        return product_graph
+    
+    def compute_spectral_radius(self, graph: nx.Graph) -> float:
+        """
+        Compute the spectral radius (largest absolute eigenvalue) of a graph.
+
+        Args:
+            graph (nx.Graph): The graph to compute the spectral radius for.
+
+        Returns:
+            float: The spectral radius of the graph.
+        """
+        adjacency_matrix = nx.to_numpy_array(graph)
+        eigenvalues = np.linalg.eigvals(adjacency_matrix)
+        spectral_radius = np.max(np.abs(eigenvalues))
+        return spectral_radius
+
+    def display_product_graph(self):
+        """
+        Display the nodes and edges of the product graph.
+        """
+        print("Nodes of the Rooted Product Graph:")
+        print(self.product_graph.nodes(data=True))
+        print("\nEdges of the Rooted Product Graph:")
+        print(self.product_graph.edges(data=True))
+
+    def get_product_graph(self) -> nx.Graph:
+        """
+        Get the product graph.
+
+        Returns:
+            nx.Graph: The rooted product graph.
+        """
+        return self.product_graph
+
+    def visualize_graphs(self):
+        """
+        Visualize the base graph, root graph, and rooted product graph.
+        """
+        plt.figure(figsize=(18, 6))
+
+        # Plot base graph G
+        plt.subplot(131)
+        nx.draw(self.base_graph, with_labels=True, node_color='lightblue', edge_color='gray', node_size=500)
+        plt.title("Base Graph G")
+
+        # Plot root graph H
+        plt.subplot(132)
+        pos = nx.spring_layout(self.root_graph)
+        nx.draw(self.root_graph, pos, with_labels=True, node_color='lightgreen', edge_color='gray', node_size=500)
+        plt.title("Root Graph H")
+
+        # Plot rooted product graph
+        plt.subplot(133)
+        pos = nx.spring_layout(self.product_graph)
+        nx.draw(self.product_graph, pos, with_labels=True, node_color='lightcoral', edge_color='gray', node_size=500)
+        plt.title("Rooted Product Graph G ∘ H")
+
+        plt.show()
+
+# Example usage
+if __name__ == "__main__":
+    # Define the base graph G
+    G = nx.Graph()
+    G.add_edges_from([(1, 2), (2, 3), (3, 4)])
+
+    # Define the root graph H with a root node 'r'
+    H = nx.Graph()
+    H.add_edges_from([('r', 'a'), ('r', 'b'), ('a', 'b')])
+    root_node = 'r'
+
+    # Construct the rooted product graph
+    rooted_product = RootedProductGraph(G, H, root_node)
+
+    # Display the product graph
+    rooted_product.display_product_graph()
+    
+    # Visualize the base graph, root graph, and rooted product graph
+    rooted_product.visualize_graphs()
+    
+    # Compute spectral radius
+    base_spectral_radius = rooted_product.compute_spectral_radius(G)
+    root_spectral_radius = rooted_product.compute_spectral_radius(H)
+    product_spectral_radius = rooted_product.compute_spectral_radius(rooted_product.get_product_graph())
+
+    # Print spectral radii
+    print(f"Spectral Radius of Base Graph G: {base_spectral_radius}")
+    print(f"Spectral Radius of Root Graph H: {root_spectral_radius}")
+    print(f"Spectral Radius of Rooted Product Graph G ∘ H: {product_spectral_radius}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>30-Limited Labeled Data</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>30. 有限标记数据</h3>
+<h4>在监督机器学习环境中，如果绘制学习曲线并发现模型过拟合且可以从更多训练数据中受益，有哪些不同的方法可以处理有限标记数据？</h4>
+<p>在监督机器学习中，当我们面临有限标记数据的问题时，存在多种方法可以改善模型性能，而不仅仅依赖于收集更多的数据。以下是一些主要的方法和策略：</p>
+<h4>增加数据标记</h4>
+<p>收集更多的训练样本通常是改善模型性能的最佳方法。学习曲线是一个很好的诊断工具，可以帮助我们确定是否需要更多的数据。然而，在实际操作中，获取高质量数据可能非常昂贵，计算资源和存储可能不足，或者数据可能难以访问。</p>
+<h4>数据增强</h4>
+<p>类似于第5章中讨论的减少过拟合的技术，生成修改后的（增强的）或人工的（合成的）训练示例也可以提高预测模型的性能。提高数据质量也能提升模型的预测性能。</p>
+<ul>
+<li><strong>图像数据增强</strong>：包括增加亮度、翻转和裁剪等技术。这些技术可以帮助模型更好地泛化，因为它们使得模型难以记住训练示例中的特定像素值 。</li>
+</ul>
+<h4>迁移学习</h4>
+<p>迁移学习是指在一个通用数据集（例如ImageNet）上训练一个模型，然后对预训练的目标数据集（例如包含不同鸟类的图像数据集）进行微调。迁移学习通常在深度学习中进行，其中模型权重可以更新。这与基于树的方法形成对比，因为大多数决策树算法是非参数模型，不支持迭代训练或参数更新。</p>
+<ul>
+<li><strong>应用场景</strong>：对于图像分类问题，可以先在大型通用数据集上进行预训练，然后在较小的特定目标数据集上进行微调，以提高模型的预测性能  。</li>
+</ul>
+<h4>自监督学习</h4>
+<p>自监督学习类似于迁移学习，模型在不同的任务上进行预训练，然后微调到仅存在有限数据的目标任务。然而，自监督学习通常依赖于可以直接从未标记数据中自动提取的标签信息。</p>
+<ul>
+<li><strong>实例</strong>：在自然语言处理中，可以使用下一个词预测任务（如GPT）或掩码词预测任务（如BERT）进行预训练。在计算机视觉中，可以使用图像修复任务，例如预测被随机移除的图像部分  。</li>
+</ul>
+<h4>主动学习</h4>
+<p>在主动学习中，模型主动选择需要标记的数据点。例如，最简单的主动学习形式选择具有高预测不确定性的数据点进行标记。</p>
+<ul>
+<li><strong>方法</strong>：通过优先标记那些模型预测不确定性较高的数据点，可以最大限度地提高模型的性能 。</li>
+</ul>
+<h4>小样本学习</h4>
+<p>在小样本学习场景中，我们通常处理包含每个类别仅有少量示例的极小数据集。</p>
+<ul>
+<li><strong>应用场景</strong>：小样本学习可以用于医疗成像中的罕见疾病检测，或者推荐系统中根据有限的用户评级数据进行产品推荐 。</li>
+</ul>
+<h4>半监督学习</h4>
+<p>半监督学习涉及为数据集中未标记的实例创建标签。与弱监督学习不同，半监督学习利用数据本身的结构来创建标签。例如，可以基于邻近的标记数据点的密度来标记其他数据点。</p>
+<ul>
+<li><strong>方法</strong>：通过这种方式，半监督学习可以有效地扩展数据集，改善模型性能  。</li>
+</ul>
+<h4>弱监督学习</h4>
+<p>弱监督学习使用外部标签源为未标记的数据生成标签。虽然这些标签可能比由人类或领域专家生成的标签更噪声或不准确，但它们仍然可以用于训练模型。</p>
+<ul>
+<li><strong>应用场景</strong>：在垃圾邮件分类中，可以设计基于关键词的规则分类器来标记一部分垃圾邮件，而无需对整个数据集进行标记 。</li>
+</ul>
+<h4>自训练</h4>
+<p>自训练介于半监督学习和弱监督学习之间。通过训练一个模型来标记数据集或采用现有模型进行标记，可以进一步扩展数据集。</p>
+<ul>
+<li><strong>方法</strong>：这种方法通常涉及使用伪标签器来生成训练标签，并不断迭代更新模型 。</li>
+</ul>
+<h4>多任务学习</h4>
+<p>多任务学习同时训练神经网络解决多个相关任务。例如，在垃圾邮件分类中，除了主要任务（垃圾邮件分类）外，还可以添加一个或多个辅助任务（如邮件主题分类）。</p>
+<ul>
+<li><strong>优势</strong>：多任务学习可以提供归纳偏差，引导模型优先考虑能够解释多个任务的假设，从而提高模型在未见数据上的表现 。</li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

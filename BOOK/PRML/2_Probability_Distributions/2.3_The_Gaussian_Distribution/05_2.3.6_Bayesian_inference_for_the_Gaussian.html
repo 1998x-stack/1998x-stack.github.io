@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.3.6 Bayesian inference for the Gaussian</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>05_2.3.6_Bayesian_inference_for_the_Gaussian</h1>
+<pre><code>Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 05_2.3.6_Bayesian_inference_for_the_Gaussian
+</code></pre>
+<h4>高斯分布的贝叶斯推断</h4>
+<p>在2.3.6节中，讨论了如何使用贝叶斯推断来估计高斯分布的参数。与最大似然估计不同，贝叶斯方法通过引入参数的先验分布来推断参数的后验分布。这种方法结合了先验信息和观测数据，提供了更加灵活和强大的参数估计方法。以下是详细步骤。</p>
+<h4>贝叶斯推断的数学推导</h4>
+<ol>
+<li>
+<p><strong>似然函数</strong>：
+给定数据集 $ X = {x_1, x_2, \ldots, x_N} $，假设这些数据点独立且同分布于一个均值为 $\mu$，方差为 $\sigma^2$ 的高斯分布。则似然函数为：
+$$
+p(X|\mu, \sigma^2) = \prod_{n=1}^{N} p(x_n|\mu, \sigma^2) = \left( \frac{1}{\sqrt{2\pi\sigma^2}} \right)^N \exp \left( -\frac{1}{2\sigma^2} \sum_{n=1}^{N} (x_n - \mu)^2 \right)
+$$
+取对数似然函数：
+$$
+\ln p(X|\mu, \sigma^2) = -\frac{N}{2} \ln(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{n=1}^{N} (x_n - \mu)^2
+$$</p>
+</li>
+<li>
+<p><strong>先验分布</strong>：
+选择均值 $\mu$ 的先验分布为高斯分布：
+$$
+p(\mu) = \mathcal{N}(\mu|\mu_0, \sigma_0^2)
+$$
+其中 $\mu_0$ 和 $\sigma_0^2$ 分别是先验均值和先验方差。</p>
+</li>
+<li>
+<p><strong>后验分布</strong>：
+结合似然函数和先验分布，得到后验分布：
+$$
+p(\mu|X) \propto p(X|\mu) p(\mu)
+$$
+因为先验分布和似然函数都是高斯分布的指数形式的乘积，因此后验分布也是高斯分布。通过标准化，得到后验分布：
+$$
+p(\mu|X) = \mathcal{N}(\mu|\mu_N, \sigma_N^2)
+$$
+其中：
+$$
+\mu_N = \frac{\sigma_0^2 \sum_{n=1}^{N} x_n + \sigma^2 \mu_0}{N\sigma_0^2 + \sigma^2}
+$$
+$$
+\sigma_N^2 = \left( \frac{1}{\sigma_0^2} + \frac{N}{\sigma^2} \right)^{-1}
+$$</p>
+</li>
+</ol>
+<h3>贝叶斯推断的优点</h3>
+<ol>
+<li><strong>结合先验信息</strong>：贝叶斯方法允许将先验知识融入到参数估计中，对于数据稀少或不确定性较大的情况尤为有用。</li>
+<li><strong>后验分布</strong>：贝叶斯方法直接提供了参数的后验分布，而不仅仅是点估计，这样可以更全面地理解参数的不确定性。</li>
+<li><strong>在线更新</strong>：贝叶斯方法可以随着新数据的到来不断更新后验分布，实现在线学习。</li>
+</ol>
+<h3>总结</h3>
+<p>通过贝叶斯推断，我们可以在已知先验分布和观测数据的情况下，推断出高斯分布的参数。贝叶斯推断提供了一个灵活和强大的框架，能够结合先验信息和观测数据进行参数估计。这种方法不仅可以用于静态数据集，还可以用于动态数据流的在线学习和更新。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 05_2.3.6_Bayesian_inference_for_the_Gaussian
+
+"""
+Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 05_2.3.6_Bayesian_inference_for_the_Gaussian
+"""
+
+import numpy as np
+from typing import Tuple
+
+class BayesianGaussianInference:
+    def __init__(self, sigma: float, mu_0: float, sigma_0: float):
+        """
+        初始化高斯分布贝叶斯推断类
+        
+        参数:
+        sigma (float): 数据分布的已知标准差
+        mu_0 (float): 均值的先验分布的均值
+        sigma_0 (float): 均值的先验分布的标准差
+        """
+        self.sigma = sigma
+        self.mu_0 = mu_0
+        self.sigma_0 = sigma_0
+        self.mu_N = mu_0
+        self.sigma_N2 = sigma_0 ** 2
+    
+    def update(self, data: np.ndarray) -> Tuple[float, float]:
+        """
+        使用新的数据更新后验分布的均值和方差
+        
+        参数:
+        data (np.ndarray): 新的数据点集合
+        
+        返回:
+        Tuple[float, float]: 更新后的后验分布的均值和方差
+        """
+        n = len(data)
+        sum_data = np.sum(data)
+        
+        # 更新后验分布的均值
+        self.mu_N = (self.sigma_0 ** 2 * sum_data + self.sigma ** 2 * self.mu_0) / (n * self.sigma_0 ** 2 + self.sigma ** 2)
+        
+        # 更新后验分布的方差
+        self.sigma_N2 = (1 / self.sigma_0 ** 2 + n / self.sigma ** 2) ** -1
+        
+        return self.mu_N, np.sqrt(self.sigma_N2)
+    
+    def get_posterior(self) -> Tuple[float, float]:
+        """
+        获取当前的后验分布的均值和方差
+        
+        返回:
+        Tuple[float, float]: 当前的后验分布的均值和方差
+        """
+        return self.mu_N, np.sqrt(self.sigma_N2)
+
+# 示例用法
+if __name__ == "__main__":
+    # 已知参数
+    sigma = 1.0
+    mu_0 = 0.0
+    sigma_0 = 1.0
+    
+    # 生成示例数据
+    np.random.seed(0)
+    data = np.random.normal(loc=0.5, scale=sigma, size=10)
+    
+    # 创建贝叶斯推断类
+    bayesian_inference = BayesianGaussianInference(sigma, mu_0, sigma_0)
+    
+    # 更新后验分布
+    mu_N, sigma_N = bayesian_inference.update(data)
+    
+    print("更新后的后验均值:", mu_N)
+    print("更新后的后验标准差:", sigma_N)
+    
+    # 获取当前后验分布
+    current_mu_N, current_sigma_N = bayesian_inference.get_posterior()
+    print("当前的后验均值:", current_mu_N)
+    print("当前的后验标准差:", current_sigma_N)</code></pre>
+  </div>
+</body>
+</html>
+  

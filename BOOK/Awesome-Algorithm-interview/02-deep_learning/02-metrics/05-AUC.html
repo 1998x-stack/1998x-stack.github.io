@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>05-AUC</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>AUC指标有什么特点？放缩结果对AUC是否有影响？</p>
+</blockquote>
+<h3>AUC指标的特点</h3>
+<p>AUC（Area Under the Curve）是二分类模型性能的常用指标。其特点包括：</p>
+<ol>
+<li>
+<p><strong>不受阈值选择的影响</strong>：</p>
+<ul>
+<li>AUC通过ROC曲线下面积来评估模型性能，不依赖于单一的阈值。它综合考虑了所有可能的阈值，提供了对模型性能的全面评估。</li>
+</ul>
+</li>
+<li>
+<p><strong>衡量模型区分能力</strong>：</p>
+<ul>
+<li>AUC反映了模型将正类和负类样本正确排序的能力。AUC值为0.5表示模型没有区分能力，与随机猜测相同；AUC值为1表示模型完美区分正类和负类样本。</li>
+</ul>
+</li>
+<li>
+<p><strong>对类别不平衡具有鲁棒性</strong>：</p>
+<ul>
+<li>AUC在处理类别不平衡的数据集时表现良好，因为它不直接受类别比例的影响，而是基于排序评估模型性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>概率输出的评估</strong>：</p>
+<ul>
+<li>AUC不仅评估模型的分类结果，还评估模型输出的概率分布。如果模型输出的概率值能更好地反映实际情况，AUC值会更高。</li>
+</ul>
+</li>
+</ol>
+<h3>放缩结果对AUC的影响</h3>
+<p>放缩结果指对模型的预测概率进行线性变换，如乘以一个常数或加上一个常数。以下是放缩结果对AUC的影响分析：</p>
+<ol>
+<li>
+<p><strong>线性变换的影响</strong>：</p>
+<ul>
+<li>由于AUC仅依赖于预测值的相对排序，而线性变换不会改变排序顺序，因此线性放缩不会影响AUC值。例如，如果预测概率 $p$ 被放缩为 $p' = ap + b$，只要 $a &gt; 0$，排序顺序保持不变，AUC值也保持不变。</li>
+</ul>
+</li>
+<li>
+<p><strong>排序不变性</strong>：</p>
+<ul>
+<li>AUC度量的是预测值的排序能力，只要预测值的排序顺序不变，AUC值就不会改变。因此，任何不改变排序的变换（如线性放缩、标准化等）都不会影响AUC。</li>
+</ul>
+</li>
+</ol>
+<h3>示例说明</h3>
+<p>假设模型输出的预测概率为 $[0.1, 0.4, 0.35, 0.8]$，对应的实际标签为 $[0, 0, 1, 1]$。如果我们对预测概率进行放缩，如乘以2并减去1，得到新的预测概率 $[-0.8, -0.2, -0.3, 0.6]$，新的预测值与原来的排序顺序一致，因此AUC值不变。</p>
+<h3>参考资料</h3>
+<ul>
+<li><a href="https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5">Understanding AUC-ROC Curve</a></li>
+<li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_auc_score.html">Scikit-learn Documentation on AUC</a></li>
+<li><a href="https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/">ROC Curve and AUC Explained</a></li>
+<li><a href="https://www.analyticsvidhya.com/blog/2020/06/auc-roc-curve-machine-learning/">AUC: A Better Measure Than Accuracy in Binary Classification</a></li>
+</ul>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

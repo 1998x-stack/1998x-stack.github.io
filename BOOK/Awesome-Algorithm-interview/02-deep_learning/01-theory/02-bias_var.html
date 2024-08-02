@@ -1,0 +1,69 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-bias var</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>什么是偏差和方差？</p>
+</blockquote>
+<h3>偏差和方差</h3>
+<p>在统计学和机器学习中，偏差（Bias）和方差（Variance）是两个用来评估模型性能和理解模型误差来源的重要概念。</p>
+<h4>1. 偏差（Bias）</h4>
+<p><strong>定义</strong>：
+偏差是指模型预测值的期望与真实值之间的差异。高偏差通常意味着模型在训练数据和测试数据上的表现都不好，即欠拟合（Underfitting）。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>欠拟合</strong>：高偏差表示模型过于简单，无法捕捉数据的复杂模式。</li>
+<li><strong>期望误差</strong>：偏差反映了模型的期望预测值与真实值之间的系统性误差。</li>
+</ul>
+<p><strong>计算</strong>：
+偏差通常通过模型的期望预测值与真实值之间的差异来度量：
+$$ \text{Bias} = \mathbb{E}[\hat{f}(x)] - f(x) $$
+其中，$\mathbb{E}[\hat{f}(x)]$ 是模型的期望预测值，$f(x)$ 是真实值。</p>
+<p><strong>示例</strong>：
+在一个简单线性回归模型中，若数据实际是二次曲线而模型是直线，则模型可能会产生较高的偏差，因为它无法捕捉数据的二次关系。</p>
+<h4>2. 方差（Variance）</h4>
+<p><strong>定义</strong>：
+方差是指模型预测值的变化程度。高方差表示模型对训练数据的敏感度较高，即过拟合（Overfitting），在不同的训练数据集上，模型的预测结果差异较大。</p>
+<p><strong>特点</strong>：</p>
+<ul>
+<li><strong>过拟合</strong>：高方差表示模型过于复杂，能够很好地拟合训练数据，但在测试数据上表现较差。</li>
+<li><strong>模型稳定性</strong>：方差反映了模型对训练数据变化的敏感性，方差越高，模型越不稳定。</li>
+</ul>
+<p><strong>计算</strong>：
+方差通过模型预测值的变化范围来度量：
+$$ \text{Variance} = \mathbb{E}[(\hat{f}(x) - \mathbb{E}[\hat{f}(x)])^2] $$</p>
+<p><strong>示例</strong>：
+在一个多项式回归模型中，若使用过高次多项式来拟合数据，模型可能会产生较高的方差，因为它对训练数据的噪声也进行了拟合。</p>
+<h3>偏差-方差权衡（Bias-Variance Tradeoff）</h3>
+<p>在模型构建过程中，偏差和方差往往是相互对立的。通常情况下，降低偏差会增加方差，反之亦然。理想情况下，我们希望找到一个平衡点，使模型的总误差（由偏差和方差共同决定）最小化。</p>
+<p><strong>总误差</strong>：
+总误差可以分解为偏差、方差和噪声三部分：
+$$ \text{Error} = \text{Bias}^2 + \text{Variance} + \text{Noise} $$</p>
+<h3>参考资料</h3>
+<ol>
+<li><strong>机器学习实战</strong>：详细介绍了偏差、方差以及它们在模型评估中的作用。</li>
+<li><strong>统计学习方法</strong>：提供了关于偏差-方差权衡的理论基础和应用实例。</li>
+<li><a href="https://www.statlearning.com/">An Introduction to Statistical Learning with Applications in R</a>: A comprehensive resource on bias and variance in the context of statistical learning.</li>
+<li><a href="https://towardsdatascience.com/bias-variance-tradeoff-explained-9f54e99f6254">Bias-Variance Tradeoff in Machine Learning</a>: An article explaining the bias-variance tradeoff with examples and visualizations.</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

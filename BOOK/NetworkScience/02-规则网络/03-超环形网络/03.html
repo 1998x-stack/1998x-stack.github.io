@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>03</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>超环形网络概述</h3>
+<p>超环形网络是一种具有高对称性和高互连性的网络拓扑结构，广泛应用于并行计算、通信网络和分布式系统中。超环形网络的设计使其在可靠性、容错性和通信效率方面表现优异。下面详细介绍超环形网络及其相关知识，包括平均路径长度和链路效率。</p>
+<h3>3.3.1 超环形网络的平均路径长度</h3>
+<h4>定义</h4>
+<p>平均路径长度是网络中所有节点对之间最短路径长度的平均值。它反映了网络的紧凑程度，路径长度越短，信息在网络中传播的速度越快。</p>
+<h4>计算方法</h4>
+<ol>
+<li><strong>超环形网络的结构</strong>：超环形网络中的每个节点连接到两个直接邻居，并且可能还连接到更多的远程节点，这些远程节点的连接根据一定的规则确定，以优化网络性能。</li>
+<li><strong>路径长度的计算</strong>：使用广度优先搜索（BFS）或 Floyd-Warshall 算法计算所有节点对之间的最短路径长度。</li>
+<li><strong>平均路径长度的公式</strong>：
+$$
+APL = \frac{\sum_{i \neq j} d(i, j)}{n(n-1)}
+$$
+其中，$ d(i, j) $ 是节点 $ i $ 和节点 $ j $ 之间的最短路径长度，$ n $ 是节点数。</li>
+</ol>
+<h4>示例代码</h4>
+<pre><code class="language-python">import networkx as nx
+
+class HypercubeNetwork:
+    ```
+    超环形网络类。
+    
+    Methods:
+        create_hypercube(dimensions: int) -&gt; nx.Graph: 创建超环形网络。
+        calculate_average_path_length(hypercube: nx.Graph) -&gt; float: 计算超环形网络的平均路径长度。
+    ```
+    
+    @staticmethod
+    def create_hypercube(dimensions: int) -&gt; nx.Graph:
+        ```
+        创建超环形网络。
+        
+        Args:
+            dimensions (int): 超环形网络的维度。
+        
+        Returns:
+            nx.Graph: 超环形网络的图表示。
+        ```
+        return nx.hypercube_graph(dimensions)
+
+    @staticmethod
+    def calculate_average_path_length(hypercube: nx.Graph) -&gt; float:
+        ```
+        计算超环形网络的平均路径长度。
+        
+        Args:
+            hypercube (nx.Graph): 超环形网络的图表示。
+        
+        Returns:
+            float: 超环形网络的平均路径长度。
+        ```
+        total_length = 0
+        num_nodes = hypercube.number_of_nodes()
+        for node in hypercube.nodes():
+            lengths = nx.single_source_shortest_path_length(hypercube, node)
+            total_length += sum(lengths.values())
+        average_path_length = total_length / (num_nodes * (num_nodes - 1))
+        return average_path_length
+
+# 示例使用
+if __name__ == &quot;__main__&quot;:
+    dimensions = 3  # 超环形网络的维度
+    hypercube = HypercubeNetwork.create_hypercube(dimensions)
+    apl = HypercubeNetwork.calculate_average_path_length(hypercube)
+    print(f&quot;超环形网络的平均路径长度: {apl}&quot;)
+</code></pre>
+<h3>3.3.2 超环形网络的链路效率</h3>
+<h4>定义</h4>
+<p>链路效率是衡量网络中节点之间通信效率的指标，通常与平均路径长度相关。链路效率越高，表示网络中节点之间通信的效率越高。</p>
+<h4>计算方法</h4>
+<ol>
+<li><strong>平均路径长度的计算</strong>：先计算超环形网络的平均路径长度。</li>
+<li><strong>链路效率的公式</strong>：
+$$
+E = \frac{1}{APL}
+$$
+其中，$ APL $ 是网络的平均路径长度。</li>
+</ol>
+<h4>示例代码</h4>
+<pre><code class="language-python">class HypercubeNetworkEfficiency:
+    ```
+    超环形网络链路效率计算类。
+    
+    Methods:
+        calculate_link_efficiency(hypercube: nx.Graph) -&gt; float: 计算超环形网络的链路效率。
+    ```
+    
+    @staticmethod
+    def calculate_link_efficiency(hypercube: nx.Graph) -&gt; float:
+        ```
+        计算超环形网络的链路效率。
+        
+        Args:
+            hypercube (nx.Graph): 超环形网络的图表示。
+        
+        Returns:
+            float: 超环形网络的链路效率。
+        ```
+        apl = HypercubeNetwork.calculate_average_path_length(hypercube)
+        return 1 / apl if apl != 0 else float('inf')
+
+# 示例使用
+if __name__ == &quot;__main__&quot;:
+    dimensions = 3  # 超环形网络的维度
+    hypercube = HypercubeNetwork.create_hypercube(dimensions)
+    efficiency = HypercubeNetworkEfficiency.calculate_link_efficiency(hypercube)
+    print(f&quot;超环形网络的链路效率: {efficiency}&quot;)
+</code></pre>
+<h3>详细解释</h3>
+<ol>
+<li><strong>超环形网络的结构</strong>：超环形网络具有高对称性和互连性，使其在并行计算和通信网络中具有优越的性能。节点不仅连接到最近的邻居，还可能连接到远程节点，以优化网络性能。</li>
+<li><strong>平均路径长度</strong>：平均路径长度是所有节点对之间最短路径长度的平均值，反映了网络的紧凑程度。使用 BFS 或 Floyd-Warshall 算法计算所有节点对之间的最短路径长度，然后计算平均值。</li>
+<li><strong>链路效率</strong>：链路效率是平均路径长度的倒数，反映了网络中节点之间通信的效率。平均路径长度越短，链路效率越高。</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>import numpy as np
+import networkx as nx
+import matplotlib.pyplot as plt
+
+class HypercubeNetwork:
+    """
+    超环形网络类。
+    
+    Methods:
+        create_hypercube(dimensions: int) -> nx.Graph: 创建超环形网络。
+        calculate_average_path_length(hypercube: nx.Graph) -> float: 使用 numpy 计算超环形网络的平均路径长度。
+        calculate_link_efficiency(hypercube: nx.Graph) -> float: 使用 numpy 计算超环形网络的链路效率。
+        visualize_hypercube(hypercube: nx.Graph): 可视化超环形网络。
+    """
+    
+    @staticmethod
+    def create_hypercube(dimensions: int) -> nx.Graph:
+        """
+        创建超环形网络。
+        
+        Args:
+            dimensions (int): 超环形网络的维度。
+        
+        Returns:
+            nx.Graph: 超环形网络的图表示。
+        """
+        return nx.hypercube_graph(dimensions)
+
+    @staticmethod
+    def calculate_average_path_length(hypercube: nx.Graph) -> float:
+        """
+        使用 numpy 计算超环形网络的平均路径长度。
+        
+        Args:
+            hypercube (nx.Graph): 超环形网络的图表示。
+        
+        Returns:
+            float: 超环形网络的平均路径长度。
+        """
+        num_nodes = hypercube.number_of_nodes()
+        path_lengths = dict(nx.all_pairs_shortest_path_length(hypercube))
+        total_length = sum(sum(lengths.values()) for lengths in path_lengths.values())
+        average_path_length = total_length / (num_nodes * (num_nodes - 1))
+        return average_path_length
+    
+        # total_length = 0
+        # num_nodes = hypercube.number_of_nodes()
+        # for node in hypercube.nodes():
+        #     lengths = nx.single_source_shortest_path_length(hypercube, node)
+        #     total_length += sum(lengths.values())
+        # average_path_length = total_length / (num_nodes * (num_nodes - 1))
+        # return average_path_length
+
+    @staticmethod
+    def calculate_link_efficiency(hypercube: nx.Graph) -> float:
+        """
+        使用 numpy 计算超环形网络的链路效率。
+        
+        Args:
+            hypercube (nx.Graph): 超环形网络的图表示。
+        
+        Returns:
+            float: 超环形网络的链路效率。
+        """
+        apl = HypercubeNetwork.calculate_average_path_length(hypercube)
+        return 1 / apl if apl != 0 else float('inf')
+
+    @staticmethod
+    def visualize_hypercube(hypercube: nx.Graph):
+        """
+        可视化超环形网络。
+        
+        Args:
+            hypercube (nx.Graph): 超环形网络的图表示。
+        """
+        pos = nx.spring_layout(hypercube)
+        plt.figure(figsize=(10, 10))
+        nx.draw(hypercube, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=500, font_size=10, font_weight='bold')
+        plt.title("Hypercube Network Visualization")
+        plt.show()
+
+# 创建并可视化超环形网络
+dimensions = 3  # 超环形网络的维度
+hypercube = HypercubeNetwork.create_hypercube(dimensions)
+HypercubeNetwork.visualize_hypercube(hypercube)
+
+# 计算并打印平均路径长度和链路效率
+apl = HypercubeNetwork.calculate_average_path_length(hypercube)
+efficiency = HypercubeNetwork.calculate_link_efficiency(hypercube)
+print(apl, efficiency)</code></pre>
+  </div>
+</body>
+</html>
+  

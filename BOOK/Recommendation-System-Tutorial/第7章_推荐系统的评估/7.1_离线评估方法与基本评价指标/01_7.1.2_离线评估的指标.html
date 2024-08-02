@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>7.1.2 离线评估的指标</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_7.1.2 离线评估的指标</h1>
+<pre><code>Lecture: 第7章 推荐系统的评估/7.1 离线评估方法与基本评价指标
+Content: 01_7.1.2 离线评估的指标
+</code></pre>
+<h3>7.1.2 离线评估的指标</h3>
+<h4>概述</h4>
+<p>离线评估指标用于评估推荐系统在历史数据上的表现，是推荐系统开发和优化过程中重要的参考依据。常见的离线评估指标包括准确性指标、排序指标、覆盖率指标、多样性指标和新颖性指标。这些指标从不同角度衡量推荐系统的性能和效果，帮助工程师找到最佳的推荐算法和模型。</p>
+<h4>准确性指标</h4>
+<ol>
+<li>
+<p><strong>精确率（Precision）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：精确率是指推荐结果中相关项目所占的比例。</li>
+<li><strong>计算公式</strong>：
+$$
+Precision = \frac{TP}{TP + FP}
+$$
+其中，TP为真正例数，FP为假正例数。</li>
+<li><strong>优点</strong>：反映推荐结果的准确性，适用于推荐结果较短的情况。</li>
+<li><strong>缺点</strong>：无法反映推荐系统的全面性。</li>
+</ul>
+</li>
+<li>
+<p><strong>召回率（Recall）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：召回率是指实际相关项目中被推荐的比例。</li>
+<li><strong>计算公式</strong>：
+$$
+Recall = \frac{TP}{TP + FN}
+$$
+其中，TP为真正例数，FN为假负例数。</li>
+<li><strong>优点</strong>：反映推荐系统的覆盖能力，适用于需要全面推荐的情况。</li>
+<li><strong>缺点</strong>：无法反映推荐结果的精确性。</li>
+</ul>
+</li>
+<li>
+<p><strong>F1值（F1-score）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：F1值是精确率和召回率的调和平均数。</li>
+<li><strong>计算公式</strong>：
+$$
+F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall}
+$$</li>
+<li><strong>优点</strong>：综合考虑精确率和召回率，提供平衡的评估结果。</li>
+<li><strong>缺点</strong>：无法反映推荐结果的排名和多样性。</li>
+</ul>
+</li>
+</ol>
+<h4>排序指标</h4>
+<ol>
+<li>
+<p><strong>平均排名（Mean Rank）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：推荐结果中相关项目的平均排名。</li>
+<li><strong>计算公式</strong>：
+$$
+Mean\ Rank = \frac{1}{N} \sum_{i=1}^{N} Rank_i
+$$
+其中，$Rank_i$为第i个推荐结果中相关项目的排名。</li>
+<li><strong>优点</strong>：反映推荐结果的排序效果。</li>
+<li><strong>缺点</strong>：对排名的敏感度较高，无法反映推荐结果的多样性。</li>
+</ul>
+</li>
+<li>
+<p><strong>平均倒数排名（Mean Reciprocal Rank, MRR）</strong>：</p>
+<ul>
+<li><strong>定义</strong>：推荐结果中第一个相关项目排名的倒数平均值。</li>
+<li><strong>计算公式</strong>：
+$$
+MRR = \frac{1}{N} \sum_{i=1}^{N} \frac{1}{Rank_i}
+$$
+其中，$Rank_i$为第i个推荐结果中第一个相关项目的排名。</li>
+<li><strong>优点</strong>：反映推荐结果中相关项目的优先级。</li>
+<li><strong>缺点</strong>：只考虑第一个相关项目的排名，无法全面反映推荐效果。</li>
+</ul>
+</li>
+</ol>
+<h4>覆盖率指标</h4>
+<ol>
+<li><strong>覆盖率（Coverage）</strong>：
+<ul>
+<li><strong>定义</strong>：推荐系统能够推荐的项目占所有项目的比例。</li>
+<li><strong>计算公式</strong>：
+$$
+Coverage = \frac{|\text{推荐的项目}|}{|\text{所有项目}|}
+$$</li>
+<li><strong>优点</strong>：反映推荐系统的广度，适用于评估推荐系统的全面性。</li>
+<li><strong>缺点</strong>：无法反映推荐结果的准确性和排序效果。</li>
+</ul>
+</li>
+</ol>
+<h4>多样性指标</h4>
+<ol>
+<li><strong>多样性（Diversity）</strong>：
+<ul>
+<li><strong>定义</strong>：推荐结果中项目的多样性程度，通常通过计算推荐项目之间的相似度来评估。</li>
+<li><strong>计算公式</strong>：
+$$
+Diversity = 1 - \frac{1}{N(N-1)} \sum_{i \neq j} \text{Sim}(i, j)
+$$
+其中，$ \text{Sim}(i, j) $为项目i和项目j之间的相似度。</li>
+<li><strong>优点</strong>：反映推荐结果的多样性，适用于评估推荐系统的多样性和创新性。</li>
+<li><strong>缺点</strong>：无法反映推荐结果的准确性和覆盖率。</li>
+</ul>
+</li>
+</ol>
+<h4>新颖性指标</h4>
+<ol>
+<li><strong>新颖性（Novelty）</strong>：
+<ul>
+<li><strong>定义</strong>：推荐结果中新颖项目的比例，通常通过计算推荐项目的流行度来评估。</li>
+<li><strong>计算公式</strong>：
+$$
+Novelty = 1 - \frac{1}{N} \sum_{i=1}^{N} \text{Popularity}(i)
+$$
+其中，$ \text{Popularity}(i) $为项目i的流行度。</li>
+<li><strong>优点</strong>：反映推荐结果的新颖性，适用于评估推荐系统的创新性。</li>
+<li><strong>缺点</strong>：无法反映推荐结果的准确性和排序效果。</li>
+</ul>
+</li>
+</ol>
+<h4>实际应用案例</h4>
+<ol>
+<li>
+<p><strong>电商推荐系统</strong>：</p>
+<ul>
+<li>在某电商平台的推荐系统中，采用精确率、召回率和F1值评估推荐算法的准确性。通过离线评估，选择最优的推荐算法，提高商品推荐的准确性和用户满意度。</li>
+</ul>
+</li>
+<li>
+<p><strong>内容推荐系统</strong>：</p>
+<ul>
+<li>在某内容平台的推荐系统中，采用平均排名和平均倒数排名评估推荐结果的排序效果。通过优化推荐算法，提升用户对推荐内容的点击率和阅读量。</li>
+</ul>
+</li>
+<li>
+<p><strong>社交网络推荐系统</strong>：</p>
+<ul>
+<li>在某社交网络平台的推荐系统中，采用覆盖率、多样性和新颖性评估推荐结果的全面性和创新性。通过离线评估，优化好友推荐和内容推荐，提高用户的活跃度和平台黏性。</li>
+</ul>
+</li>
+</ol>
+<h3>总结</h3>
+<p>离线评估指标是推荐系统开发和优化过程中不可或缺的一部分。通过准确性、排序、覆盖率、多样性和新颖性等指标，全面评估推荐系统的性能和效果，帮助工程师找到最佳的推荐算法和模型。在未来，随着推荐系统技术的发展，离线评估指标将进一步完善，为推荐系统的高效开发和优化提供更有力的支持。</p>
+<hr>
+<h3>离线评估的主要指标极详细表格</h3>
+<table>
+<thead>
+<tr>
+<th><strong>指标名称</strong></th>
+<th><strong>定义</strong></th>
+<th><strong>计算公式</strong></th>
+<th><strong>优点</strong></th>
+<th><strong>缺点</strong></th>
+<th><strong>应用场景</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>精确率（Precision）</strong></td>
+<td>推荐结果中相关项目所占的比例。</td>
+<td>$$Precision = \frac{TP}{TP + FP}$$</td>
+<td>反映推荐结果的准确性，适用于推荐结果较短的情况。</td>
+<td>无法反映推荐系统的全面性。</td>
+<td>数据量较大，适用于一般推荐系统开发。</td>
+</tr>
+<tr>
+<td><strong>召回率（Recall）</strong></td>
+<td>实际相关项目中被推荐的比例。</td>
+<td>$$Recall = \frac{TP}{TP + FN}$$</td>
+<td>反映推荐系统的覆盖能力，适用于需要全面推荐的情况。</td>
+<td>无法反映推荐结果的精确性。</td>
+<td>数据量适中，需要全面覆盖用户需求。</td>
+</tr>
+<tr>
+<td><strong>F1值（F1-score）</strong></td>
+<td>精确率和召回率的调和平均数。</td>
+<td>$$F1 = 2 \times \frac{Precision \times Recall}{Precision + Recall}$$</td>
+<td>综合考虑精确率和召回率，提供平衡的评估结果。</td>
+<td>无法反映推荐结果的排名和多样性。</td>
+<td>综合评估推荐系统的准确性和覆盖能力。</td>
+</tr>
+<tr>
+<td><strong>平均排名（Mean Rank）</strong></td>
+<td>推荐结果中相关项目的平均排名。</td>
+<td>$$Mean\ Rank = \frac{1}{N} \sum_{i=1}^{N} Rank_i$$</td>
+<td>反映推荐结果的排序效果。</td>
+<td>对排名的敏感度较高，无法反映推荐结果的多样性。</td>
+<td>需要评估推荐结果的排序效果。</td>
+</tr>
+<tr>
+<td><strong>平均倒数排名（MRR）</strong></td>
+<td>推荐结果中第一个相关项目排名的倒数平均值。</td>
+<td>$$MRR = \frac{1}{N} \sum_{i=1}^{N} \frac{1}{Rank_i}$$</td>
+<td>反映推荐结果中相关项目的优先级。</td>
+<td>只考虑第一个相关项目的排名，无法全面反映推荐效果。</td>
+<td>需要评估推荐结果的优先级和排序效果。</td>
+</tr>
+<tr 所有项目="">
+<td><strong>覆盖率（Coverage）</strong></td>
+<td>推荐系统能够推荐的项目占所有项目的比例。</td>
+<td>$$Coverage = \frac{</td>
+<td 推荐的项目="">\text</td>
+<td>}{</td>
+<td>\text</td>
+</tr>
+<tr>
+<td><strong>多样性（Diversity）</strong></td>
+<td>推荐结果中项目的多样性程度，通常通过计算推荐项目之间的相似度来评估。</td>
+<td>$$Diversity = 1 - \frac{1}{N(N-1)} \sum_{i \neq j} \text{Sim}(i, j)$$</td>
+<td>反映推荐结果的多样性，适用于评估推荐系统的多样性和创新性。</td>
+<td>无法反映推荐结果的准确性和覆盖率。</td>
+<td>需要评估推荐结果的多样性和用户体验。</td>
+</tr>
+<tr>
+<td><strong>新颖性（Novelty）</strong></td>
+<td>推荐结果中新颖项目的比例，通常通过计算推荐项目的流行度来评估。</td>
+<td>$$Novelty = 1 - \frac{1}{N} \sum_{i=1}^{N} \text{Popularity}(i)$$</td>
+<td>反映推荐结果的新颖性，适用于评估推荐系统的创新性。</td>
+<td>无法反映推荐结果的准确性和排序效果。</td>
+<td>需要评估推荐结果的新颖性和用户兴趣。</td>
+</tr>
+</tbody>
+</table>
+<h4>表格字段详细解释：</h4>
+<ul>
+<li><strong>指标名称</strong>：评估指标的名称。</li>
+<li><strong>定义</strong>：指标的具体描述和衡量内容。</li>
+<li><strong>计算公式</strong>：指标的计算公式，用于定量评估推荐系统性能。</li>
+<li><strong>优点</strong>：使用该指标进行评估的主要优势。</li>
+<li><strong>缺点</strong>：使用该指标进行评估的主要劣势。</li>
+<li><strong>应用场景</strong>：适用该指标的具体应用场景。</li>
+</ul>
+<h4>具体应用示例：</h4>
+<ol>
+<li>
+<p><strong>电商推荐系统</strong>：</p>
+<ul>
+<li><strong>精确率（Precision）</strong>：在某电商平台进行推荐系统优化时，使用精确率评估推荐结果的准确性。通过优化推荐算法，提高推荐商品的准确性，提升用户的购物体验。</li>
+<li><strong>召回率（Recall）</strong>：在电商平台中，使用召回率评估推荐系统的覆盖能力，确保推荐系统能够全面覆盖用户的潜在需求。</li>
+</ul>
+</li>
+<li>
+<p><strong>内容推荐系统</strong>：</p>
+<ul>
+<li><strong>F1值（F1-score）</strong>：在某内容平台进行推荐系统优化时，使用F1值综合评估推荐结果的准确性和覆盖能力。通过优化推荐算法，提升推荐内容的质量和用户满意度。</li>
+<li><strong>平均排名（Mean Rank）</strong>：使用平均排名评估推荐结果的排序效果，确保用户优先看到最相关的内容，提高用户的点击率和阅读量。</li>
+</ul>
+</li>
+<li>
+<p><strong>社交网络推荐系统</strong>：</p>
+<ul>
+<li><strong>平均倒数排名（MRR）</strong>：在某社交网络平台进行好友推荐时，使用平均倒数排名评估推荐结果中相关好友的优先级。通过优化推荐算法，提高好友推荐的准确性和优先级。</li>
+<li><strong>覆盖率（Coverage）</strong>：使用覆盖率评估推荐系统的全面覆盖能力，确保推荐系统能够推荐多样化的内容和用户，提高平台的活跃度和用户粘性。</li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_7.1.2 离线评估的指标
+
+"""
+Lecture: 第7章 推荐系统的评估/7.1 离线评估方法与基本评价指标
+Content: 01_7.1.2 离线评估的指标
+"""
+
+from typing import List, Dict, Tuple
+from collections import defaultdict
+import numpy as np
+
+class OfflineEvaluationMetrics:
+    def __init__(self):
+        pass
+
+    def precision(self, true_positive: int, false_positive: int) -> float:
+        """
+        计算精确率
+
+        Args:
+            true_positive (int): 真正例数
+            false_positive (int): 假正例数
+
+        Returns:
+            float: 精确率
+        """
+        if true_positive + false_positive == 0:
+            return 0.0
+        return true_positive / (true_positive + false_positive)
+
+    def recall(self, true_positive: int, false_negative: int) -> float:
+        """
+        计算召回率
+
+        Args:
+            true_positive (int): 真正例数
+            false_negative (int): 假负例数
+
+        Returns:
+            float: 召回率
+        """
+        if true_positive + false_negative == 0:
+            return 0.0
+        return true_positive / (true_positive + false_negative)
+
+    def f1_score(self, precision: float, recall: float) -> float:
+        """
+        计算F1值
+
+        Args:
+            precision (float): 精确率
+            recall (float): 召回率
+
+        Returns:
+            float: F1值
+        """
+        if precision + recall == 0:
+            return 0.0
+        return 2 * (precision * recall) / (precision + recall)
+
+    def mean_rank(self, ranks: List[int]) -> float:
+        """
+        计算平均排名
+
+        Args:
+            ranks (List[int]): 推荐结果中相关项目的排名列表
+
+        Returns:
+            float: 平均排名
+        """
+        if not ranks:
+            return 0.0
+        return np.mean(ranks)
+
+    def mean_reciprocal_rank(self, ranks: List[int]) -> float:
+        """
+        计算平均倒数排名
+
+        Args:
+            ranks (List[int]): 推荐结果中相关项目的排名列表
+
+        Returns:
+            float: 平均倒数排名
+        """
+        if not ranks:
+            return 0.0
+        return np.mean([1.0 / rank for rank in ranks])
+
+    def coverage(self, recommended_items: List[int], all_items: List[int]) -> float:
+        """
+        计算覆盖率
+
+        Args:
+            recommended_items (List[int]): 推荐的项目列表
+            all_items (List[int]): 所有项目列表
+
+        Returns:
+            float: 覆盖率
+        """
+        if not all_items:
+            return 0.0
+        return len(set(recommended_items)) / len(all_items)
+
+    def diversity(self, recommended_items: List[int], similarity_matrix: Dict[Tuple[int, int], float]) -> float:
+        """
+        计算多样性
+
+        Args:
+            recommended_items (List[int]): 推荐的项目列表
+            similarity_matrix (Dict[Tuple[int, int], float]): 项目相似度矩阵
+
+        Returns:
+            float: 多样性
+        """
+        if len(recommended_items) < 2:
+            return 0.0
+        pairwise_similarities = [
+            similarity_matrix[(min(i, j), max(i, j))]
+            for idx, i in enumerate(recommended_items)
+            for j in recommended_items[idx + 1:]
+        ]
+        if not pairwise_similarities:
+            return 1.0
+        return 1.0 - np.mean(pairwise_similarities)
+
+    def novelty(self, recommended_items: List[int], popularity_dict: Dict[int, float]) -> float:
+        """
+        计算新颖性
+
+        Args:
+            recommended_items (List[int]): 推荐的项目列表
+            popularity_dict (Dict[int, float]): 项目流行度字典
+
+        Returns:
+            float: 新颖性
+        """
+        if not recommended_items:
+            return 0.0
+        return 1.0 - np.mean([popularity_dict[item] for item in recommended_items])
+
+# 示例使用
+evaluation_metrics = OfflineEvaluationMetrics()
+
+# 精确率和召回率
+precision_value = evaluation_metrics.precision(true_positive=50, false_positive=10)
+recall_value = evaluation_metrics.recall(true_positive=50, false_negative=20)
+
+# F1值
+f1_value = evaluation_metrics.f1_score(precision=precision_value, recall=recall_value)
+
+# 平均排名和平均倒数排名
+mean_rank_value = evaluation_metrics.mean_rank(ranks=[1, 3, 5, 7])
+mean_rr_value = evaluation_metrics.mean_reciprocal_rank(ranks=[1, 3, 5, 7])
+
+# 覆盖率
+coverage_value = evaluation_metrics.coverage(recommended_items=[1, 2, 3, 4], all_items=list(range(1, 101)))
+
+# 多样性
+similarity_matrix = {
+    (1, 2): 0.9, (1, 3): 0.2, (1, 4): 0.4,
+    (2, 3): 0.5, (2, 4): 0.3,
+    (3, 4): 0.7
+}
+diversity_value = evaluation_metrics.diversity(recommended_items=[1, 2, 3, 4], similarity_matrix=similarity_matrix)
+
+# 新颖性
+popularity_dict = {
+    1: 0.9, 2: 0.8, 3: 0.1, 4: 0.4
+}
+novelty_value = evaluation_metrics.novelty(recommended_items=[1, 2, 3, 4], popularity_dict=popularity_dict)
+
+print(f"Precision: {precision_value}")
+print(f"Recall: {recall_value}")
+print(f"F1 Score: {f1_value}")
+print(f"Mean Rank: {mean_rank_value}")
+print(f"Mean Reciprocal Rank: {mean_rr_value}")
+print(f"Coverage: {coverage_value}")
+print(f"Diversity: {diversity_value}")
+print(f"Novelty: {novelty_value}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

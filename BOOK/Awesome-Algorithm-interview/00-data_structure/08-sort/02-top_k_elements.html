@@ -1,0 +1,106 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-top k elements</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>堆排序topk</p>
+</blockquote>
+<h3>堆排序用于查找 Top K 元素</h3>
+<p>堆排序（Heap Sort）是一种基于堆数据结构的比较排序算法，可以在 $O(n \log k)$ 的时间复杂度内找到数组中最大的 $k$ 个元素。通过维护一个大小为 $k$ 的小顶堆，可以高效地实现这一目标。</p>
+<h4>算法步骤</h4>
+<ol>
+<li>创建一个大小为 $k$ 的小顶堆，将前 $k$ 个元素插入堆中。</li>
+<li>遍历数组中剩余的元素：
+<ul>
+<li>如果当前元素大于堆顶元素，则替换堆顶元素并调整堆。</li>
+</ul>
+</li>
+<li>遍历结束后，堆中的元素即为数组中最大的 $k$ 个元素。</li>
+</ol>
+<h4>代码实现</h4>
+<pre><code class="language-python">import heapq
+
+def top_k_elements(nums, k):
+    if k == 0:
+        return []
+    # 创建一个大小为 k 的小顶堆
+    min_heap = nums[:k]
+    heapq.heapify(min_heap)
+    
+    # 遍历数组中剩余的元素
+    for num in nums[k:]:
+        if num &gt; min_heap[0]:
+            heapq.heappushpop(min_heap, num)
+    
+    # 返回堆中的元素
+    return min_heap
+
+# 示例使用
+nums = [3, 2, 1, 5, 6, 4]
+k = 2
+print(top_k_elements(nums, k))  # 输出: [5, 6]
+</code></pre>
+<h3>解释</h3>
+<ol>
+<li>
+<p><strong>创建小顶堆</strong>：</p>
+<ul>
+<li>使用 <code>heapq.heapify</code> 将前 $k$ 个元素构建成一个小顶堆。</li>
+</ul>
+</li>
+<li>
+<p><strong>遍历数组</strong>：</p>
+<ul>
+<li>对于数组中剩余的元素，如果当前元素大于堆顶元素（即堆中的最小元素），则将堆顶元素替换为当前元素，并调整堆使其保持小顶堆性质。</li>
+</ul>
+</li>
+<li>
+<p><strong>返回结果</strong>：</p>
+<ul>
+<li>遍历结束后，堆中的元素即为数组中最大的 $k$ 个元素。</li>
+</ul>
+</li>
+</ol>
+<h3>时间复杂度和空间复杂度</h3>
+<ul>
+<li><strong>时间复杂度</strong>：$O(n \log k)$，其中 $n$ 是数组的长度。堆的插入和删除操作的时间复杂度为 $O(\log k)$，遍历数组的时间复杂度为 $O(n)$。</li>
+<li><strong>空间复杂度</strong>：$O(k)$，用于存储堆的额外空间。</li>
+</ul>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Kth Largest Element in an Array</strong>：</p>
+<ul>
+<li>提供了使用堆查找数组中第 $k$ 大元素的详细解释和实现示例。</li>
+<li><a href="https://www.geeksforgeeks.org/kth-largest-element-in-an-array/">GeeksforGeeks链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Problem - Kth Largest Element in an Array</strong>：</p>
+<ul>
+<li>提供了查找数组中第 $k$ 大元素问题的详细描述和解决方案。</li>
+<li><a href="https://leetcode.com/problems/kth-largest-element-in-an-array/">LeetCode链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

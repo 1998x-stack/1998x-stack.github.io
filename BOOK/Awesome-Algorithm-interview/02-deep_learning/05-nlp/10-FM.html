@@ -1,0 +1,113 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>10-FM</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>详细介绍一下FM，以及其优缺点</p>
+</blockquote>
+<h3>因子分解机（Factorization Machines, FM）详解</h3>
+<p>因子分解机（Factorization Machines, FM）是一种广泛应用于推荐系统、预测建模和数据挖掘的机器学习模型。FM模型通过因子分解技术有效地捕捉特征间的交互作用，特别是在高维稀疏数据上表现优异。</p>
+<h4>FM 的原理</h4>
+<p>因子分解机的基本思想是通过引入隐因子（Latent Factors）来建模特征之间的二阶交互。FM 可以被看作是线性模型和矩阵分解的结合。</p>
+<p><strong>公式</strong>：
+因子分解机的预测函数可以表示为：</p>
+<p>$$ \hat{y} = w_0 + \sum_{i=1}^{n} w_i x_i + \sum_{i=1}^{n} \sum_{j=i+1}^{n} \langle \mathbf{v}_i, \mathbf{v}_j \rangle x_i x_j $$</p>
+<p>其中：</p>
+<ul>
+<li>$ \hat{y} $ 是预测值。</li>
+<li>$ w_0 $ 是全局偏置。</li>
+<li>$ w_i $ 是一阶特征的权重。</li>
+<li>$ x_i $ 和 $ x_j $ 是特征值。</li>
+<li>$ \mathbf{v}_i $ 和 $ \mathbf{v}_j $ 是特征 $i$ 和 $j$ 的隐向量，通常维度为 $k$。</li>
+<li>$ \langle \mathbf{v}_i, \mathbf{v}_j \rangle = \mathbf{v}_i^T \mathbf{v}_j $ 表示两个隐向量的内积。</li>
+</ul>
+<p><strong>特征交互</strong>：
+FM 通过引入隐因子 $ \mathbf{v} $ 将特征交互分解为多个隐向量的内积，从而有效地捕捉高维稀疏数据中的特征交互关系。</p>
+<p><strong>优化</strong>：
+因子分解机通常通过随机梯度下降（SGD）或交替最小二乘法（ALS）来优化模型参数。</p>
+<h4>优点</h4>
+<ol>
+<li><strong>捕捉高维特征交互</strong>：FM 能有效建模高维稀疏数据中的二阶特征交互，这是传统线性模型难以实现的。</li>
+<li><strong>可解释性强</strong>：FM 模型的参数具有一定的可解释性，便于理解特征之间的交互关系。</li>
+<li><strong>处理稀疏数据</strong>：FM 在处理稀疏数据时表现优异，适用于推荐系统中的用户-物品评分矩阵等场景。</li>
+<li><strong>灵活性高</strong>：FM 可以扩展到更复杂的模型，如 FFM（Field-aware Factorization Machines）和 DeepFM 等。</li>
+</ol>
+<h4>缺点</h4>
+<ol>
+<li><strong>计算复杂度</strong>：虽然 FM 通过引入隐因子简化了特征交互的计算，但对于非常高维的数据集，训练过程仍然可能较慢。</li>
+<li><strong>只能捕捉二阶交互</strong>：基础的 FM 模型只能捕捉二阶特征交互，对于高阶特征交互，需要扩展模型如高阶因子分解机（HOFM）或结合深度学习的方法（如 DeepFM）。</li>
+<li><strong>依赖于隐因子维度</strong>：模型性能对隐因子维度 $k$ 的选择较为敏感，过小的维度无法充分捕捉特征交互，过大的维度可能导致过拟合。</li>
+</ol>
+<h4>应用场景</h4>
+<ol>
+<li><strong>推荐系统</strong>：在推荐系统中，FM 可以用来预测用户对物品的评分，捕捉用户和物品之间的交互。</li>
+<li><strong>广告点击率预估</strong>：FM 能有效处理广告点击率预估中的高维稀疏数据，提升预估精度。</li>
+<li><strong>个性化推荐</strong>：在个性化推荐中，FM 能根据用户的历史行为和物品的特征进行精准推荐。</li>
+</ol>
+<h3>实现示例</h3>
+<p>以下是使用 Python 和 libFM 库实现因子分解机的示例代码：</p>
+<pre><code class="language-python">from sklearn.feature_extraction import DictVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+from pylibfm import FM
+
+# 示例数据
+data = [
+    {'user': 'A', 'item': 'item1', 'rating': 5},
+    {'user': 'A', 'item': 'item2', 'rating': 3},
+    {'user': 'B', 'item': 'item1', 'rating': 4},
+    {'user': 'B', 'item': 'item3', 'rating': 2},
+]
+
+# 特征和标签提取
+X = [ {k: v for k, v in d.items() if k != 'rating'} for d in data ]
+y = [ d['rating'] for d in data ]
+
+# 特征向量化
+v = DictVectorizer()
+X = v.fit_transform(X)
+
+# 训练集和测试集划分
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# 因子分解机模型
+fm = FM(num_factors=10, num_iter=10, task='regression', initial_learning_rate=0.01, learning_rate_schedule='optimal')
+
+# 训练模型
+fm.fit(X_train, y_train)
+
+# 预测
+y_pred = fm.predict(X_test)
+
+# 评估
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
+</code></pre>
+<h3>参考文献</h3>
+<ol>
+<li><strong>Steffen Rendle. &quot;Factorization Machines with libFM.&quot; ACM Transactions on Intelligent Systems and Technology (TIST), 2012.</strong>
+<a href="https://dl.acm.org/doi/10.1145/2168752.2168771">论文链接</a></li>
+<li><strong>Steffen Rendle. &quot;Factorization Machines.&quot; IEEE International Conference on Data Mining (ICDM), 2010.</strong>
+<a href="https://ieeexplore.ieee.org/document/5694074">论文链接</a></li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

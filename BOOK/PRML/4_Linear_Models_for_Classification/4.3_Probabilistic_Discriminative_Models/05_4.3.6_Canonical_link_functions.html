@@ -1,0 +1,236 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.3.6 Canonical link functions</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>05_4.3.6_Canonical_link_functions</h1>
+<pre><code>Lecture: 4_Linear_Models_for_Classification/4.3_Probabilistic_Discriminative_Models
+Content: 05_4.3.6_Canonical_link_functions
+</code></pre>
+<h3>详解PRML中的4.3.6节：典型链接函数</h3>
+<p>《模式识别与机器学习》（Pattern Recognition and Machine Learning, PRML）是由Christopher M. Bishop所著的一本经典教材，其中第4章涵盖了线性分类模型的内容。在第4.3节，作者介绍了概率判别模型（Probabilistic Discriminative Models）。具体来说，第4.3.6节探讨了典型链接函数（Canonical Link Functions）。以下是对这一节内容的详细分析。</p>
+<h3>典型链接函数的背景</h3>
+<p>在广义线性模型（Generalized Linear Models, GLM）中，链接函数（Link Function）用于将线性预测变量和目标变量之间的关系映射到一个合适的范围。典型链接函数是一类特殊的链接函数，它们使得对数似然函数的导数形式变得简单，从而简化参数估计和模型优化。</p>
+<h3>典型链接函数的定义</h3>
+<p>典型链接函数是与指数族分布相对应的链接函数。对于指数族分布，其概率密度函数或概率质量函数可以表示为：</p>
+<p>$$ p(t|\eta) = h(t) \exp(\eta t - A(\eta)) $$</p>
+<p>其中，$\eta$ 是自然参数（Natural Parameter），$A(\eta)$ 是对数分区函数（Log Partition Function），$h(t)$ 是标准化常数。</p>
+<p>在广义线性模型中，线性预测变量 $\eta$ 和期望值 $\mu$ 之间的关系由链接函数 $g$ 来描述：</p>
+<p>$$ \eta = g(\mu) $$</p>
+<p>当链接函数 $g$ 是对数分区函数 $A(\eta)$ 的导数时，称其为典型链接函数：</p>
+<p>$$ g(\mu) = \frac{dA(\eta)}{d\eta} $$</p>
+<h3>线性回归中的典型链接函数</h3>
+<p>对于线性回归模型，假设噪声服从高斯分布。其对数似然函数为：</p>
+<p>$$ \ln p(t|\mu, \sigma^2) = -\frac{N}{2} \ln(2\pi\sigma^2) - \frac{1}{2\sigma^2} \sum_{n=1}^{N} (t_n - \mu_n)^2 $$</p>
+<p>对于高斯分布，其分区函数为：</p>
+<p>$$ A(\eta) = \frac{\eta^2}{2} $$</p>
+<p>因此，对应的典型链接函数为：</p>
+<p>$$ g(\mu) = \mu $$</p>
+<p>这表明，在高斯分布假设下，线性回归模型的链接函数是恒等函数。</p>
+<h3>逻辑回归中的典型链接函数</h3>
+<p>对于逻辑回归模型，假设目标变量服从伯努利分布。其对数似然函数为：</p>
+<p>$$ \ln p(t|\mu) = \sum_{n=1}^{N} { t_n \ln \mu_n + (1 - t_n) \ln (1 - \mu_n) } $$</p>
+<p>对于伯努利分布，其分区函数为：</p>
+<p>$$ A(\eta) = \ln(1 + \exp(\eta)) $$</p>
+<p>因此，对应的典型链接函数为：</p>
+<p>$$ g(\mu) = \ln \frac{\mu}{1 - \mu} $$</p>
+<p>这表明，在伯努利分布假设下，逻辑回归模型的链接函数是对数几率（Logit）函数。</p>
+<h3>多类别逻辑回归中的典型链接函数</h3>
+<p>对于多类别逻辑回归模型，假设目标变量服从多项分布。其对数似然函数为：</p>
+<p>$$ \ln p(t|\mu) = \sum_{n=1}^{N} \sum_{k=1}^{K} t_{nk} \ln \mu_{nk} $$</p>
+<p>对于多项分布，其分区函数为：</p>
+<p>$$ A(\eta) = \ln \left( \sum_{k=1}^{K} \exp(\eta_k) \right) $$</p>
+<p>因此，对应的典型链接函数为：</p>
+<p>$$ g(\mu) = \ln \frac{\mu_k}{\mu_1} $$</p>
+<p>这表明，在多项分布假设下，多类别逻辑回归模型的链接函数是对数比率函数。</p>
+<h3>典型链接函数的优点</h3>
+<ol>
+<li><strong>简化计算</strong>：典型链接函数使得对数似然函数的导数形式变得简单，从而简化参数估计和模型优化。</li>
+<li><strong>广泛应用</strong>：典型链接函数广泛应用于各种广义线性模型中，包括线性回归、逻辑回归和多类别逻辑回归等。</li>
+</ol>
+<h3>结论</h3>
+<p>通过以上分析可以看出，典型链接函数在广义线性模型中具有重要的地位。它们不仅简化了模型的参数估计和优化过程，而且在各种实际应用中表现出色。掌握典型链接函数的理论和应用，有助于我们在实际问题中选择合适的模型和算法，提高分类和预测的准确性。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 05_4.3.6_Canonical_link_functions
+
+"""
+Lecture: 4_Linear_Models_for_Classification/4.3_Probabilistic_Discriminative_Models
+Content: 05_4.3.6_Canonical_link_functions
+"""
+
+import numpy as np
+from scipy.special import expit, logit, softmax
+from scipy.optimize import minimize
+from typing import Tuple
+
+class GeneralizedLinearModel:
+    """
+    广义线性模型，支持线性回归、逻辑回归和多类别逻辑回归
+
+    Parameters:
+    -----------
+    link_function : str
+        链接函数类型 ('identity', 'logit', 'log_ratio')
+    max_iter : int
+        训练数据迭代次数 (默认值为 100)
+    tol : float
+        收敛阈值 (默认值为 1e-6)
+    
+    Attributes:
+    -----------
+    w_ : np.ndarray
+        权重向量
+    """
+    def __init__(self, link_function: str, max_iter: int = 100, tol: float = 1e-6) -> None:
+        self.link_function = link_function
+        self.max_iter = max_iter
+        self.tol = tol
+        self.w_ = None
+
+    def _identity(self, X: np.ndarray) -> np.ndarray:
+        """ 恒等函数 """
+        return X
+
+    def _inverse_identity(self, X: np.ndarray) -> np.ndarray:
+        """ 恒等函数的逆函数 """
+        return X
+
+    def _logit(self, X: np.ndarray) -> np.ndarray:
+        """ 对数几率函数 """
+        return logit(X)
+
+    def _inverse_logit(self, X: np.ndarray) -> np.ndarray:
+        """ 对数几率函数的逆函数 """
+        return expit(X)
+
+    def _log_ratio(self, X: np.ndarray) -> np.ndarray:
+        """ 对数比率函数 """
+        return np.log(X / (1 - X))
+
+    def _inverse_log_ratio(self, X: np.ndarray) -> np.ndarray:
+        """ 对数比率函数的逆函数 """
+        return np.exp(X) / (1 + np.exp(X))
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
+        """
+        训练广义线性模型
+        
+        Parameters:
+        -----------
+        X : np.ndarray, shape = [n_samples, n_features]
+            训练向量
+        y : np.ndarray, shape = [n_samples]
+            目标值
+        """
+        n_samples, n_features = X.shape
+        X_bias = np.insert(X, 0, 1, axis=1)  # 添加偏置项
+
+        if self.link_function == 'identity':
+            link, inverse_link = self._identity, self._inverse_identity
+        elif self.link_function == 'logit':
+            link, inverse_link = self._logit, self._inverse_logit
+        elif self.link_function == 'log_ratio':
+            link, inverse_link = self._log_ratio, self._inverse_log_ratio
+        else:
+            raise ValueError("Unsupported link function")
+
+        def neg_log_likelihood(w):
+            z = np.dot(X_bias, w)
+            mu = inverse_link(z)
+            if self.link_function == 'identity':
+                likelihood = -0.5 * np.sum((y - mu) ** 2)
+            elif self.link_function in ['logit', 'log_ratio']:
+                likelihood = y * np.log(mu) + (1 - y) * np.log(1 - mu)
+            return -np.sum(likelihood)
+
+        def grad_neg_log_likelihood(w):
+            z = np.dot(X_bias, w)
+            mu = inverse_link(z)
+            if self.link_function == 'identity':
+                gradient = np.dot(X_bias.T, y - mu)
+            elif self.link_function in ['logit', 'log_ratio']:
+                gradient = np.dot(X_bias.T, y - mu)
+            return -gradient
+
+        self.w_ = minimize(neg_log_likelihood, np.zeros(n_features + 1), jac=grad_neg_log_likelihood,
+                           options={'maxiter': self.max_iter, 'disp': True, 'gtol': self.tol}).x
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """
+        返回预测值
+        
+        Parameters:
+        -----------
+        X : np.ndarray
+            输入向量
+        
+        Returns:
+        --------
+        np.ndarray
+            预测值
+        """
+        X_bias = np.insert(X, 0, 1, axis=1)  # 添加偏置项
+        z = np.dot(X_bias, self.w_)
+        if self.link_function == 'identity':
+            return self._inverse_identity(z)
+        elif self.link_function == 'logit':
+            return self._inverse_logit(z)
+        elif self.link_function == 'log_ratio':
+            return self._inverse_log_ratio(z)
+
+def generate_data(n_samples: int = 100) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    生成二分类数据集
+    
+    Parameters:
+    -----------
+    n_samples : int
+        样本数量 (默认值为 100)
+        
+    Returns:
+    --------
+    Tuple[np.ndarray, np.ndarray]
+        特征矩阵和目标值向量
+    """
+    np.random.seed(0)
+    X1 = np.random.randn(n_samples // 2, 2) + np.array([2, 2])
+    X2 = np.random.randn(n_samples // 2, 2) + np.array([-2, -2])
+    X = np.vstack((X1, X2))
+    y = np.hstack((np.ones(n_samples // 2), np.zeros(n_samples // 2)))
+    return X, y
+
+def main() -> None:
+    """
+    主函数，运行广义线性模型并打印结果
+    """
+    X, y = generate_data()
+    glm = GeneralizedLinearModel(link_function='logit', max_iter=100, tol=1e-6)
+    glm.fit(X, y)
+    predictions = glm.predict(X)
+    
+    print("权重向量 w:")
+    print(glm.w_)
+    print("预测结果:")
+    print(predictions)
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

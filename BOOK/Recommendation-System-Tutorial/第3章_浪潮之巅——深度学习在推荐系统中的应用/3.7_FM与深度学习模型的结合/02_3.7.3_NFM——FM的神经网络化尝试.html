@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.7.3 NFM——FM的神经网络化尝试</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_3.7.3 NFM——FM的神经网络化尝试</h1>
+<pre><code>Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.7 FM与深度学习模型的结合
+Content: 02_3.7.3 NFM——FM的神经网络化尝试
+</code></pre>
+<h3>3.7.3 NFM——FM的神经网络化尝试</h3>
+<h4>1. 背景和动机</h4>
+<p>在推荐系统中，Factorization Machine（FM）模型因其在捕捉特征交互方面的优势，得到了广泛应用。然而，FM模型主要处理的是二阶特征交互，无法有效扩展到更高阶的特征交互。为了克服这一限制，新加坡国立大学的研究人员在2017年提出了NFM（Neural Factorization Machine）模型，旨在通过神经网络的强大表达能力，提升FM模型在高阶特征交互中的表现。</p>
+<h4>2. NFM模型概述</h4>
+<p>NFM模型在FM模型的基础上，引入了神经网络，用更强大的函数替代FM中二阶隐向量内积的部分。具体而言，NFM模型的结构如图3-20所示，通过在Embedding层和多层神经网络之间加入特征交叉池化层（Bi-Interaction Pooling Layer），实现了特征交互的增强。</p>
+<h4>3. 特征交叉池化层的作用</h4>
+<p>特征交叉池化层是NFM模型的核心创新之一。假设$ Vx $是所有特征域的Embedding集合，那么特征交叉池化层的具体操作如下：
+$$ f(x) = \sum_{i=1}^n \sum_{j=i+1}^n v_i \odot v_j $$
+其中，$ \odot $代表两个向量的元素积操作，即对应维相乘得到元素积向量。</p>
+<p>通过对两两Embedding向量进行元素积操作，再对交叉特征向量取和，得到池化层的输出向量。这个输出向量随后输入上层的多层全连接神经网络，进行进一步的特征交叉。</p>
+<h4>4. NFM模型的优势</h4>
+<p>NFM模型相较于传统FM模型和Wide&amp;Deep模型，有以下几个显著优势：</p>
+<ol>
+<li><strong>增强的特征交互能力</strong>：通过特征交叉池化层，NFM模型能够捕捉到更高阶的特征交互信息，提升模型的表达能力。</li>
+<li><strong>更强的非线性特征表示</strong>：神经网络的引入，使得模型能够拟合更复杂的非线性特征组合，适应更多样化的推荐场景。</li>
+<li><strong>联合训练</strong>：NFM模型通过联合训练特征交叉池化层和多层神经网络，实现了特征表示和特征交互的有效优化。</li>
+</ol>
+<h4>5. 实验结果与分析</h4>
+<p>通过在多个推荐任务中的实验验证，NFM模型在点击率预测、评分预测等任务中表现优异。具体实验结果表明，NFM模型在特征交互和泛化能力上显著优于传统的FM模型和Wide&amp;Deep模型。</p>
+<h4>6. 总结</h4>
+<p>NFM模型通过引入神经网络，对FM模型进行改进，提升了特征交互的能力和模型的非线性表示。其创新点在于特征交叉池化层的设计，能够有效捕捉高阶特征交互信息，显著提升了推荐系统的性能。NFM模型在理论上提供了新的思路，也在实际应用中展现了强大的性能优势。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_3.7.3 NFM——FM的神经网络化尝试
+
+"""
+Lecture: 第3章 浪潮之巅——深度学习在推荐系统中的应用/3.7 FM与深度学习模型的结合
+Content: 02_3.7.3 NFM——FM的神经网络化尝试
+"""
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torch.nn.functional as F
+
+class BiInteractionPooling(nn.Module):
+    def __init__(self):
+        super(BiInteractionPooling, self).__init__()
+
+    def forward(self, x):
+        square_of_sum = torch.pow(torch.sum(x, dim=1), 2)
+        sum_of_square = torch.sum(torch.pow(x, 2), dim=1)
+        bi_interaction = 0.5 * (square_of_sum - sum_of_square)
+        return bi_interaction
+
+class NFM(nn.Module):
+    def __init__(self, num_features, k, hidden_dims):
+        super(NFM, self).__init__()
+        self.num_features = num_features
+        self.k = k
+
+        # Embedding层
+        self.embeddings = nn.Embedding(num_features, k)
+
+        # 特征交叉池化层
+        self.bi_interaction_pooling = BiInteractionPooling()
+
+        # 全连接层
+        layers = []
+        input_dim = k
+        for hidden_dim in hidden_dims:
+            layers.append(nn.Linear(input_dim, hidden_dim))
+            layers.append(nn.ReLU())
+            input_dim = hidden_dim
+        layers.append(nn.Linear(input_dim, 1))
+        self.dnn = nn.Sequential(*layers)
+
+    def forward(self, x):
+        x_embed = self.embeddings(x).view(-1, self.num_features, self.k)
+        bi_interaction = self.bi_interaction_pooling(x_embed)
+        output = self.dnn(bi_interaction)
+        return output
+
+# 数据准备
+num_features = 10000
+k = 32
+hidden_dims = [64, 32]
+batch_size = 64
+num_epochs = 10
+
+# 生成示例数据
+X = torch.randint(0, num_features, (batch_size, num_features))
+y = torch.randn(batch_size, 1)
+
+# 初始化模型
+model = NFM(num_features, k, hidden_dims)
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+criterion = nn.MSELoss()
+
+# 训练模型
+for epoch in range(num_epochs):
+    model.train()
+    optimizer.zero_grad()
+    outputs = model(X)
+    loss = criterion(outputs, y)
+    loss.backward()
+    optimizer.step()
+    print(f"Epoch [{epoch+1}/{num_epochs}], Loss: {loss.item():.4f}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

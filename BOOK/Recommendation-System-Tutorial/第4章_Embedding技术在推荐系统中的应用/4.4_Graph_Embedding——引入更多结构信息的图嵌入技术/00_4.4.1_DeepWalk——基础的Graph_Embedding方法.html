@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.4.1 DeepWalk——基础的Graph Embedding方法</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_4.4.1 DeepWalk——基础的Graph Embedding方法</h1>
+<pre><code>Lecture: 第4章 Embedding技术在推荐系统中的应用/4.4 Graph Embedding——引入更多结构信息的图嵌入技术
+Content: 00_4.4.1 DeepWalk——基础的Graph Embedding方法
+</code></pre>
+<h3>4.4.1 DeepWalk——基础的Graph Embedding方法</h3>
+<h4>背景和概述</h4>
+<p>DeepWalk是一种基础的图嵌入（Graph Embedding）方法，由Perozzi等人在2014年提出。其主要思想是在图结构上进行随机游走，生成大量的节点序列，然后将这些节点序列作为训练样本输入Word2vec模型进行训练，从而得到节点的嵌入向量。DeepWalk方法将序列Embedding技术与图嵌入技术相结合，是一种连接序列Embedding和Graph Embedding的过渡方法。</p>
+<h4>方法原理</h4>
+<p>DeepWalk的算法流程包括以下几个步骤：</p>
+<ol>
+<li>
+<p><strong>构建图结构</strong>：从原始的用户行为序列中构建物品关系图。用户的行为（如购买、点击等）可以看作是图中的边，物品可以看作是图中的节点。物品之间的边权重表示用户行为的频率或强度。</p>
+</li>
+<li>
+<p><strong>随机游走</strong>：在构建的物品关系图上进行随机游走，生成大量物品序列。随机游走的过程类似于在图中进行深度优先搜索，每次从当前节点随机选择一个邻居节点继续游走。游走的长度和次数可以根据实际需求进行设置。</p>
+</li>
+<li>
+<p><strong>生成训练样本</strong>：将生成的物品序列作为训练样本输入Word2vec模型。Word2vec模型通过训练这些物品序列，生成每个物品的嵌入向量。嵌入向量能够捕捉物品之间的潜在关系和相似性。</p>
+</li>
+</ol>
+<h4>算法细节</h4>
+<p>在DeepWalk的算法流程中，随机游走的跳转概率是关键部分。如果物品关系图是有向有权图，从节点 $ v_i $ 跳转到节点 $ v_j $ 的概率定义为：</p>
+<p>$$ P(v_i \rightarrow v_j) = \frac{w_{ij}}{\sum_{k \in N^+(v_i)} w_{ik}} $$</p>
+<p>其中，$ w_{ij} $ 是节点 $ v_i $ 到节点 $ v_j $ 的边权重， $ N^+(v_i) $ 是节点 $ v_i $ 所有的出边集合。</p>
+<p>对于无向无权图，跳转概率将是上述公式的特例，即权重 $ w_{ij} $ 为常数1，且 $ N^+(v_i) $ 是节点 $ v_i $ 所有边的集合，而不是所有出边的集合。</p>
+<h4>优势</h4>
+<ol>
+<li><strong>无监督学习</strong>：DeepWalk不需要预先标注数据，通过随机游走和Word2vec模型即可生成高质量的节点嵌入向量。</li>
+<li><strong>灵活性强</strong>：DeepWalk可以应用于各种类型的图结构，适用于大规模图数据。</li>
+<li><strong>捕捉图结构信息</strong>：生成的节点嵌入向量能够捕捉图的结构信息和节点之间的局部相似性。</li>
+</ol>
+<h4>局限性</h4>
+<ol>
+<li><strong>计算复杂度高</strong>：对于大规模图数据，随机游走和Word2vec模型的训练过程可能需要大量的计算资源。</li>
+<li><strong>缺乏全局信息</strong>：随机游走仅能捕捉节点的局部信息，无法充分利用图的全局结构信息。</li>
+</ol>
+<h4>应用案例</h4>
+<p>阿里巴巴在其推荐系统中应用了DeepWalk方法，通过用户行为数据构建物品关系图，利用DeepWalk生成物品的嵌入向量，从而实现个性化推荐。DeepWalk方法在大规模用户数据下表现出了较高的准确性和效率。</p>
+<h3>结论</h3>
+<p>DeepWalk方法作为一种基础的图嵌入技术，通过随机游走和Word2vec模型结合，实现了从图结构到嵌入向量的转换。该方法具有灵活性强、无监督学习等优势，能够有效提升推荐系统的性能。然而，DeepWalk也存在计算复杂度高和缺乏全局信息的局限性。在实际应用中，可以结合其他图嵌入方法，如Node2vec、EGES等，进一步优化嵌入效果。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_4.4.1 DeepWalk——基础的Graph Embedding方法
+
+"""
+Lecture: 第4章 Embedding技术在推荐系统中的应用/4.4 Graph Embedding——引入更多结构信息的图嵌入技术
+Content: 00_4.4.1 DeepWalk——基础的Graph Embedding方法
+"""
+
+import numpy as np
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import Dataset, DataLoader
+from typing import List, Dict, Tuple
+import networkx as nx
+import random
+
+class DeepWalkDataset(Dataset):
+    """
+    DeepWalk数据集类，用于存储和提供训练数据。
+
+    Attributes:
+        walks: 随机游走生成的节点序列。
+        word2vec_window: Word2Vec窗口大小。
+    """
+    def __init__(self, walks: List[List[int]], word2vec_window: int):
+        self.walks = walks
+        self.word2vec_window = word2vec_window
+        self.pairs = self._generate_pairs()
+
+    def _generate_pairs(self) -> List[Tuple[int, int]]:
+        """
+        根据随机游走生成的节点序列，创建训练对。
+        
+        Returns:
+            pairs: 训练对列表。
+        """
+        pairs = []
+        for walk in self.walks:
+            for i, node in enumerate(walk):
+                for j in range(1, self.word2vec_window + 1):
+                    if i - j >= 0:
+                        pairs.append((node, walk[i - j]))
+                    if i + j < len(walk):
+                        pairs.append((node, walk[i + j]))
+        return pairs
+
+    def __len__(self) -> int:
+        return len(self.pairs)
+
+    def __getitem__(self, index: int) -> Tuple[int, int]:
+        return self.pairs[index]
+
+class DeepWalkModel(nn.Module):
+    """
+    DeepWalk模型类，通过Skip-gram模型实现节点嵌入。
+    
+    Attributes:
+        embedding_dim: 嵌入向量的维度。
+        vocab_size: 词汇表大小（节点数）。
+        embeddings: 嵌入层，用于存储节点的嵌入向量。
+    """
+    def __init__(self, vocab_size: int, embedding_dim: int):
+        super(DeepWalkModel, self).__init__()
+        self.embeddings = nn.Embedding(vocab_size, embedding_dim)
+
+    def forward(self, input_nodes: torch.Tensor) -> torch.Tensor:
+        return self.embeddings(input_nodes)
+
+class DeepWalkTrainer:
+    """
+    DeepWalk训练器类，负责数据预处理、模型训练和评估。
+    
+    Attributes:
+        graph: 输入的图结构。
+        embedding_dim: 嵌入向量的维度。
+        walk_length: 每次随机游走的长度。
+        num_walks: 每个节点的随机游走次数。
+        window_size: Skip-gram模型的窗口大小。
+        learning_rate: 学习率。
+        epochs: 训练的轮数。
+    """
+    def __init__(self, graph: nx.Graph, embedding_dim: int, walk_length: int, num_walks: int, window_size: int, learning_rate: float, epochs: int):
+        self.graph = graph
+        self.embedding_dim = embedding_dim
+        self.walk_length = walk_length
+        self.num_walks = num_walks
+        self.window_size = window_size
+        self.learning_rate = learning_rate
+        self.epochs = epochs
+        self.vocab_size = len(graph.nodes)
+        self.model = DeepWalkModel(self.vocab_size, embedding_dim)
+        self.criterion = nn.CrossEntropyLoss()
+        self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
+        self.walks = self._generate_walks()
+        self.dataset = DeepWalkDataset(self.walks, window_size)
+
+    def _generate_walks(self) -> List[List[int]]:
+        """
+        在图上进行随机游走，生成节点序列。
+        
+        Returns:
+            walks: 节点序列列表。
+        """
+        walks = []
+        nodes = list(self.graph.nodes)
+        for _ in range(self.num_walks):
+            random.shuffle(nodes)
+            for node in nodes:
+                walk = self._random_walk(node)
+                walks.append(walk)
+        return walks
+
+    def _random_walk(self, start_node: int) -> List[int]:
+        """
+        从指定节点开始进行随机游走。
+        
+        Args:
+            start_node: 起始节点。
+        
+        Returns:
+            walk: 随机游走生成的节点序列。
+        """
+        walk = [start_node]
+        while len(walk) < self.walk_length:
+            cur = walk[-1]
+            neighbors = list(self.graph.neighbors(cur))
+            if len(neighbors) > 0:
+                next_node = random.choice(neighbors)
+                walk.append(next_node)
+            else:
+                break
+        return walk
+
+    def train(self):
+        """
+        训练DeepWalk模型。
+        """
+        data_loader = DataLoader(self.dataset, batch_size=128, shuffle=True)
+        
+        for epoch in range(self.epochs):
+            total_loss = 0
+            for target, context in data_loader:
+                self.optimizer.zero_grad()
+                target = target.to(torch.int64)
+                context = context.to(torch.int64)
+                output = self.model(target)
+                loss = self.criterion(output, context)
+                loss.backward()
+                self.optimizer.step()
+                total_loss += loss.item()
+            print(f"Epoch: {epoch + 1}, Loss: {total_loss:.4f}")
+
+    def get_embedding(self, node: int) -> np.ndarray:
+        """
+        获取指定节点的嵌入向量。
+        
+        Args:
+            node: 节点ID。
+        
+        Returns:
+            嵌入向量。
+        """
+        node_idx = node
+        embedding_vector = self.model.embeddings.weight[node_idx].detach().numpy()
+        return embedding_vector
+
+# 数据准备
+graph = nx.karate_club_graph()
+
+# 训练DeepWalk模型
+trainer = DeepWalkTrainer(graph=graph, embedding_dim=128, walk_length=10, num_walks=80, window_size=5, learning_rate=0.01, epochs=10)
+trainer.train()
+
+# 获取节点的嵌入向量
+node_id = 0
+embedding_vector = trainer.get_embedding(node_id)
+print(f"Node {node_id} embedding vector: {embedding_vector}")
+</code></pre>
+  </div>
+</body>
+</html>
+  

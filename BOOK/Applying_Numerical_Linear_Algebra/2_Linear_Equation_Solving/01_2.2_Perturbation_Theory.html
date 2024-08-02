@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.2 Perturbation Theory</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_2.2_Perturbation_Theory</h1>
+<pre><code>Lecture: /2_Linear_Equation_Solving
+Content: 01_2.2_Perturbation_Theory
+</code></pre>
+<h3>2.2 扰动理论</h3>
+<h4>引言</h4>
+<p>在数值线性代数中，求解线性方程组 $Ax = b$ 是一个基本问题。然而，由于实际计算中存在舍入误差和输入数据的误差，必须理解当矩阵 $A$ 和向量 $b$ 发生扰动时，解 $x$ 的变化情况。扰动理论帮助我们量化这种变化，从而评估和控制计算误差。</p>
+<h4>基本概念</h4>
+<p>扰动理论研究的是在输入数据（矩阵 $A$ 和向量 $b$）发生微小变化时，问题的解（向量 $x$）如何变化。通过分析这种变化，可以估计计算结果的误差。</p>
+<h5>线性方程组的扰动分析</h5>
+<p>假设 $Ax = b$ 和 $(A + \delta A)(x + \delta x) = b + \delta b$，我们的目标是求解误差 $\delta x \equiv x̂ - x$ 的范数。我们可以通过以下步骤推导出 $\delta x$ 的界限：</p>
+<ol>
+<li>计算扰动后的方程：
+$$
+(A + \delta A)(x + \delta x) = b + \delta b
+$$</li>
+<li>将其减去原方程 $Ax = b$：
+$$
+\delta A x + (A + \delta A) \delta x = \delta b
+$$</li>
+<li>重排方程得到：
+$$
+\delta x = A^{-1}(-\delta A x̂ + \delta b)
+$$</li>
+</ol>
+<h4>误差界限</h4>
+<p>使用范数并结合三角不等式，可以得到误差 $\delta x$ 的界限：
+$$
+|\delta x| \leq |A^{-1}| (|\delta A| \cdot |x̂| + |\delta b|)
+$$</p>
+<p>进一步，我们可以将该不等式重排为：
+$$
+\frac{|\delta x|}{|x̂|} \leq |A^{-1}| \cdot |A| \left( \frac{|\delta A|}{|A|} + \frac{|\delta b|}{|A| \cdot |x̂|} \right)
+$$</p>
+<p>这里，$\kappa(A) = |A^{-1}| \cdot |A|$ 称为矩阵 $A$ 的条件数，因为它衡量了相对误差 $\frac{|\delta x|}{|x̂|}$ 随数据相对变化 $\frac{|\delta A|}{|A|}$ 的倍数变化情况。</p>
+<h4>绝对扰动理论与相对扰动理论</h4>
+<p>在实际应用中，绝对扰动理论和相对扰动理论都很重要。绝对扰动理论提供了 $\delta x$ 的绝对误差界限，而相对扰动理论则提供了相对误差界限。对于许多应用，相对误差界限更有意义，因为它们直接反映了误差相对于解的大小。</p>
+<h5>绝对条件数与相对条件数</h5>
+<p>绝对条件数 $\kappa(A)$ 是 $|A^{-1}| \cdot |A|$，它衡量了输入绝对变化对解的绝对变化的影响。而相对条件数考虑的是输入相对变化对解相对变化的影响。</p>
+<h4>数值稳定性</h4>
+<p>数值稳定性是衡量算法在实际计算中抗误差能力的指标。对于数值算法，我们希望它们不仅在理论上是正确的，而且在实际计算中能有效抵抗舍入误差和输入数据的微小扰动。向后稳定性（backward stability）是数值稳定性的一种重要形式，它要求算法的输出结果能够视为某个近似输入问题的精确解。</p>
+<h4>实例分析</h4>
+<p>假设我们使用高斯消去法求解线性方程组 $Ax = b$，我们可以分析其扰动影响：</p>
+<ol>
+<li><strong>误差传播</strong>：在高斯消去过程中，每次消去操作都会引入舍入误差。如果我们使用部分选主元策略，可以减小误差传播的影响。</li>
+<li><strong>误差累积</strong>：总的舍入误差可以近似表示为 $O(n\epsilon)$，其中 $\epsilon$ 是机器精度。对于大规模线性方程组，误差累积可能会显著影响解的准确性。</li>
+<li><strong>向后稳定性</strong>：高斯消去法在选主元策略下是向后稳定的，即其解可以看作是原线性方程组的一个“微小扰动”的精确解。向后误差 $\delta A$ 的大小由矩阵 $A$ 的条件数决定。</li>
+</ol>
+<h3>深入分析</h3>
+<h4>扰动理论的应用</h4>
+<p>扰动理论不仅适用于线性方程组，还适用于特征值问题、最小二乘问题等。通过理解不同类型问题的条件数，我们可以：</p>
+<ol>
+<li><strong>评估算法稳定性</strong>：通过计算条件数，可以判断算法对输入误差的敏感性，从而选择合适的算法或改进现有算法。</li>
+<li><strong>误差控制</strong>：通过分析输入数据的误差传播，可以设计误差较小的数值计算方法，提高计算结果的可靠性和精度。</li>
+<li><strong>算法优化</strong>：在实际应用中，选择合适的矩阵分解方法和数值技巧，可以显著提高计算效率和结果的准确性。</li>
+</ol>
+<h4>计算实际问题中的条件数</h4>
+<p>在大规模科学计算和工程应用中，计算条件数是评估和优化算法的重要步骤。例如，在气象模拟中，条件数可以帮助评估模型的稳定性；在结构分析中，条件数可以帮助判断结构系统对外部载荷变化的敏感性。</p>
+<p>通过深入理解扰动理论和条件数的概念，可以更好地设计和实现高效、可靠的数值计算算法，解决实际中的复杂问题。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_2.2_Perturbation_Theory
+
+"""
+Lecture: /2_Linear_Equation_Solving
+Content: 01_2.2_Perturbation_Theory
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

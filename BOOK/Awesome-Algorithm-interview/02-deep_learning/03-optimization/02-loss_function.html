@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>02-loss function</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>常用的损失函数有哪些？分别适用于什么场景？</p>
+</blockquote>
+<h3>常用的损失函数及其适用场景</h3>
+<p>在机器学习和深度学习中，损失函数（Loss Function）是评估模型预测与真实值之间差异的函数。选择合适的损失函数对模型的训练效果和最终性能至关重要。以下是一些常用的损失函数及其适用场景：</p>
+<h3>1. 均方误差（Mean Squared Error, MSE）</h3>
+<p><strong>定义</strong>：
+$$ \text{MSE} = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2 $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>回归问题</strong>：MSE是最常用的回归损失函数，适用于预测连续值的任务，如房价预测、股票价格预测等。</li>
+<li><strong>优点</strong>：计算简单，梯度易于计算。</li>
+<li><strong>缺点</strong>：对异常值非常敏感，因为误差被平方放大。</li>
+</ul>
+<h3>2. 平均绝对误差（Mean Absolute Error, MAE）</h3>
+<p><strong>定义</strong>：
+$$ \text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i| $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>回归问题</strong>：MAE也是常用的回归损失函数，适用于预测连续值的任务。</li>
+<li><strong>优点</strong>：对异常值不敏感，具有更好的鲁棒性。</li>
+<li><strong>缺点</strong>：梯度不可导，优化时需要特殊处理。</li>
+</ul>
+<h3>3. 交叉熵损失（Cross-Entropy Loss）</h3>
+<p><strong>定义</strong>：
+$$ \text{Cross-Entropy} = -\frac{1}{n} \sum_{i=1}^{n} y_i \log(\hat{y}_i) + (1 - y_i) \log(1 - \hat{y}_i) $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>分类问题</strong>：交叉熵损失广泛用于二分类和多分类任务，如图像分类、文本分类等。</li>
+<li><strong>优点</strong>：与概率分布相关，适用于模型输出概率的情况。</li>
+<li><strong>缺点</strong>：在处理类别不平衡时可能需要调整。</li>
+</ul>
+<h3>4. Hinge Loss</h3>
+<p><strong>定义</strong>：
+$$ \text{Hinge Loss} = \frac{1}{n} \sum_{i=1}^{n} \max(0, 1 - y_i \cdot \hat{y}_i) $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>支持向量机（SVM）</strong>：Hinge Loss是SVM的标准损失函数，适用于二分类任务。</li>
+<li><strong>优点</strong>：通过最大化间隔来优化分类边界。</li>
+<li><strong>缺点</strong>：不适用于概率输出模型。</li>
+</ul>
+<h3>5. Hubér Loss</h3>
+<p><strong>定义</strong>：
+Hubér Loss结合了MSE和MAE的优点，当误差较小时使用MSE，当误差较大时使用MAE：
+$$ \text{Hubér Loss} = \begin{cases}
+\frac{1}{2}(y_i - \hat{y}_i)^2 &amp; \text{if } |y_i - \hat{y}_i| \leq \delta \
+\delta |y_i - \hat{y}_i| - \frac{1}{2}\delta^2 &amp; \text{otherwise}
+\end{cases} $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>回归问题</strong>：Hubér Loss适用于对异常值不敏感的回归任务。</li>
+<li><strong>优点</strong>：结合了MSE和MAE的优点，平衡了对异常值的敏感性和梯度的稳定性。</li>
+<li><strong>缺点</strong>：需要调整超参数 $\delta$。</li>
+</ul>
+<h3>6. Kullback-Leibler Divergence (KL Divergence)</h3>
+<p><strong>定义</strong>：
+$$ \text{KL Divergence} = \sum_{i} P(i) \log \frac{P(i)}{Q(i)} $$</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>概率分布学习</strong>：KL散度用于衡量两个概率分布之间的差异，常用于生成模型和变分自编码器（VAE）中。</li>
+<li><strong>优点</strong>：能够度量分布之间的差异。</li>
+<li><strong>缺点</strong>：对 $Q(i) = 0$ 的情况需要特别处理。</li>
+</ul>
+<h3>7. CTC Loss（Connectionist Temporal Classification Loss）</h3>
+<p><strong>定义</strong>：
+CTC Loss用于处理标签和输入序列对齐不确定的问题，常用于序列到序列任务，如语音识别和手写识别。</p>
+<p><strong>适用场景</strong>：</p>
+<ul>
+<li><strong>序列到序列任务</strong>：CTC Loss适用于输入序列长度和标签序列长度不一致的情况。</li>
+<li><strong>优点</strong>：能够自动对齐序列，处理变长输入和输出。</li>
+<li><strong>缺点</strong>：计算复杂，需要特殊的前向后向算法。</li>
+</ul>
+<h3>参考资料</h3>
+<ol>
+<li><a href="https://ml-cheatsheet.readthedocs.io/en/latest/loss_functions.html">Understanding Loss Functions</a></li>
+<li><a href="https://towardsdatascience.com/cross-entropy-loss-explained-9b31f2f2c655">Cross-Entropy Loss Explained</a></li>
+<li><a href="https://towardsdatascience.com/robust-regression-and-outlier-detection-with-the-huber-loss-function-6e24081f8d99">The Huber Loss</a></li>
+<li><a href="https://machinelearningmastery.com/kl-divergence-for-machine-learning/">A Gentle Introduction to KL Divergence</a></li>
+<li><a href="https://distill.pub/2017/ctc/">Connectionist Temporal Classification</a></li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

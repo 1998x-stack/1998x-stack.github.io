@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>6.4.2 Gaussian processes for regression</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>01_6.4.2_Gaussian_processes_for_regression</h1>
+<pre><code>Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 01_6.4.2_Gaussian_processes_for_regression
+</code></pre>
+<h2>详细分析第6.4.2节：用于回归的高斯过程</h2>
+<h3>引言</h3>
+<p>高斯过程（Gaussian Processes, GPs）是一种非参数贝叶斯方法，用于建模和预测函数分布。与传统回归方法不同，高斯过程可以提供预测的不确定性量化。第6.4.2节详细介绍了高斯过程在回归任务中的应用。</p>
+<h3>高斯过程回归的基本概念</h3>
+<p>高斯过程假设目标函数 $ f(x) $ 服从一个高斯过程，其形式为：
+$$ f(x) \sim \mathcal{GP}(m(x), k(x, x')) $$
+其中，$ m(x) $ 是均值函数，通常设为0，$ k(x, x') $ 是协方差函数（或核函数），定义了输入点之间的相似性。</p>
+<h3>核函数的选择</h3>
+<p>核函数是高斯过程的核心，常见的核函数包括：</p>
+<ol>
+<li><strong>线性核</strong>：
+$$ k(x, x') = x^T x' $$</li>
+<li><strong>高斯核</strong>（RBF核）：
+$$ k(x, x') = \exp \left( -\frac{|x - x'|^2}{2l^2} \right) $$</li>
+<li><strong>多项式核</strong>：
+$$ k(x, x') = (x^T x' + c)^d $$</li>
+</ol>
+<h3>训练数据的联合分布</h3>
+<p>给定训练数据集 ${(x_n, t_n)}<em ij="">{n=1}^{N}$，目标变量的联合分布为：
+$$ p(t|X) = \mathcal{N}(0, K + \sigma^2 I) $$
+其中，$ K $ 是核矩阵，$ K</em> = k(x_i, x_j) $，$ \sigma^2 $ 是噪声方差。</p>
+<h3>预测分布</h3>
+<p>对于新的输入 $ x_* $，预测分布也是高斯分布，其均值和协方差分别为：
+$$ \mu_* = k_<em>^T (K + \sigma^2 I)^{-1} t $$
+$$ \sigma^2_</em> = k(x_<em>, x_</em>) - k_<em>^T (K + \sigma^2 I)^{-1} k_</em> $$
+其中，$ k_* $ 是新的输入与训练数据之间的核向量。</p>
+<h3>实例分析</h3>
+<p>假设我们有一个一维回归问题，输入变量为 $ x $，目标变量为 $ t $。生成数据如下：
+$$ x_i \sim \mathcal{U}(0, 10) $$
+$$ t_i = \sin(x_i) + \epsilon_i $$
+其中，$ \epsilon_i \sim \mathcal{N}(0, 0.1) $。</p>
+<h4>数据可视化</h4>
+<p>绘制输入 $ x $ 和目标 $ t $ 的散点图。</p>
+<h4>训练高斯过程模型</h4>
+<ol>
+<li><strong>构建核矩阵</strong> $ K $。</li>
+<li><strong>计算预测均值和方差</strong>。</li>
+</ol>
+<h4>结果分析</h4>
+<p>通过可视化预测均值和方差，可以看到高斯过程模型不仅捕捉了数据的非线性关系，还量化了预测的不确定性。</p>
+<h3>高斯过程回归的优势</h3>
+<ul>
+<li><strong>非参数性</strong>：高斯过程不假设数据的分布形式，适用于多种复杂的分布情况。</li>
+<li><strong>不确定性量化</strong>：通过预测分布的方差，高斯过程可以量化预测的不确定性。</li>
+<li><strong>灵活性</strong>：可以通过选择不同的核函数来适应不同的应用场景。</li>
+</ul>
+<h3>结论</h3>
+<p>高斯过程回归通过引入核函数，提供了一种灵活且强大的方法来建模复杂的函数关系，并有效量化预测的不确定性。这使得高斯过程在处理非线性和高噪声数据时表现出色。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 01_6.4.2_Gaussian_processes_for_regression
+
+"""
+Lecture: 6_Kernel_Methods/6.4_Gaussian_Processes
+Content: 01_6.4.2_Gaussian_processes_for_regression
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

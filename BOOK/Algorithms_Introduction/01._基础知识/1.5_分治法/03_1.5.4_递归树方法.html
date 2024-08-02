@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>1.5.4 递归树方法</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>03_1.5.4_递归树方法</h1>
+<pre><code>Lecture: 01._基础知识/1.5_分治法
+Content: 03_1.5.4_递归树方法
+</code></pre>
+<h3>03_1.5.4_递归树方法 深度解析</h3>
+<h4>1. 引言</h4>
+<p>在分治法中，递归树方法是一种强有力的工具，用于分析递归关系的时间复杂度。通过将递归关系图形化为树结构，我们可以直观地理解每个子问题的成本和整个递归过程的总成本。</p>
+<h4>2. 递归树方法的基本原理</h4>
+<p>递归树方法通过以下步骤分析递归方程：</p>
+<ol>
+<li><strong>构建递归树</strong>：每个节点表示递归调用的成本，树的每个层级表示递归的深度。</li>
+<li><strong>计算每层的成本</strong>：每层的成本是所有节点成本的总和。</li>
+<li><strong>总成本的累加</strong>：将所有层的成本相加得到递归关系的总成本。</li>
+</ol>
+<p>通过这种方法，我们可以将递归方程转化为树结构，从而更容易理解和计算其复杂度。</p>
+<h4>3. 递归树的构建</h4>
+<h5>示例</h5>
+<p>考虑以下递归方程：</p>
+<p>$$
+T(n) = 3T\left(\frac{n}{4}\right) + n^2
+$$</p>
+<p>为了构建递归树，我们需要遵循以下步骤：</p>
+<ol>
+<li><strong>根节点成本</strong>：将根节点的成本表示为 $cn^2$。</li>
+<li><strong>子节点递归</strong>：根节点有三个子节点，每个子节点的成本为 $T\left(\frac{n}{4}\right)$。</li>
+<li><strong>递归展开</strong>：继续递归展开每个子节点，直到子问题规模减小到常数。</li>
+</ol>
+<h5>递归树展开</h5>
+<p>递归树的展开如下图所示：</p>
+<pre><code>            T(n)
+           /  |  \
+  T(n/4)  T(n/4)  T(n/4)
+   /|\      /|\      /|\
+... ...    ... ...  ... ...
+</code></pre>
+<p>每一层的成本是所有节点成本的总和，例如，第一层的成本为 $cn^2$，第二层的成本为 $3 \times c \left(\frac{n}{4}\right)^2 = \frac{3}{16} cn^2$。</p>
+<h4>4. 总成本的计算</h4>
+<p>通过累加每一层的成本，可以得到递归树的总成本：</p>
+<p>$$
+T(n) = cn^2 + \frac{3}{16} cn^2 + \left(\frac{3}{16}\right)^2 cn^2 + \ldots
+$$</p>
+<p>这实际上是一个无限几何级数。根据几何级数的求和公式，当公比 $r &lt; 1$ 时，总和为：</p>
+<p>$$
+\sum_{k=0}^{\infty} ar^k = \frac{a}{1-r}
+$$</p>
+<p>对于我们的递归树：</p>
+<p>$$
+a = cn^2, \quad r = \frac{3}{16}
+$$</p>
+<p>因此，总成本为：</p>
+<p>$$
+T(n) = \frac{cn^2}{1 - \frac{3}{16}} = \frac{cn^2}{\frac{13}{16}} = \frac{16}{13}cn^2 = O(n^2)
+$$</p>
+<h4>5. 递归树方法的应用场景</h4>
+<p>递归树方法不仅适用于简单的递归方程，还广泛应用于各种复杂的分治算法分析中。例如，在合并排序、快速排序和矩阵乘法等算法中，递归树方法都可以帮助我们直观地理解和计算其时间复杂度。</p>
+<h4>6. 优缺点分析</h4>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>直观性</strong>：递归树方法通过图形化展示递归过程，直观且易于理解。</li>
+<li><strong>适用性广</strong>：适用于各种分治算法的复杂度分析。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>复杂度</strong>：对于某些复杂的递归方程，构建递归树和计算每层成本可能比较繁琐。</li>
+<li><strong>准确性依赖</strong>：需要确保每层的成本计算准确，以避免总成本计算误差。</li>
+</ul>
+<h4>7. 总结</h4>
+<p>递归树方法作为一种强有力的递归关系分析工具，通过将递归过程图形化，使得复杂度分析更加直观和易于理解。无论是简单的递归方程还是复杂的分治算法，递归树方法都为我们的算法分析提供了重要的理论支持和实践指导。通过深入理解和灵活运用递归树方法，我们能够更加高效地设计和分析各种算法。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 03_1.5.4_递归树方法
+
+"""
+Lecture: 01._基础知识/1.5_分治法
+Content: 03_1.5.4_递归树方法
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.5.3 Geometric Mean Return Versus Arithmetic Mean Return</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>02_2.5.3_Geometric_Mean_Return_Versus_Arithmetic_Mean_Return</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.5_Generalized_Compound_Interest
+Content: 02_2.5.3_Geometric_Mean_Return_Versus_Arithmetic_Mean_Return
+
+</code></pre>
+<h3>02_2.5.3_几何平均收益率与算术平均收益率</h3>
+<p><strong>讲座</strong>: 2_货币的时间价值/2.5_广义复利<br>
+<strong>内容</strong>: 02_2.5.3_几何平均收益率与算术平均收益率</p>
+<h4>一、几何平均收益率与算术平均收益率的基本概念</h4>
+<p>在金融学中，收益率的计算方法主要有两种：几何平均收益率和算术平均收益率。虽然两者都用于衡量投资的平均回报率，但它们在计算方式和反映的实际收益上存在显著差异。</p>
+<h5>1. 算术平均收益率的定义</h5>
+<p>算术平均收益率是指一段时间内各期收益率的简单平均值。其公式为：
+$$ R_{\text{arith}} = \frac{1}{n} \sum_{i=1}^n R_i $$
+其中，$ R_i $ 表示第 $ i $ 期的收益率，$ n $ 表示总期数。</p>
+<h5>2. 几何平均收益率的定义</h5>
+<p>几何平均收益率是指一段时间内各期收益率的几何平均值，更能反映投资实际复合增长的情况。其公式为：
+$$ R_{\text{geom}} = \left( \prod_{i=1}^n (1 + R_i) \right)^{\frac{1}{n}} - 1 $$</p>
+<h4>二、几何平均收益率与算术平均收益率的比较</h4>
+<h5>1. 数学关系</h5>
+<p>一般情况下，几何平均收益率小于或等于算术平均收益率。只有在各期收益率完全相同时，几何平均收益率才等于算术平均收益率。</p>
+<p>$$ R_{\text{geom}} \leq R_{\text{arith}} $$</p>
+<h5>2. 波动性的影响</h5>
+<p>波动性对两种平均收益率的影响显著。高波动性的投资，其几何平均收益率显著低于算术平均收益率。因为几何平均收益率考虑了收益的复合效应和波动性对整体回报的削弱作用。</p>
+<h4>三、实际计算示例</h4>
+<p>假设你初始投资 $3,000，基金不支付红利。在第1年末，投资降至 $2,000，第2年末降至 $1,000，第3年末增至 $3,000。3年内总回报率为零。</p>
+<h5>1. 计算各年收益率</h5>
+<ul>
+<li>第一年：
+$$ R(t_0, t_1) = \frac{2000}{3000} - 1 = -\frac{1}{3} $$</li>
+<li>第二年：
+$$ R(t_1, t_2) = \frac{1000}{2000} - 1 = -\frac{1}{2} $$</li>
+<li>第三年：
+$$ R(t_2, t_3) = \frac{3000}{1000} - 1 = 2 $$</li>
+</ul>
+<h5>2. 算术平均收益率</h5>
+<p>$$ R_{\text{arith}} = \frac{1}{3} \left( -\frac{1}{3} - \frac{1}{2} + 2 \right) = \frac{7}{18} \approx 0.3889 $$</p>
+<h5>3. 几何平均收益率</h5>
+<p>$$ R_{\text{geom}} = \left( (1 + 2) \left(1 - \frac{1}{2}\right) \left(1 - \frac{1}{3}\right) \right)^{\frac{1}{3}} - 1 = 0 $$</p>
+<p>因此，在这种情况下，算术平均收益率为 0.3889（38.89%），几何平均收益率为 0（0%）。</p>
+<h4>四、几何平均收益率与算术平均收益率的实际应用</h4>
+<h5>1. 长期投资分析</h5>
+<p>几何平均收益率更适合用于长期投资分析，因为它考虑了投资期间内收益的复合增长和波动性的影响。例如，股票市场的长期回报通常使用几何平均收益率进行衡量。</p>
+<h5>2. 投资组合表现评估</h5>
+<p>在评估投资组合的表现时，几何平均收益率能够更准确地反映投资的实际回报，而不是单纯依赖于算术平均收益率。</p>
+<h4>五、总结</h4>
+<p>几何平均收益率和算术平均收益率是两种重要的收益率衡量指标。理解它们之间的关系和计算方法，对于准确评估投资回报具有重要意义。几何平均收益率考虑了复合效应和波动性，通常低于算术平均收益率，尤其在高波动性投资中差异更为显著。</p>
+<p>通过详细分析几何平均收益率与算术平均收益率的定义、数学关系、实际计算和应用场景，读者可以更好地理解和应用这些概念，从而在金融投资和风险管理中做出更科学的决策。这对于金融市场参与者、投资者和研究人员制定策略和进行风险管理具有重要指导意义。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_2.5.3_Geometric_Mean_Return_Versus_Arithmetic_Mean_Return
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.5_Generalized_Compound_Interest
+Content: 02_2.5.3_Geometric_Mean_Return_Versus_Arithmetic_Mean_Return
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

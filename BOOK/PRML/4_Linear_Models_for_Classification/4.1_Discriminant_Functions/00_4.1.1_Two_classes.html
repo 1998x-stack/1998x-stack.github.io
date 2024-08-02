@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>4.1.1 Two classes</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_4.1.1_Two_classes</h1>
+<pre><code>Lecture: 4_Linear_Models_for_Classification/4.1_Discriminant_Functions
+Content: 00_4.1.1_Two_classes
+</code></pre>
+<h3>4.1.1 两类分类问题</h3>
+<p>在《模式识别与机器学习》（PRML）一书的第4章中，Bishop博士详细介绍了线性分类模型的概念。第4.1节专注于判别函数，并在4.1.1节中讨论了两类分类问题。以下是对4.1.1节内容的详细分析。</p>
+<h4>判别函数</h4>
+<p>判别函数是一种输入向量 $ \mathbf{x} $ 并将其分配到 $ K $ 类之一的函数，记为 $ C_k $。在本节中，我们主要讨论线性判别函数，即决策面是超平面（hyperplane）的情况。首先考虑两类分类问题，然后再探讨扩展到 $ K &gt; 2 $ 类的情况。</p>
+<h4>两类分类</h4>
+<p>线性判别函数的最简单表示是对输入向量进行线性函数处理，形式如下：</p>
+<p>$$ y(\mathbf{x}) = \mathbf{w}^T \mathbf{x} + w_0 $$</p>
+<p>其中，$ \mathbf{w} $ 称为权重向量，$ w_0 $ 为偏置。将输入向量 $ \mathbf{x} $ 分配到类 $ C_1 $ 的条件是 $ y(\mathbf{x}) \geq 0 $，否则分配到类 $ C_2 $。对应的决策边界由 $ y(\mathbf{x}) = 0 $ 定义，即：</p>
+<p>$$ \mathbf{w}^T \mathbf{x} + w_0 = 0 $$</p>
+<p>这对应于 $ D $ 维输入空间中的一个 $ D-1 $ 维超平面。假设两个点 $ \mathbf{x}_A $ 和 $ \mathbf{x}_B $ 都位于决策面上，因为 $ y(\mathbf{x}_A) = y(\mathbf{x}_B) = 0 $，则有：</p>
+<p>$$ \mathbf{w}^T (\mathbf{x}_A - \mathbf{x}_B) = 0 $$</p>
+<p>因此，向量 $ \mathbf{w} $ 垂直于位于决策面内的每个向量，$ \mathbf{w} $ 决定了决策面的方向。如果点 $ \mathbf{x} $ 位于决策面上，则 $ y(\mathbf{x}) = 0 $，于是从原点到决策面的法向距离为：</p>
+<p>$$ \frac{\mathbf{w}^T \mathbf{x}}{|\mathbf{w}|} = -\frac{w_0}{|\mathbf{w}|} $$</p>
+<p>因此，偏置参数 $ w_0 $ 决定了决策面的位置。对于 $ D = 2 $ 的情况，这些性质在图4.1中有详细说明。</p>
+<p>此外，$ y(\mathbf{x}) $ 的值给出了点 $ \mathbf{x} $ 到决策面的垂直距离的符号度量。</p>
+<h4>扩展到多类分类</h4>
+<p>对于多类分类问题，可以使用多个判别函数。每个类 $ C_k $ 有自己的判别函数：</p>
+<p>$$ y_k(\mathbf{x}) = \mathbf{w}<em k0="">k^T \mathbf{x} + w</em> $$</p>
+<p>其中 $ k = 1, \dots, K $。为了方便，可以使用向量表示：</p>
+<p>$$ \mathbf{y}(\mathbf{x}) = \mathbf{W}^T \tilde{\mathbf{x}} $$</p>
+<p>其中 $ \mathbf{W} $ 是一个矩阵，其第 $ k $ 列包含 $ D+1 $ 维向量 $ \tilde{\mathbf{w}}<em k0="">k = (w</em>, \mathbf{w}_k^T)^T $， $ \tilde{\mathbf{x}} $ 是相应的扩展输入向量 $ (1, \mathbf{x}^T)^T $。</p>
+<h3>结论</h3>
+<p>在第4.1.1节中，Bishop博士详细阐述了两类分类问题中的线性判别函数。线性判别函数通过将输入向量映射到一个超平面，并根据映射结果进行分类。这种方法简单且具有一定的理论基础，但在实际应用中可能需要结合非线性方法来提高分类效果。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_4.1.1_Two_classes
+
+"""
+Lecture: 4_Linear_Models_for_Classification/4.1_Discriminant_Functions
+Content: 00_4.1.1_Two_classes
+"""
+
+import numpy as np
+from scipy.optimize import minimize
+from typing import Tuple
+
+class LinearDiscriminantAnalysis:
+    """线性判别分析（Linear Discriminant Analysis, LDA）用于两类分类问题的类。
+    
+    该类实现了线性判别函数 y(x) = w^T x + w_0，其中 w 为权重向量，w_0 为偏置。
+    """
+    
+    def __init__(self):
+        self.weights = None
+        self.bias = None
+
+    def fit(self, X: np.ndarray, y: np.ndarray) -> None:
+        """拟合LDA模型。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        y (np.ndarray): 标签数据，形状为 (n_samples,)
+        """
+        n_samples, n_features = X.shape
+        X_with_bias = np.hstack([np.ones((n_samples, 1)), X])
+        
+        # 定义目标函数
+        def objective(w):
+            predictions = X_with_bias @ w
+            return np.sum((predictions - y) ** 2)
+        
+        # 初始权重
+        initial_weights = np.zeros(n_features + 1)
+        
+        # 最小化目标函数
+        result = minimize(objective, initial_weights)
+        if not result.success:
+            raise ValueError("优化失败")
+        
+        self.weights = result.x[1:]
+        self.bias = result.x[0]
+
+    def predict(self, X: np.ndarray) -> np.ndarray:
+        """预测新数据的类别。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        
+        返回:
+        np.ndarray: 预测的类别，形状为 (n_samples,)
+        """
+        return np.sign(X @ self.weights + self.bias)
+
+    def decision_function(self, X: np.ndarray) -> np.ndarray:
+        """计算判别函数的值。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        
+        返回:
+        np.ndarray: 判别函数的值，形状为 (n_samples,)
+        """
+        return X @ self.weights + self.bias
+
+    def score(self, X: np.ndarray, y: np.ndarray) -> float:
+        """计算模型的准确率。
+        
+        参数:
+        X (np.ndarray): 输入数据，形状为 (n_samples, n_features)
+        y (np.ndarray): 标签数据，形状为 (n_samples,)
+        
+        返回:
+        float: 准确率
+        """
+        predictions = self.predict(X)
+        return np.mean(predictions == y)
+
+# 数据生成和模型测试
+def generate_data(n_samples: int = 100) -> Tuple[np.ndarray, np.ndarray]:
+    """生成两类分类问题的模拟数据。
+    
+    参数:
+    n_samples (int): 样本数量
+    
+    返回:
+    Tuple[np.ndarray, np.ndarray]: 输入数据和标签
+    """
+    np.random.seed(0)
+    X = np.random.randn(n_samples, 2)
+    y = np.where(X[:, 0] + X[:, 1] > 0, 1, -1)
+    return X, y
+
+def main():
+    """主函数，用于测试LDA模型。
+    """
+    X, y = generate_data(200)
+    lda = LinearDiscriminantAnalysis()
+    lda.fit(X, y)
+    accuracy = lda.score(X, y)
+    print(f"模型的准确率为: {accuracy * 100:.2f}%")
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

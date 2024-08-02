@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>3.3.5 实际考虑</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>04_3.3.5_实际考虑</h1>
+<pre><code>Lecture: 03._数据结构/3.3_哈希表
+Content: 04_3.3.5_实际考虑
+</code></pre>
+<h3>3.3.5 实际考虑</h3>
+<h4>实际考虑的必要性</h4>
+<p>在实际应用中，高效的哈希表算法不仅具有理论意义，还具有巨大的实际重要性。常数因子在实际性能中起着关键作用。因此，本节讨论了两个现代CPU中未包含在标准RAM模型中的方面：内存层次结构和高级指令集。</p>
+<h4>内存层次结构</h4>
+<p>现代CPU的内存层次结构包括多个级别，从快速寄存器到一级或多级缓存，再到主存储器。每一级存储的数据量越来越多，但访问速度也越来越慢。由于这个原因，一个完全在快速寄存器内工作的复杂计算（如复杂的哈希函数）可能比一次从主存储器读取操作花费的时间还少 。</p>
+<h5>局部性原理</h5>
+<p>缓存内存通常以缓存块的形式组织，每个块（例如64字节）总是一起从主存储器中提取。因此，确保内存使用的局部性具有很大的优势：重用同一个缓存块比从主存储器中提取不同的缓存块更高效。标准的RAM模型通过计算探查的哈希表槽位数来衡量哈希表操作的效率，但在实际中，这种度量只是粗略近似，因为一旦缓存块在缓存中，随后的探查速度比必须访问主存储器的探查快得多  。</p>
+<h4>高级指令集</h4>
+<p>现代CPU可能具有实现加密或其他形式密码学的高级指令集。这些指令可能在设计高效的哈希函数时非常有用。线性探查在内存层次结构中表现优异，因为探查序列通常保持在同一个缓存块中。对于层次化内存模型，复杂的哈希函数（例如5-独立哈希函数）可以实现得非常高效 。</p>
+<h4>实例分析</h4>
+<h5>线性探查</h5>
+<p>尽管线性探查在标准RAM模型中表现不佳，但在内存层次结构中，由于连续探查通常在同一个缓存块中，因此它表现出色。使用线性探查进行删除的另一个原因是删除似乎复杂或不可能而不使用特殊的“已删除”（DELETED）值 。</p>
+<h5>哈希函数设计</h5>
+<p>使用基于加密原语的高级哈希函数在具有层次化内存模型的计算机系统中设计高效的哈希表变得有优势。这些复杂的哈希函数可以在计算机的快速寄存器中实现，使得它们即使非常复杂也可以非常高效。一个例子是基于SHA-256的加密哈希函数，它们非常复杂并且对哈希表应用足够随机。在具有专用指令的机器上，这些加密函数可以非常高效 。</p>
+<h4>结论</h4>
+<p>在现代计算机系统中，利用内存层次结构和高级指令集，可以设计出高效的哈希表算法。线性探查作为一种碰撞解决方法，由于探查序列通常保持在同一个缓存块中，因此在内存层次结构中表现尤为优异。复杂的哈希函数尽管实现起来复杂，但在现代CPU上可以非常高效地运行，为线性探查提供了高效支持。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 04_3.3.5_实际考虑
+
+"""
+Lecture: 03._数据结构/3.3_哈希表
+Content: 04_3.3.5_实际考虑
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

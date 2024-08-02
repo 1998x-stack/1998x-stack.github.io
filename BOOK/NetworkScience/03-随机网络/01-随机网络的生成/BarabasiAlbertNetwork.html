@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>BarabasiAlbertNetwork</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h3>小世界网络与幂律分布网络详细解释</h3>
+<h4>小世界网络</h4>
+<p>小世界网络（Small-world Networks）是由 Duncan Watts 和 Steven Strogatz 于 1998 年提出的一种网络模型，用于描述许多现实世界网络的特点。这种网络具有以下两个主要特征：</p>
+<ol>
+<li>
+<p><strong>短平均路径长度</strong>：</p>
+<ul>
+<li>小世界网络中的节点之间的平均最短路径长度非常短，这意味着任何两个节点之间的路径长度较小，即使网络中的节点数量很大。这种特性常用来解释为什么在社交网络中，人们之间的联系可以通过很少的中间人达成。</li>
+<li>例如，Milgram 的“六度分隔”实验表明，任何两个美国人之间的关系平均只需要通过六个人。</li>
+</ul>
+</li>
+<li>
+<p><strong>高聚类系数</strong>：</p>
+<ul>
+<li>小世界网络中的节点倾向于形成高度集中的团体或群体，即如果节点 A 连接到节点 B 和节点 C，那么节点 B 和节点 C 之间也很可能直接连接。这种特性表现在社交网络中，即朋友的朋友往往也是朋友。</li>
+<li>聚类系数是衡量网络中节点邻居之间相互连接程度的指标。在小世界网络中，聚类系数通常很高。</li>
+</ul>
+</li>
+</ol>
+<p>小世界网络模型通常通过以下步骤生成：</p>
+<ol>
+<li>先构建一个规则的环形格子，每个节点连接到其最近的 $ K/2 $ 个邻居。</li>
+<li>以一定概率 $ \beta $ 随机重连部分边，以增加网络的随机性。</li>
+</ol>
+<p>小世界网络的典型例子包括社交网络、生物神经网络和电力网。</p>
+<h4>幂律分布网络</h4>
+<p>幂律分布网络（Scale-free Networks）是指其度分布（即节点的连接数分布）遵循幂律分布的网络。在这种网络中，大多数节点的度数较小，但少数节点的度数非常大，这些高度数节点被称为“hub”节点。</p>
+<ol>
+<li>
+<p><strong>度分布</strong>：</p>
+<ul>
+<li>度分布表示网络中每个节点的连接数。在幂律分布网络中，度分布 $ P(k) $ 服从幂律分布，即 $ P(k) \sim k^{-\gamma} $，其中 $ \gamma $ 是幂律指数。</li>
+</ul>
+</li>
+<li>
+<p><strong>hub 节点</strong>：</p>
+<ul>
+<li>幂律分布网络中的 hub 节点连接了大量其他节点，使得网络具有较高的连接效率和鲁棒性。这些 hub 节点在网络中起到关键作用，即使去除少数 hub 节点，网络仍然能够保持连通性。</li>
+</ul>
+</li>
+<li>
+<p><strong>无标度性质</strong>：</p>
+<ul>
+<li>幂律分布网络被称为无标度网络，因为它们在不同尺度上具有相似的结构特征。无论在大尺度还是小尺度，网络的度分布都是一致的。</li>
+</ul>
+</li>
+</ol>
+<p>幂律分布网络的典型生成模型是 Barabasi-Albert (BA) 模型，其基本思想是通过“优先连接”机制生成新节点。具体步骤如下：</p>
+<ol>
+<li>初始状态下有一个小规模的完全连接网络。</li>
+<li>每次添加一个新节点，并随机连接到现有节点中度数较高的节点，连接概率与现有节点的度数成正比。</li>
+</ol>
+<p>幂律分布网络的典型例子包括互联网、社交网络中的朋友关系、科学家合作网络和细胞代谢网络。</p>
+<h3>总结</h3>
+<ul>
+<li><strong>小世界网络</strong>：具有短路径长度和高聚类系数，适用于描述社交网络等系统。</li>
+<li><strong>幂律分布网络</strong>：具有幂律分布的度数分布和关键 hub 节点，适用于描述互联网等复杂系统。</li>
+</ul>
+<hr>
+<h3>Barabasi-Albert (BA) 模型详细展开</h3>
+<p>Barabasi-Albert (BA) 模型是由 Albert-László Barabási 和 Réka Albert 于 1999 年提出的，用于描述无标度网络（scale-free networks）的生成过程。该模型解释了许多自然和人工网络中度分布遵循幂律分布的现象。BA 模型的核心机制包括“增长”和“优先连接”两大原则。</p>
+<h4>1. 模型的基本机制</h4>
+<ol>
+<li>
+<p><strong>增长</strong>：</p>
+<ul>
+<li>网络开始时有一个小规模的完全连接网络，通常由 $ m_0 $ 个节点组成。</li>
+<li>每次添加一个新节点，并与现有网络中的 $ m $ 个节点建立连接，这些节点通过优先连接机制选择。</li>
+</ul>
+</li>
+<li>
+<p><strong>优先连接</strong>：</p>
+<ul>
+<li>新节点倾向于连接到已经具有较高度数的节点，即“富者愈富”效应。度数越高的节点，越有可能吸引到新节点的连接。</li>
+<li>优先连接的概率 $ \Pi $ 定义为：
+$$
+\Pi(k_i) = \frac{k_i}{\sum_j k_j}
+$$
+其中 $ k_i $ 是现有节点 $ i $ 的度数，分母是所有现有节点的度数之和。</li>
+</ul>
+</li>
+</ol>
+<h4>2. 模型的具体步骤</h4>
+<ol>
+<li>
+<p><strong>初始化</strong>：</p>
+<ul>
+<li>创建一个包含 $ m_0 $ 个节点的初始完全连接网络。</li>
+</ul>
+</li>
+<li>
+<p><strong>添加新节点</strong>：</p>
+<ul>
+<li>每次添加一个新节点，并连接到现有网络中的 $ m $ 个节点。</li>
+<li>连接选择基于优先连接机制，度数越高的节点被选择的概率越大。</li>
+</ul>
+</li>
+<li>
+<p><strong>重复过程</strong>：</p>
+<ul>
+<li>重复添加新节点的过程，直到网络达到预期的规模。</li>
+</ul>
+</li>
+</ol>
+<h4>3. BA 模型的性质</h4>
+<ol>
+<li>
+<p><strong>幂律度分布</strong>：</p>
+<ul>
+<li>BA 模型生成的网络具有幂律度分布，即节点的度数分布遵循幂律：
+$$
+P(k) \sim k^{-\gamma}
+$$
+其中 $ \gamma \approx 3 $。</li>
+</ul>
+</li>
+<li>
+<p><strong>无标度特性</strong>：</p>
+<ul>
+<li>无标度网络在不同尺度上具有相似的结构特征，不存在特征长度。即使网络规模增加，其度分布的形状保持不变。</li>
+</ul>
+</li>
+<li>
+<p><strong>鲁棒性和脆弱性</strong>：</p>
+<ul>
+<li>无标度网络对随机失效具有很强的鲁棒性，即去除随机节点对网络连通性影响较小。然而，对具有高度数的 hub 节点进行攻击，则可能导致网络的连通性迅速崩溃。</li>
+</ul>
+</li>
+</ol>
+<h4>4. BA 模型的应用</h4>
+<ol>
+<li>
+<p><strong>互联网结构</strong>：</p>
+<ul>
+<li>互联网节点（如路由器和主机）之间的连接结构符合无标度网络的特性。</li>
+</ul>
+</li>
+<li>
+<p><strong>社交网络</strong>：</p>
+<ul>
+<li>社交网络中的人际关系网络也符合无标度网络特性，少数人具有大量的朋友（hub），而大多数人朋友较少。</li>
+</ul>
+</li>
+<li>
+<p><strong>生物网络</strong>：</p>
+<ul>
+<li>例如蛋白质相互作用网络和代谢网络中，少数关键蛋白质或代谢物具有大量连接，而大多数只与少数节点连接。</li>
+</ul>
+</li>
+</ol>
+<h4>5. BA 模型的局限性</h4>
+<ol>
+<li>
+<p><strong>真实网络的复杂性</strong>：</p>
+<ul>
+<li>现实中的很多网络结构比 BA 模型更复杂，可能需要考虑多重连接机制和节点的异质性。</li>
+</ul>
+</li>
+<li>
+<p><strong>动态演变</strong>：</p>
+<ul>
+<li>现实网络中的节点和连接是动态变化的，BA 模型的静态生成过程可能无法完全反映这种动态特性。</li>
+</ul>
+</li>
+</ol>
+<h3>总结</h3>
+<p>Barabasi-Albert (BA) 模型通过“增长”和“优先连接”机制，成功解释了无标度网络中度分布的幂律特性。这一模型为理解和模拟现实世界中的复杂网络提供了重要的理论工具，尽管在处理更复杂和动态的网络时，可能需要进一步的扩展和修正。</p>
+<hr>
+
+    <h3>Python 文件</h3>
+    <pre><code>import numpy as np
+import matplotlib.pyplot as plt
+from typing import List, Tuple
+
+
+class BarabasiAlbertNetwork:
+    def __init__(self, num_nodes: int, num_initial_nodes: int, num_edges_to_attach: int) -> None:
+        self.num_nodes = num_nodes
+        self.num_initial_nodes = num_initial_nodes
+        self.num_edges_to_attach = num_edges_to_attach
+        self.adjacency_list = self._generate_network()
+
+    def _generate_network(self) -> List[List[int]]:
+        adjacency_list = [[] for _ in range(self.num_nodes)]
+        degrees = np.zeros(self.num_nodes)
+        for i in range(self.num_initial_nodes):
+            for j in range(i + 1, self.num_initial_nodes):
+                adjacency_list[i].append(j)
+                adjacency_list[j].append(i)
+                degrees[i] += 1
+                degrees[j] += 1
+
+        for new_node in range(self.num_initial_nodes, self.num_nodes):
+            targets = self._preferential_attachment(degrees, new_node)
+            for target in targets:
+                adjacency_list[new_node].append(target)
+                adjacency_list[target].append(new_node)
+                degrees[new_node] += 1
+                degrees[target] += 1
+        
+        return adjacency_list
+
+    def _preferential_attachment(self, degrees: np.ndarray, new_node: int) -> List[int]:
+        targets = set()
+        while len(targets) < self.num_edges_to_attach:
+            probabilities = degrees / degrees.sum()
+            chosen_node = np.random.choice(self.num_nodes, p=probabilities)
+            if chosen_node != new_node and chosen_node not in targets:
+                targets.add(chosen_node)
+        return list(targets)
+
+    def calculate_degree_distribution(self) -> np.ndarray:
+        degrees = np.zeros(self.num_nodes)
+        for neighbors in self.adjacency_list:
+            degrees[len(neighbors)] += 1
+        return degrees / self.num_nodes
+
+    def visualize_network(self, filename: str = None) -> None:
+        plt.figure(figsize=(10, 10))
+        pos = {i: (np.cos(2 * np.pi * i / self.num_nodes), np.sin(2 * np.pi * i / self.num_nodes)) for i in range(self.num_nodes)}
+        for i, neighbors in enumerate(self.adjacency_list):
+            for j in neighbors:
+                if i < j:
+                    plt.plot([pos[i][0], pos[j][0]], [pos[i][1], pos[j][1]], 'k-', alpha=0.5)
+        plt.scatter([pos[i][0] for i in range(self.num_nodes)], [pos[i][1] for i in range(self.num_nodes)], c='blue', s=50)
+        if filename:
+            plt.savefig(filename)
+        plt.show()
+
+    def verify_power_law_distribution(self) -> None:
+        degrees = np.array([len(neighbors) for neighbors in self.adjacency_list])
+        unique_degrees, counts = np.unique(degrees, return_counts=True)
+        probabilities = counts / counts.sum()
+
+        plt.figure()
+        plt.loglog(unique_degrees, probabilities, 'b.', markersize=10)
+        plt.title('Degree Distribution')
+        plt.xlabel('Degree')
+        plt.ylabel('Probability')
+        plt.show()
+
+
+def main():
+    num_nodes = 1000
+    num_initial_nodes = 5
+    num_edges_to_attach = 3
+
+    ba_network = BarabasiAlbertNetwork(num_nodes, num_initial_nodes, num_edges_to_attach)
+
+    ba_network.visualize_network()
+
+    ba_network.verify_power_law_distribution()
+
+    degree_distribution = ba_network.calculate_degree_distribution()
+
+main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

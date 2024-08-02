@@ -1,0 +1,143 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>08-invert copy tree</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>翻转、复制二叉树</p>
+</blockquote>
+<h3>翻转二叉树</h3>
+<p>翻转二叉树是指交换每个节点的左子树和右子树，从而得到镜像二叉树。这可以通过递归或迭代的方法实现。</p>
+<h4>递归方法</h4>
+<p><strong>算法步骤</strong>：</p>
+<ol>
+<li>如果当前节点为空，返回。</li>
+<li>交换当前节点的左子节点和右子节点。</li>
+<li>递归翻转左子树。</li>
+<li>递归翻转右子树。</li>
+</ol>
+<p><strong>实现代码</strong>：</p>
+<pre><code class="language-python">class TreeNode:
+    def __init__(self, value=0, left=None, right=None):
+        self.value = value
+        self.left = left
+        self.right = right
+
+def invert_tree(root):
+    if not root:
+        return None
+    
+    # 交换左子树和右子树
+    root.left, root.right = root.right, root.left
+    
+    # 递归翻转左子树和右子树
+    invert_tree(root.left)
+    invert_tree(root.right)
+    
+    return root
+
+# 示例使用
+root = TreeNode(1, TreeNode(2), TreeNode(3, TreeNode(4), TreeNode(5)))
+inverted_root = invert_tree(root)
+</code></pre>
+<h4>迭代方法</h4>
+<p><strong>算法步骤</strong>：</p>
+<ol>
+<li>初始化一个队列，将根节点加入队列。</li>
+<li>当队列不为空时：
+<ul>
+<li>取出队列中的节点，交换其左子节点和右子节点。</li>
+<li>将其左子节点和右子节点（如果存在）加入队列。</li>
+</ul>
+</li>
+</ol>
+<p><strong>实现代码</strong>：</p>
+<pre><code class="language-python">from collections import deque
+
+def invert_tree_iterative(root):
+    if not root:
+        return None
+    
+    queue = deque([root])
+    while queue:
+        node = queue.popleft()
+        node.left, node.right = node.right, node.left
+        
+        if node.left:
+            queue.append(node.left)
+        if node.right:
+            queue.append(node.right)
+    
+    return root
+
+# 示例使用
+inverted_root_iter = invert_tree_iterative(root)
+</code></pre>
+<h3>复制二叉树</h3>
+<p>复制二叉树是指创建一个与原二叉树结构和节点值完全相同的新的二叉树。这可以通过递归的方法实现。</p>
+<h4>递归方法</h4>
+<p><strong>算法步骤</strong>：</p>
+<ol>
+<li>如果当前节点为空，返回空节点。</li>
+<li>创建一个新的节点，其值等于当前节点的值。</li>
+<li>递归复制左子树，并将其赋值给新节点的左子树。</li>
+<li>递归复制右子树，并将其赋值给新节点的右子树。</li>
+</ol>
+<p><strong>实现代码</strong>：</p>
+<pre><code class="language-python">def copy_tree(root):
+    if not root:
+        return None
+    
+    new_root = TreeNode(root.value)
+    new_root.left = copy_tree(root.left)
+    new_root.right = copy_tree(root.right)
+    
+    return new_root
+
+# 示例使用
+copied_root = copy_tree(root)
+</code></pre>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>GeeksforGeeks - Invert/Reverse a Binary Tree</strong>:</p>
+<ul>
+<li>提供了详细的翻转二叉树的实现和说明。</li>
+<li><a href="https://www.geeksforgeeks.org/invert-binary-tree/">链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>LeetCode Problem - Invert Binary Tree</strong>:</p>
+<ul>
+<li>提供了关于翻转二叉树的详细描述和解决方案。</li>
+<li><a href="https://leetcode.com/problems/invert-binary-tree/">LeetCode链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>GeeksforGeeks - Clone a Binary Tree</strong>:</p>
+<ul>
+<li>详细介绍了如何复制二叉树，并提供了实现方法。</li>
+<li><a href="https://www.geeksforgeeks.org/clone-binary-tree/">链接</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

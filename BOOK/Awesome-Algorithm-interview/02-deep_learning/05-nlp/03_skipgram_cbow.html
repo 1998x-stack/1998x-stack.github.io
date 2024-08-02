@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>skipgram cbow</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <blockquote>
+<p>cbow和skipgram如何选择？</p>
+</blockquote>
+<h3>CBOW 和 Skip-gram 如何选择</h3>
+<p>CBOW（Continuous Bag of Words）和 Skip-gram 是 Word2Vec 的两种模型架构。选择 CBOW 或 Skip-gram 取决于你的任务需求、数据特征以及计算资源。下面详细介绍这两种模型的区别、优缺点及选择依据。</p>
+<h4>CBOW（Continuous Bag of Words）</h4>
+<p><strong>原理</strong>：
+CBOW 模型根据上下文词预测中心词。它利用上下文窗口内的所有词，生成一个特征向量来预测处于窗口中心的词。</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>计算效率高</strong>：CBOW 模型在训练时计算效率较高，因为它同时使用了上下文窗口内的所有词来预测中心词。</li>
+<li><strong>适用于大数据集</strong>：CBOW 通常在大数据集上表现更好，尤其是在计算资源有限的情况下。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>忽略词序信息</strong>：CBOW 直接将上下文词平均后进行预测，可能会忽略词序信息。</li>
+<li><strong>对稀有词效果较差</strong>：CBOW 对频繁出现的词效果较好，但对稀有词的效果相对较差。</li>
+</ul>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>当计算资源有限且数据集较大时，优先选择 CBOW。</li>
+<li>适用于对词序要求不高的应用场景。</li>
+</ul>
+<h4>Skip-gram</h4>
+<p><strong>原理</strong>：
+Skip-gram 模型根据中心词预测上下文词。它通过中心词预测窗口内所有的上下文词，因此需要更多的计算。</p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>对稀有词效果好</strong>：Skip-gram 在处理稀有词和未见词方面表现较好，因为它能够更好地捕捉词与词之间的关系。</li>
+<li><strong>保留更多语义信息</strong>：Skip-gram 能更好地保留词语的语义关系，生成的词向量在捕捉词语的语义相似性方面表现更好。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>计算开销大</strong>：由于需要预测每个上下文词，Skip-gram 的计算开销比 CBOW 大。</li>
+<li><strong>训练时间长</strong>：在同等条件下，Skip-gram 的训练时间通常比 CBOW 长。</li>
+</ul>
+<p><strong>应用场景</strong>：</p>
+<ul>
+<li>当需要处理稀有词或未见词时，优先选择 Skip-gram。</li>
+<li>适用于对语义信息要求较高的应用场景，如语义相似度计算。</li>
+</ul>
+<h3>选择依据</h3>
+<p>选择 CBOW 或 Skip-gram 需要考虑以下几个方面：</p>
+<ol>
+<li>
+<p><strong>数据集大小和计算资源</strong>：</p>
+<ul>
+<li>如果数据集较大且计算资源有限，选择 CBOW，因为它计算效率较高。</li>
+<li>如果计算资源充足且需要高质量的词向量，选择 Skip-gram。</li>
+</ul>
+</li>
+<li>
+<p><strong>任务需求</strong>：</p>
+<ul>
+<li>如果任务对词序信息不敏感，如文本分类，选择 CBOW。</li>
+<li>如果任务需要保留更多语义信息，如语义相似度计算或问答系统，选择 Skip-gram。</li>
+</ul>
+</li>
+<li>
+<p><strong>词频分布</strong>：</p>
+<ul>
+<li>如果数据集中的词频分布较为均匀，选择 CBOW。</li>
+<li>如果数据集中存在大量稀有词，选择 Skip-gram。</li>
+</ul>
+</li>
+</ol>
+<h3>实现示例（使用Gensim库）</h3>
+<p>以下是使用Gensim库训练CBOW和Skip-gram模型的示例代码：</p>
+<pre><code class="language-python">from gensim.models import Word2Vec
+
+# 示例数据
+sentences = [
+    ['i', 'love', 'machine', 'learning'],
+    ['word2vec', 'is', 'a', 'great', 'tool'],
+    ['i', 'enjoy', 'learning', 'new', 'things']
+]
+
+# 训练CBOW模型（sg=0表示使用CBOW）
+cbow_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, sg=0)
+print(&quot;CBOW模型中的词向量：\n&quot;, cbow_model.wv['learning'])
+
+# 训练Skip-gram模型（sg=1表示使用Skip-gram）
+skipgram_model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, sg=1)
+print(&quot;Skip-gram模型中的词向量：\n&quot;, skipgram_model.wv['learning'])
+</code></pre>
+<h3>参考文献</h3>
+<ol>
+<li>
+<p><strong>Distributed Representations of Words and Phrases and their Compositionality by Tomas Mikolov et al.</strong>：</p>
+<ul>
+<li>提供了Word2Vec的详细理论和实现，包括CBOW和Skip-gram模型。</li>
+<li><a href="https://arxiv.org/abs/1310.4546">论文链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Efficient Estimation of Word Representations in Vector Space by Tomas Mikolov et al.</strong>：</p>
+<ul>
+<li>介绍了Skip-gram和CBOW模型，以及负采样方法。</li>
+<li><a href="https://arxiv.org/abs/1301.3781">论文链接</a></li>
+</ul>
+</li>
+<li>
+<p><strong>Gensim文档</strong>：</p>
+<ul>
+<li>提供了使用Gensim库进行Word2Vec训练的实际示例和教程。</li>
+<li><a href="https://radimrehurek.com/gensim/models/word2vec.html">Gensim文档</a></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code>对应的 Python 文件不存在。</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.3.3 Bayes’ theorem for Gaussian variables</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h4>贝叶斯定理在高斯变量中的应用</h4>
+<p>在2.3.3节中，探讨了如何将贝叶斯定理应用于高斯变量。首先，我们假设给定了一个高斯边缘分布 $ p(\mathbf{x}) $ 和一个高斯条件分布 $ p(\mathbf{y}|\mathbf{x}) $，其中 $ p(\mathbf{y}|\mathbf{x}) $ 的均值是 $ \mathbf{x} $ 的线性函数，且协方差独立于 $ \mathbf{x} $。这种情况通常被称为线性高斯模型。</p>
+<h3>数学推导</h3>
+<h4>边缘分布</h4>
+<p>设 $ \mathbf{x} $ 和 $ \mathbf{y} $ 的边缘分布和条件分布分别为：
+$$
+p(\mathbf{x}) = \mathcal{N}(\mathbf{x}|\mathbf{\mu}, \mathbf{\Lambda}^{-1})
+$$
+$$
+p(\mathbf{y}|\mathbf{x}) = \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{x} + \mathbf{b}, \mathbf{L}^{-1})
+$$
+其中，$\mathbf{\mu}$、$\mathbf{A}$ 和 $\mathbf{b}$ 是均值的参数，$\mathbf{\Lambda}$ 和 $\mathbf{L}$ 是精度矩阵。</p>
+<h4>条件分布</h4>
+<p>为了找到 $\mathbf{y}$ 的边缘分布 $ p(\mathbf{y}) $ 和 $\mathbf{x}$ 在给定 $\mathbf{y}$ 条件下的条件分布 $ p(\mathbf{x}|\mathbf{y}) $，我们可以利用贝叶斯定理：
+$$
+p(\mathbf{y}) = \mathcal{N}(\mathbf{y}|\mathbf{A}\mathbf{\mu} + \mathbf{b}, \mathbf{L}^{-1} + \mathbf{A}\mathbf{\Lambda}^{-1}\mathbf{A}^T)
+$$
+$$
+p(\mathbf{x}|\mathbf{y}) = \mathcal{N}(\mathbf{x}|\mathbf{\Sigma}(\mathbf{A}^T\mathbf{L}(\mathbf{y} - \mathbf{b}) + \mathbf{\Lambda}\mathbf{\mu}), \mathbf{\Sigma})
+$$
+其中：
+$$
+\mathbf{\Sigma} = (\mathbf{\Lambda} + \mathbf{A}^T\mathbf{L}\mathbf{A})^{-1}
+$$</p>
+<h3>代码实现</h3>
+<p>以下是一个基于numpy和scipy实现贝叶斯定理在高斯变量中应用的Python代码。代码按照工业标准进行了设计，包含了详细的中文注释、类型注解以及边界条件的检查。</p>
+<pre><code class="language-python">import numpy as np
+from scipy.stats import multivariate_normal
+from typing import Tuple
+
+class BayesianGaussian:
+    def __init__(self, mu: np.ndarray, lambda_: np.ndarray, a: np.ndarray, b: np.ndarray, l: np.ndarray):
+        ```
+        初始化贝叶斯高斯分布类
+        
+        参数:
+        mu (np.ndarray): 边缘分布的均值向量
+        lambda_ (np.ndarray): 边缘分布的精度矩阵
+        a (np.ndarray): 条件分布的均值矩阵系数
+        b (np.ndarray): 条件分布的均值偏移向量
+        l (np.ndarray): 条件分布的精度矩阵
+        ```
+        self.mu = mu
+        self.lambda_ = lambda_
+        self.a = a
+        self.b = b
+        self.l = l
+        self._check_validity()
+    
+    def _check_validity(self):
+        ```检查输入参数的有效性```
+        assert self.mu.ndim == 1, &quot;均值向量应为一维&quot;
+        assert self.lambda_.ndim == 2, &quot;精度矩阵应为二维&quot;
+        assert self.lambda_.shape[0] == self.lambda_.shape[1], &quot;精度矩阵应为方阵&quot;
+        assert self.mu.shape[0] == self.lambda_.shape[0], &quot;均值向量和精度矩阵的维度应匹配&quot;
+        assert self.a.ndim == 2, &quot;A矩阵应为二维&quot;
+        assert self.b.ndim == 1, &quot;b向量应为一维&quot;
+        assert self.l.ndim == 2, &quot;L矩阵应为二维&quot;
+        assert self.l.shape[0] == self.l.shape[1], &quot;L矩阵应为方阵&quot;
+    
+    def marginal_distribution(self) -&gt; Tuple[np.ndarray, np.ndarray]:
+        ```
+        计算边缘高斯分布的均值和协方差矩阵
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 边缘高斯分布的均值和协方差矩阵
+        ```
+        mu_y = self.a @ self.mu + self.b
+        sigma_y = np.linalg.inv(self.l) + self.a @ np.linalg.inv(self.lambda_) @ self.a.T
+
+        return mu_y, sigma_y
+    
+    def conditional_distribution(self, y: np.ndarray) -&gt; Tuple[np.ndarray, np.ndarray]:
+        ```
+        计算条件高斯分布的均值和协方差矩阵
+        
+        参数:
+        y (np.ndarray): 条件变量的值
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 条件高斯分布的均值和协方差矩阵
+        ```
+        sigma = np.linalg.inv(self.lambda_ + self.a.T @ self.l @ self.a)
+        mu_x_given_y = sigma @ (self.a.T @ self.l @ (y - self.b) + self.lambda_ @ self.mu)
+        
+        return mu_x_given_y, sigma
+    
+    def sample_marginal(self, size: int = 1) -&gt; np.ndarray:
+        ```
+        从边缘高斯分布中采样
+        
+        参数:
+        size (int): 采样数量
+        
+        返回:
+        np.ndarray: 采样结果
+        ```
+        mu_y, sigma_y = self.marginal_distribution()
+        samples = multivariate_normal.rvs(mean=mu_y, cov=sigma_y, size=size)
+        return samples
+    
+    def sample_conditional(self, y: np.ndarray, size: int = 1) -&gt; np.ndarray:
+        ```
+        从条件高斯分布中采样
+        
+        参数:
+        y (np.ndarray): 条件变量的值
+        size (int): 采样数量
+        
+        返回:
+        np.ndarray: 采样结果
+        ```
+        mu_x_given_y, sigma_x_given_y = self.conditional_distribution(y)
+        samples = multivariate_normal.rvs(mean=mu_x_given_y, cov=sigma_x_given_y, size=size)
+        return samples
+
+# 示例用法
+if __name__ == &quot;__main__&quot;:
+    mu = np.array([1.0, 2.0])
+    lambda_ = np.array([
+        [1.0, 0.5],
+        [0.5, 1.0]
+    ])
+    a = np.array([
+        [0.6, 0.8],
+        [0.3, 0.7]
+    ])
+    b = np.array([0.5, 0.2])
+    l = np.array([
+        [2.0, 0.4],
+        [0.4, 2.0]
+    ])
+    
+    bg = BayesianGaussian(mu, lambda_, a, b, l)
+    
+    mu_y, sigma_y = bg.marginal_distribution()
+    print(&quot;边缘均值:&quot;, mu_y)
+    print(&quot;边缘协方差矩阵:&quot;, sigma_y)
+    
+    y = np.array([1.5, 2.5])
+    mu_x_given_y, sigma_x_given_y = bg.conditional_distribution(y)
+    print(&quot;条件均值:&quot;, mu_x_given_y)
+    print(&quot;条件协方差矩阵:&quot;, sigma_x_given_y)
+    
+    samples_marginal = bg.sample_marginal(size=5)
+    print(&quot;边缘采样结果:&quot;, samples_marginal)
+    
+    samples_conditional = bg.sample_conditional(y, size=5)
+    print(&quot;条件采样结果:&quot;, samples_conditional)
+</code></pre>
+<h3>代码解释</h3>
+<ol>
+<li>
+<p><strong>类初始化</strong>:</p>
+<ul>
+<li><code>BayesianGaussian</code>类接受均值向量、精度矩阵、条件分布的均值矩阵系数和偏移向量，以及条件分布的精度矩阵作为输入，并在初始化时检查它们的有效性。</li>
+<li><code>_check_validity</code>方法用于确保输入参数的维度和形状匹配。</li>
+</ul>
+</li>
+<li>
+<p><strong>边缘分布计算</strong>:</p>
+<ul>
+<li><code>marginal_distribution</code>方法计算边缘高斯分布的均值和协方差矩阵。</li>
+<li>通过矩阵计算得到边缘分布的均值和协方差矩阵。</li>
+</ul>
+</li>
+<li>
+<p><strong>条件分布计算</strong>:</p>
+<ul>
+<li><code>conditional_distribution</code>方法计算条件高斯分布的均值和协方差矩阵。</li>
+<li>通过矩阵计算得到条件分布的均值和协方差矩阵。</li>
+</ul>
+</li>
+<li>
+<p><strong>采样</strong>:</p>
+<ul>
+<li><code>sample_marginal</code>方法和<code>sample_conditional</code></li>
+</ul>
+</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 02_2.3.3_Bayes’_theorem_for_Gaussian_variables
+
+"""
+Lecture: 2_Probability_Distributions/2.3_The_Gaussian_Distribution
+Content: 02_2.3.3_Bayes’_theorem_for_Gaussian_variables
+"""
+
+import numpy as np
+from scipy.stats import multivariate_normal
+from typing import Tuple
+
+class BayesianGaussian:
+    def __init__(self, mu: np.ndarray, lambda_: np.ndarray, a: np.ndarray, b: np.ndarray, l: np.ndarray):
+        """
+        初始化贝叶斯高斯分布类
+        
+        参数:
+        mu (np.ndarray): 边缘分布的均值向量
+        lambda_ (np.ndarray): 边缘分布的精度矩阵
+        a (np.ndarray): 条件分布的均值矩阵系数
+        b (np.ndarray): 条件分布的均值偏移向量
+        l (np.ndarray): 条件分布的精度矩阵
+        """
+        self.mu = mu
+        self.lambda_ = lambda_
+        self.a = a
+        self.b = b
+        self.l = l
+        self._check_validity()
+    
+    def _check_validity(self):
+        """检查输入参数的有效性"""
+        assert self.mu.ndim == 1, "均值向量应为一维"
+        assert self.lambda_.ndim == 2, "精度矩阵应为二维"
+        assert self.lambda_.shape[0] == self.lambda_.shape[1], "精度矩阵应为方阵"
+        assert self.mu.shape[0] == self.lambda_.shape[0], "均值向量和精度矩阵的维度应匹配"
+        assert self.a.ndim == 2, "A矩阵应为二维"
+        assert self.b.ndim == 1, "b向量应为一维"
+        assert self.l.ndim == 2, "L矩阵应为二维"
+        assert self.l.shape[0] == self.l.shape[1], "L矩阵应为方阵"
+    
+    def marginal_distribution(self) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        计算边缘高斯分布的均值和协方差矩阵
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 边缘高斯分布的均值和协方差矩阵
+        """
+        mu_y = self.a @ self.mu + self.b
+        sigma_y = np.linalg.inv(self.l) + self.a @ np.linalg.inv(self.lambda_) @ self.a.T
+
+        return mu_y, sigma_y
+    
+    def conditional_distribution(self, y: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+        """
+        计算条件高斯分布的均值和协方差矩阵
+        
+        参数:
+        y (np.ndarray): 条件变量的值
+        
+        返回:
+        Tuple[np.ndarray, np.ndarray]: 条件高斯分布的均值和协方差矩阵
+        """
+        sigma = np.linalg.inv(self.lambda_ + self.a.T @ self.l @ self.a)
+        mu_x_given_y = sigma @ (self.a.T @ self.l @ (y - self.b) + self.lambda_ @ self.mu)
+        
+        return mu_x_given_y, sigma
+    
+    def sample_marginal(self, size: int = 1) -> np.ndarray:
+        """
+        从边缘高斯分布中采样
+        
+        参数:
+        size (int): 采样数量
+        
+        返回:
+        np.ndarray: 采样结果
+        """
+        mu_y, sigma_y = self.marginal_distribution()
+        samples = multivariate_normal.rvs(mean=mu_y, cov=sigma_y, size=size)
+        return samples
+    
+    def sample_conditional(self, y: np.ndarray, size: int = 1) -> np.ndarray:
+        """
+        从条件高斯分布中采样
+        
+        参数:
+        y (np.ndarray): 条件变量的值
+        size (int): 采样数量
+        
+        返回:
+        np.ndarray: 采样结果
+        """
+        mu_x_given_y, sigma_x_given_y = self.conditional_distribution(y)
+        samples = multivariate_normal.rvs(mean=mu_x_given_y, cov=sigma_x_given_y, size=size)
+        return samples
+
+# 示例用法
+if __name__ == "__main__":
+    mu = np.array([1.0, 2.0])
+    lambda_ = np.array([
+        [1.0, 0.5],
+        [0.5, 1.0]
+    ])
+    a = np.array([
+        [0.6, 0.8],
+        [0.3, 0.7]
+    ])
+    b = np.array([0.5, 0.2])
+    l = np.array([
+        [2.0, 0.4],
+        [0.4, 2.0]
+    ])
+    
+    bg = BayesianGaussian(mu, lambda_, a, b, l)
+    
+    mu_y, sigma_y = bg.marginal_distribution()
+    print("边缘均值:", mu_y)
+    print("边缘协方差矩阵:", sigma_y)
+    
+    y = np.array([1.5, 2.5])
+    mu_x_given_y, sigma_x_given_y = bg.conditional_distribution(y)
+    print("条件均值:", mu_x_given_y)
+    print("条件协方差矩阵:", sigma_x_given_y)
+    
+    samples_marginal = bg.sample_marginal(size=5)
+    print("边缘采样结果:", samples_marginal)
+    
+    samples_conditional = bg.sample_conditional(y, size=5)
+    print("条件采样结果:", samples_conditional)
+</code></pre>
+  </div>
+</body>
+</html>
+  

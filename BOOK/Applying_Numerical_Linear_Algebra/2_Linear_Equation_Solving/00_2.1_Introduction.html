@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.1 Introduction</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_2.1_Introduction</h1>
+<pre><code>Lecture: /2_Linear_Equation_Solving
+Content: 00_2.1_Introduction
+</code></pre>
+<h3>2.1 引言</h3>
+<h4>线性方程组求解的背景</h4>
+<p>在数值线性代数中，求解线性方程组 $Ax = b$ 是一个基本问题，其中 $A$ 是已知的 $n \times n$ 矩阵，$b$ 是已知的 $n \times 1$ 向量，而 $x$ 是需要求解的 $n \times 1$ 向量。在没有舍入误差的理想情况下，这些问题可以通过有限步数的直接方法精确求解。然而，由于实际计算中存在舍入误差，必须对这些方法进行分析和改进以确保解的精度和稳定性。</p>
+<h4>直接方法与迭代方法</h4>
+<p>本章讨论了求解线性方程组的扰动理论、算法和误差分析。所有这些算法都是高斯消去法的变种，被称为直接方法，因为在没有舍入误差的情况下，它们可以在有限步数内给出 $Ax = b$ 的精确解。与之相对，第6章讨论了迭代方法，这些方法通过计算一系列逐渐逼近 $Ax = b$ 的解 $x_0, x_1, x_2, \cdots$ 来求解。当 $x_i$ 足够准确时停止迭代（计算下一步的 $x_{i+1}$）。根据矩阵 $A$ 的性质和 $x_i$ 收敛到 $x = A^{-1}b$ 的速度，直接方法或迭代方法可能更快或更准确。</p>
+<h4>本章内容结构</h4>
+<p>本章的其余部分组织如下：</p>
+<ul>
+<li><strong>2.2 扰动理论</strong>：讨论线性方程组 $Ax = b$ 的扰动理论，为2.4节中的实际误差界定提供基础。</li>
+<li><strong>2.3 高斯消去法</strong>：推导适用于密集矩阵的高斯消去算法。</li>
+<li><strong>2.4 误差分析</strong>：分析高斯消去法中的误差，并提出实际误差界定。</li>
+<li><strong>2.5 提高解的精度</strong>：展示如何使用简单且低成本的迭代方法提高通过高斯消去法计算出的解的精度。</li>
+<li><strong>2.6 提高性能的阻塞算法</strong>：讨论如何组织计算以适应现代计算机的内存组织，从而从高斯消去法和其他线性代数算法中获得高速度。</li>
+<li><strong>2.7 特殊矩阵的高效算法</strong>：讨论适用于常见特殊矩阵（如对称矩阵或稀疏矩阵）的高斯消去法变种。</li>
+</ul>
+<h4>直接方法的优缺点</h4>
+<ul>
+<li>
+<p><strong>优点</strong>：</p>
+<ul>
+<li><strong>稳定性保证</strong>：直接方法通常提供稳定性保证，尤其是当用户对矩阵 $A$ 的来源没有特别的了解，或者需要在保证时间内获得稳定解时。</li>
+<li><strong>有限步数</strong>：在理论上，直接方法可以在有限步数内提供精确解，这在许多应用中非常有用。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>舍入误差累积</strong>：在实际计算中，舍入误差可能会影响解的准确性，特别是对于病态矩阵。</li>
+<li><strong>计算量大</strong>：对于非常大的问题，直接方法的计算量可能非常大，这限制了其在高性能计算中的应用。</li>
+</ul>
+</li>
+</ul>
+<h4>应用举例</h4>
+<p>在科学计算和工程实践中，线性方程组的求解广泛应用于以下领域：</p>
+<ol>
+<li><strong>物理模拟</strong>：如流体动力学、热传导等物理现象的模拟中，需要求解大量的线性方程组。</li>
+<li><strong>结构分析</strong>：工程结构的应力分析、变形计算等也依赖于线性方程组的求解。</li>
+<li><strong>经济与金融</strong>：在金融模型、风险评估和投资组合优化中，线性方程组求解是重要的计算工具。</li>
+</ol>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_2.1_Introduction
+
+"""
+Lecture: /2_Linear_Equation_Solving
+Content: 00_2.1_Introduction
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  

@@ -1,0 +1,327 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>6.1 总体谱</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_6.1 总体谱</h1>
+<pre><code>Lecture: /第6章 谱分析
+Content: 00_6.1 总体谱
+</code></pre>
+<h2>6.1 总体谱分析极致详细解析</h2>
+<h3>1. 总体谱概述</h3>
+<p>总体谱（Spectral Density）是时间序列分析中的一种工具，用于描述时间序列在不同频率上的能量分布。通过总体谱，可以了解时间序列在频域上的特性，这是频域分析的重要组成部分。总体谱是自协方差函数的傅里叶变换，它提供了时间序列信号在不同频率上的强度信息。</p>
+<h3>2. 总体谱的数学定义</h3>
+<p>假设${X_t}$是一个零均值平稳时间序列，其自协方差函数为$\gamma(h)$，满足$\sum_{h=-\infty}^{\infty}|\gamma(h)| &lt; \infty$。总体谱$f(\lambda)$定义为：
+$$ f(\lambda) = \frac{1}{2\pi} \sum_{h=-\infty}^{\infty} e^{-ih\lambda} \gamma(h), \quad -\infty &lt; \lambda &lt; \infty $$
+这里，$\lambda$ 表示频率，自协方差函数 $\gamma(h)$ 描述了时间序列在不同时刻之间的依赖关系。</p>
+<h3>3. 总体谱的基本性质</h3>
+<p>总体谱$f(\lambda)$具有以下基本性质：</p>
+<ol>
+<li><strong>对称性</strong>：总体谱是一个偶函数，即 $f(\lambda) = f(-\lambda)$。这意味着频率为 $\lambda$ 和 $-\lambda$ 处的能量是相同的。</li>
+<li><strong>非负性</strong>：总体谱在所有频率下均为非负值，即 $f(\lambda) \geq 0$。这反映了能量的非负性。</li>
+<li><strong>归一化</strong>：总体谱的积分等于时间序列的方差，即 $\int_{-\pi}^{\pi} f(\lambda) d\lambda = \gamma(0)$。</li>
+<li><strong>自协方差函数的关系</strong>：自协方差函数 $\gamma(k)$ 可以通过总体谱的逆傅里叶变换表示：
+$$ \gamma(k) = \int_{-\pi}^{\pi} e^{ik\lambda} f(\lambda) d\lambda $$
+这表明总体谱与自协方差函数之间存在一一对应关系。</li>
+</ol>
+<h3>4. 总体谱的推导过程</h3>
+<p>总体谱的推导涉及对时间序列的频域分析。以下是推导过程的详细步骤：</p>
+<h4>4.1 自协方差函数的傅里叶变换</h4>
+<p>总体谱的定义是自协方差函数 $\gamma(h)$ 的傅里叶变换。首先，通过时间序列的自协方差函数 $\gamma(h)$ 来描述序列在不同时刻的依赖关系。然后，计算其傅里叶变换：
+$$ f(\lambda) = \frac{1}{2\pi} \sum_{h=-\infty}^{\infty} \gamma(h) e^{-ih\lambda} $$</p>
+<h4>4.2 频域表示</h4>
+<p>时间序列在频域上的表示是通过离散傅里叶变换（DFT）实现的。对于一个长度为 $n$ 的时间序列 ${x_t}$，其离散傅里叶变换定义为：
+$$ a_k = \frac{1}{\sqrt{n}} \sum_{t=1}^n x_t e^{-it\omega_k} $$
+其中 $\omega_k = \frac{2\pi k}{n}$ 是频率。通过傅里叶变换，时间序列可以表示为：
+$$ x_t = \sum_{k=-\left[\frac{n-1}{2}\right]}^{\left[\frac{n}{2}\right]} a_k e^{it\omega_k} $$
+这些系数 $a_k$ 被称为时间序列的离散傅里叶变换（DFT）系数。</p>
+<h3>5. 样本总体谱估计</h3>
+<p>在实际应用中，我们需要对总体谱进行估计。样本总体谱的估计通常通过计算样本周期图（Periodogram）来实现。样本周期图 $I_n(\lambda)$ 定义为：
+$$ I_n(\lambda) = \frac{1}{2\pi n} \left| \sum_{t=1}^n x_t e^{-it\lambda} \right|^2 $$
+周期图 $I_n(\lambda)$ 可以看作是总体谱 $f(\lambda)$ 的一个无偏估计。当样本量 $n$ 足够大时，$I_n(\lambda)$ 会收敛于 $f(\lambda)$。</p>
+<h3>6. 总体谱在不同模型中的应用</h3>
+<p>不同时间序列模型的总体谱有不同的特性。以下是几个常见模型的总体谱特性：</p>
+<h4>6.1.1 白噪声的总体谱</h4>
+<p>如果 ${X_t}$ 是一个白噪声过程（即 $\gamma(0) = \sigma^2$ 和 $\gamma(h) = 0$ 对于所有 $|h| &gt; 0$），则其总体谱是一个常数：
+$$ f(\lambda) = \frac{\sigma^2}{2\pi} $$
+这表明白噪声在所有频率上均匀分布。</p>
+<h4>6.1.2 AR(1) 过程的总体谱</h4>
+<p>对于 AR(1) 过程 $X_t = \phi X_{t-1} + Z_t$，其中 ${Z_t}$ 是零均值白噪声过程，其总体谱为：
+$$ f(\lambda) = \frac{\sigma^2}{2\pi (1 - 2\phi \cos(\lambda) + \phi^2)} $$
+这里，$\phi$ 是模型参数。该公式表明 AR(1) 过程的频谱在低频处有较高的能量。</p>
+<h4>6.1.3 MA(1) 过程的总体谱</h4>
+<p>对于 MA(1) 过程 $X_t = Z_t + \theta Z_{t-1}$，其总体谱为：
+$$ f(\lambda) = \frac{\sigma^2}{2\pi} (1 + \theta^2 + 2\theta \cos(\lambda)) $$
+其中 $\theta$ 是模型参数。该公式表明 MA(1) 过程的频谱在频率 $\lambda$ 处具有对称性。</p>
+<h3>7. 总体谱的实际应用</h3>
+<p>总体谱在实际应用中具有广泛用途，以下是几个典型应用场景：</p>
+<h4>7.1 结构设计中的应用</h4>
+<p>在结构设计中，通过分析加载力的总体谱，可以识别出显著的正弦分量，从而避免结构共振频率的存在。例如，在桥梁设计中，需要确保桥梁的自然频率与行车频率不发生共振，以避免结构损坏。</p>
+<h4>7.2 信号处理中的应用</h4>
+<p>在信号处理领域，总体谱分析用于信号去噪、滤波和特征提取。例如，在语音信号处理中，通过分析语音信号的频谱特性，可以实现语音识别和语音增强。</p>
+<h4>7.3 经济和金融数据分析中的应用</h4>
+<p>在经济和金融数据分析中，总体谱用于检测周期性趋势和市场波动。例如，通过分析股票价格的频谱，可以识别出潜在的周期性模式，从而辅助投资决策。</p>
+<h4>7.4 气象数据分析中的应用</h4>
+<p>在气象数据分析中，总体谱用于分析气温、降水量等气象数据的周期性变化。例如，通过分析多年气温数据的频谱，可以识别出季节性和年际变化模式，从而预测未来的气候变化。</p>
+<h3>8. 总体谱估计的数值方法</h3>
+<p>在实际应用中，通常使用快速傅里叶变换（FFT）来计算时间序列的离散傅里叶变换，从而估计总体谱。以下是一个简单的数值计算步骤：</p>
+<ol>
+<li><strong>数据预处理</strong>：对时间序列数据进行去趋势和去季节性处理，确保数据平稳。</li>
+<li><strong>计算DFT</strong>：使用快速傅里叶变换（FFT）计算时间序列的离散傅里叶变换系数 $a_k$。</li>
+<li><strong>计算周期图</strong>：根据DFT系数计算样本周期图 $I_n(\lambda)$。</li>
+<li><strong>平滑处理</strong>：对周期图进行平滑处理，以获得更加平滑的总体谱估计。</li>
+</ol>
+<h3>9. 结论</h3>
+<p>总体谱分析是时间序列分析中的重要工具，通过频域分析提供了一种新的视角，帮助我们更好地理解时间序列的频率特性。总体谱在实际应用中具有广泛的用途，从结构设计到信号处理，再到经济和气象数据分析，总体谱分析为各领域的研究和实践提供了有力支持。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_6.1 总体谱
+
+"""
+Lecture: /第6章 谱分析
+Content: 00_6.1 总体谱
+"""
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.signal import periodogram
+from statsmodels.tsa.arima_process import ArmaProcess
+
+# 设置随机种子以确保可重复性
+np.random.seed(0)
+
+# 生成白噪声序列
+n = 1000
+white_noise = np.random.normal(0, 1, n)
+
+# 生成AR(1)过程
+ar1 = np.array([1, -0.5])
+ma1 = np.array([1])
+AR1_process = ArmaProcess(ar1, ma1)
+ar1_series = AR1_process.generate_sample(nsample=n)
+
+# 生成MA(1)过程
+ar = np.array([1])
+ma = np.array([1, 0.5])
+MA1_process = ArmaProcess(ar, ma)
+ma1_series = MA1_process.generate_sample(nsample=n)
+
+# 计算并绘制时域序列
+plt.figure(figsize=(12, 8))
+
+plt.subplot(3, 2, 1)
+plt.plot(white_noise)
+plt.title("White Noise (Time Domain)")
+plt.xlabel("Time")
+plt.ylabel("Amplitude")
+
+plt.subplot(3, 2, 3)
+plt.plot(ar1_series)
+plt.title("AR(1) Process (Time Domain)")
+plt.xlabel("Time")
+plt.ylabel("Amplitude")
+
+plt.subplot(3, 2, 5)
+plt.plot(ma1_series)
+plt.title("MA(1) Process (Time Domain)")
+plt.xlabel("Time")
+plt.ylabel("Amplitude")
+
+# 计算并绘制频域谱图
+frequencies_wn, spectrum_wn = periodogram(white_noise)
+frequencies_ar1, spectrum_ar1 = periodogram(ar1_series)
+frequencies_ma1, spectrum_ma1 = periodogram(ma1_series)
+
+plt.subplot(3, 2, 2)
+plt.semilogy(frequencies_wn, spectrum_wn)
+plt.title("White Noise (Frequency Domain)")
+plt.xlabel("Frequency")
+plt.ylabel("Power Spectral Density")
+
+plt.subplot(3, 2, 4)
+plt.semilogy(frequencies_ar1, spectrum_ar1)
+plt.title("AR(1) Process (Frequency Domain)")
+plt.xlabel("Frequency")
+plt.ylabel("Power Spectral Density")
+
+plt.subplot(3, 2, 6)
+plt.semilogy(frequencies_ma1, spectrum_ma1)
+plt.title("MA(1) Process (Frequency Domain)")
+plt.xlabel("Frequency")
+plt.ylabel("Power Spectral Density")
+
+plt.tight_layout()
+plt.show()
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.fft import fft, fftfreq
+
+class TimeSeriesAnalysis:
+    def __init__(self, n: int, seed: int = 0) -> None:
+        """
+        初始化时间序列分析类
+
+        参数:
+        n (int): 序列长度
+        seed (int): 随机种子
+        """
+        np.random.seed(seed)
+        self.n = n
+        self.time = np.arange(n)
+
+    def generate_white_noise(self, mean: float = 0, std: float = 1) -> np.ndarray:
+        """
+        生成白噪声序列
+
+        参数:
+        mean (float): 均值
+        std (float): 标准差
+
+        返回:
+        np.ndarray: 白噪声序列
+        """
+        return np.random.normal(mean, std, self.n)
+
+    def generate_ar1(self, phi: float, mean: float = 0, std: float = 1) -> np.ndarray:
+        """
+        生成AR(1)过程
+
+        参数:
+        phi (float): AR参数
+        mean (float): 噪声均值
+        std (float): 噪声标准差
+
+        返回:
+        np.ndarray: AR(1)序列
+        """
+        ar1_series = np.zeros(self.n)
+        noise = np.random.normal(mean, std, self.n)
+        for t in range(1, self.n):
+            ar1_series[t] = phi * ar1_series[t-1] + noise[t]
+        return ar1_series
+
+    def generate_ma1(self, theta: float, mean: float = 0, std: float = 1) -> np.ndarray:
+        """
+        生成MA(1)过程
+
+        参数:
+        theta (float): MA参数
+        mean (float): 噪声均值
+        std (float): 噪声标准差
+
+        返回:
+        np.ndarray: MA(1)序列
+        """
+        ma1_series = np.zeros(self.n)
+        noise = np.random.normal(mean, std, self.n)
+        for t in range(1, self.n):
+            ma1_series[t] = noise[t] + theta * noise[t-1]
+        return ma1_series
+
+    def compute_periodogram(self, series: np.ndarray) -> (np.ndarray, np.ndarray):
+        """
+        计算序列的周期图
+
+        参数:
+        series (np.ndarray): 输入序列
+
+        返回:
+        (np.ndarray, np.ndarray): 频率和功率谱密度
+        """
+        frequencies = fftfreq(self.n)
+        spectrum = np.abs(fft(series))**2 / self.n
+        return frequencies[:self.n // 2], spectrum[:self.n // 2]
+
+    def plot_time_series(self, series: np.ndarray, title: str) -> None:
+        """
+        绘制时间序列
+
+        参数:
+        series (np.ndarray): 输入序列
+        title (str): 图表标题
+        """
+        plt.plot(self.time, series)
+        plt.title(title)
+        plt.xlabel("Time")
+        plt.ylabel("Amplitude")
+        plt.grid(True)
+
+    def plot_periodogram(self, frequencies: np.ndarray, spectrum: np.ndarray, title: str) -> None:
+        """
+        绘制周期图
+
+        参数:
+        frequencies (np.ndarray): 频率
+        spectrum (np.ndarray): 功率谱密度
+        title (str): 图表标题
+        """
+        plt.semilogy(frequencies, spectrum)
+        plt.title(title)
+        plt.xlabel("Frequency")
+        plt.ylabel("Power Spectral Density")
+        plt.grid(True)
+
+
+def main() -> None:
+    """
+    主函数：生成并分析白噪声、AR(1)和MA(1)过程，绘制其时域图和频域图。
+    """
+    n = 1000
+    analysis = TimeSeriesAnalysis(n)
+
+    # 生成序列
+    white_noise = analysis.generate_white_noise()
+    ar1_series = analysis.generate_ar1(phi=0.5)
+    ma1_series = analysis.generate_ma1(theta=0.5)
+
+    # 绘制时域图
+    plt.figure(figsize=(12, 8))
+
+    plt.subplot(3, 2, 1)
+    analysis.plot_time_series(white_noise, "White Noise (Time Domain)")
+
+    plt.subplot(3, 2, 3)
+    analysis.plot_time_series(ar1_series, "AR(1) Process (Time Domain)")
+
+    plt.subplot(3, 2, 5)
+    analysis.plot_time_series(ma1_series, "MA(1) Process (Time Domain)")
+
+    # 计算并绘制频域图
+    frequencies_wn, spectrum_wn = analysis.compute_periodogram(white_noise)
+    frequencies_ar1, spectrum_ar1 = analysis.compute_periodogram(ar1_series)
+    frequencies_ma1, spectrum_ma1 = analysis.compute_periodogram(ma1_series)
+
+    plt.subplot(3, 2, 2)
+    analysis.plot_periodogram(frequencies_wn, spectrum_wn, "White Noise (Frequency Domain)")
+
+    plt.subplot(3, 2, 4)
+    analysis.plot_periodogram(frequencies_ar1, spectrum_ar1, "AR(1) Process (Frequency Domain)")
+
+    plt.subplot(3, 2, 6)
+    analysis.plot_periodogram(frequencies_ma1, spectrum_ma1, "MA(1) Process (Frequency Domain)")
+
+    plt.tight_layout()
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+</code></pre>
+  </div>
+</body>
+</html>
+  

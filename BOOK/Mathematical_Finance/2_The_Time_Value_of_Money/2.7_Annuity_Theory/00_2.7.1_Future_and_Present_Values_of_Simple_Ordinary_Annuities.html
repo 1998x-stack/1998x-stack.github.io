@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+  <title>2.7.1 Future and Present Values of Simple Ordinary Annuities</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap">
+  <link rel="stylesheet" href="../../markdown.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script src="../../markdown.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>00_2.7.1_Future_and_Present_Values_of_Simple_Ordinary_Annuities</h1>
+<pre><code>
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 00_2.7.1_Future_and_Present_Values_of_Simple_Ordinary_Annuities
+
+</code></pre>
+<h3>00_2.7.1_普通年金的未来值和现值 (Future and Present Values of Simple Ordinary Annuities)</h3>
+<h4>概述</h4>
+<p>普通年金（Ordinary Annuity）是指在每期期末支付等额款项的一种年金形式。在财务管理中，计算普通年金的未来值和现值是重要的基本功，能够帮助财务人员评估长期支付或收入计划的价值。</p>
+<h4>未来值（Future Value, FV）</h4>
+<p>普通年金的未来值是指在若干期末支付固定金额后的总值。未来值的计算公式为：
+$$ FV = C \times \frac{(1 + r)^n - 1}{r} $$
+其中：</p>
+<ul>
+<li>$ C $ 是每期期末支付的固定金额；</li>
+<li>$ r $ 是每期的利率；</li>
+<li>$ n $ 是总支付期数。</li>
+</ul>
+<p>通过这个公式，可以计算在若干期后，普通年金的总金额。这对于规划长期储蓄目标非常有用。</p>
+<h4>现值（Present Value, PV）</h4>
+<p>普通年金的现值是指将未来若干期的固定支付折现到现在的总值。现值的计算公式为：
+$$ PV = C \times \frac{1 - (1 + r)^{-n}}{r} $$
+其中：</p>
+<ul>
+<li>$ C $ 是每期期末支付的固定金额；</li>
+<li>$ r $ 是每期的折现率；</li>
+<li>$ n $ 是总支付期数。</li>
+</ul>
+<p>现值公式用于评估未来一系列支付在现时点的价值，这在贷款偿还计划和投资评估中非常重要。</p>
+<h4>普通年金未来值和现值的性质</h4>
+<ol>
+<li><strong>时间和利率的影响</strong>：随着支付期数 $ n $ 的增加或利率 $ r $ 的提高，普通年金的未来值和现值都会相应变化。</li>
+<li><strong>等额支付</strong>：普通年金假设每期支付金额 $ C $ 是相等的，这使得计算更为简便。</li>
+<li><strong>期末支付</strong>：普通年金假设支付发生在每期期末，这与预付年金（在期初支付）不同，导致计算方法的差异。</li>
+</ol>
+<h4>实际应用</h4>
+<p>在实际应用中，普通年金的未来值和现值计算可以用于多个场景：</p>
+<ol>
+<li><strong>储蓄计划</strong>：帮助个人或企业设定并评估长期储蓄目标。</li>
+<li><strong>贷款偿还</strong>：用于计算贷款的等额本息偿还计划，确定每期应支付的金额。</li>
+<li><strong>退休规划</strong>：帮助个人计算退休后每期应领取的固定金额，以及目前需要储蓄的金额。</li>
+</ol>
+<h4>举例说明</h4>
+<p>假设一个普通年金计划，每期期末支付$1000，年利率为5%，总支付期数为10年。计算未来值和现值如下：</p>
+<ol>
+<li>
+<p><strong>未来值</strong>：
+$$ FV = 1000 \times \frac{(1 + 0.05)^{10} - 1}{0.05} = 1000 \times \frac{1.6289 - 1}{0.05} = 1000 \times 12.578 \approx 12578 $$</p>
+</li>
+<li>
+<p><strong>现值</strong>：
+$$ PV = 1000 \times \frac{1 - (1 + 0.05)^{-10}}{0.05} = 1000 \times \frac{1 - 0.6139}{0.05} = 1000 \times 7.721 \approx 7721 $$</p>
+</li>
+</ol>
+<h4>结论</h4>
+<p>普通年金的未来值和现值计算是财务管理中的基本工具，能够帮助个人和企业合理规划和评估长期的支付或收入计划。通过掌握这些计算方法，可以更好地理解和管理资金的时间价值，提高财务决策的科学性和准确性。</p>
+<h3>总结</h3>
+<p>普通年金的未来值和现值计算在金融和财务管理中具有广泛的应用。了解这些概念和计算方法，不仅可以帮助我们在储蓄、贷款和投资等方面做出更明智的决策，还能提高我们对资金时间价值的理解，从而优化财务规划和管理。</p>
+
+    <h3>Python 文件</h3>
+    <pre><code># 00_2.7.1_Future_and_Present_Values_of_Simple_Ordinary_Annuities
+
+"""
+
+Lecture: 2_The_Time_Value_of_Money/2.7_Annuity_Theory
+Content: 00_2.7.1_Future_and_Present_Values_of_Simple_Ordinary_Annuities
+
+"""
+
+</code></pre>
+  </div>
+</body>
+</html>
+  
