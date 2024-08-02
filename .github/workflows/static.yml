@@ -1,61 +1,78 @@
-# 高级GitHub工作流以将静态内容部署到GitHub Pages
 name: 高级部署静态内容到GitHub Pages
 
-# 触发事件定义
 on:
   push:
-    branches: ["main"]  # 在向main分支push时触发
+    branches: ["main"]
   pull_request:
-    branches: ["main"]  # 在对main分支发起pull request时触发
-  workflow_dispatch:  # 允许手动触发此工作流
+    branches: ["main"]
+  workflow_dispatch:
 
-# 设置GITHUB_TOKEN的权限，以允许部署到GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# 设置并发策略，确保部署的连贯性
 concurrency:
   group: "pages-deployment-${{ github.ref }}"
-  cancel-in-progress: true  # 取消正在进行的过时部署
+  cancel-in-progress: true
 
-# 工作定义
 jobs:
-  # 部署工作
   deploy:
-    # 设置运行环境
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest  # 在最新的Ubuntu环境下运行
+    runs-on: ubuntu-latest
 
-    # 部署步骤
     steps:
       - name: 检出代码
-        uses: actions/checkout@v3  # 使用v3版本的checkout动作
+        uses: actions/checkout@v3
+
+      - name: 设置Node.js版本
+        uses: actions/setup-node@v3
+        with:
+          node-version: '14' # 或其他适当版本
+
+      - name: 缓存npm依赖
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: 安装依赖
-        run: npm install  # 安装项目依赖
+        run: npm install
+
+      - name: 运行Lint检查
+        run: npm run lint
+
+      - name: 运行单元测试
+        run: npm test
 
       - name: 构建项目
-        run: npm run build  # 执行构建命令
+        run: npm run build
 
       - name: 配置GitHub Pages
-        uses: actions/configure-pages@v3  # 配置GitHub Pages环境
+        uses: actions/configure-pages@v3
 
       - name: 上传构建产物
         uses: actions/upload-pages-artifact@v1
         with:
-          path: './build'  # 指定上传的目录路径
+          path: './build'
 
       - name: 部署到GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v2  # 部署到GitHub Pages
+        uses: actions/deploy-pages@v2
 
-      - name: 部署状态通知
-        if: ${{ always() }}  # 无论前面步骤成功或失败都执行
-        uses: some-notification-action@v1  # 使用自定义的通知动作
+      - name: 部署状态通知（成功）
+        if: ${{ success() }}
+        uses: some-notification-action@v1
         with:
-          status: ${{ job.status }}  # 传递部署状态
-          url: ${{ steps.deployment.outputs.page_url }}  # 传递部署的URL
+          status: 成功
+          url: ${{ steps.deployment.outputs.page_url }}
+
+      - name: 部署状态通知（失败）
+        if: ${{ failure() }}
+        uses: some-notification-action@v1
+        with:
+          status: 失败
