@@ -32,13 +32,15 @@ jobs:
         with:
           node-version: '14' # 或其他适当版本
 
-      - name: 缓存npm依赖
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
+      - name: 生成 package.json 文件
+        run: |
+          echo "{}" > package.json
+          npm init -y
+
+      - name: 添加项目依赖
+        run: |
+          npm install <你的依赖项，例如 react react-dom 等>
+          # 例如：npm install react react-dom
 
       - name: 安装依赖
         run: npm install
@@ -69,14 +71,14 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const github = require('@actions/github');
-            const context = github.context;
+            const githubScript = require('@actions/github');
+            const context = githubScript.context;
             const core = require('@actions/core');
 
             const status = core.getInput('status');
             const url = core.getInput('url');
 
-            github.rest.repos.createCommitStatus({
+            githubScript.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
@@ -93,14 +95,14 @@ jobs:
         uses: actions/github-script@v4
         with:
           script: |
-            const github = require('@actions/github');
-            const context = github.context;
+            const githubScript = require('@actions/github');
+            const context = githubScript.context;
             const core = require('@actions/core');
 
             const status = core.getInput('status');
             const url = core.getInput('url');
 
-            github.rest.repos.createCommitStatus({
+            githubScript.rest.repos.createCommitStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
               sha: context.sha,
