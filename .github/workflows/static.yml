@@ -66,13 +66,48 @@ jobs:
 
       - name: 部署状态通知（成功）
         if: ${{ success() }}
-        uses: some-notification-action@v1
+        uses: actions/github-script@v4
         with:
-          status: 成功
-          url: ${{ steps.deployment.outputs.page_url }}
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+            const core = require('@actions/core');
+
+            const status = core.getInput('status');
+            const url = core.getInput('url');
+
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: status === '成功' ? 'success' : 'failure',
+              target_url: url,
+              description: `Deployment ${status}`,
+              context: 'Deployment Status'
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 部署状态通知（失败）
         if: ${{ failure() }}
-        uses: some-notification-action@v1
+        uses: actions/github-script@v4
         with:
-          status: 失败
+          script: |
+            const github = require('@actions/github');
+            const context = github.context;
+            const core = require('@actions/core');
+
+            const status = core.getInput('status');
+            const url = core.getInput('url');
+
+            github.rest.repos.createCommitStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              sha: context.sha,
+              state: status === '成功' ? 'success' : 'failure',
+              target_url: url,
+              description: `Deployment ${status}`,
+              context: 'Deployment Status'
+            });
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
