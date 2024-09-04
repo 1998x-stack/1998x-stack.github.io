@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # 监听 main 分支的推送事件
+      - main  # 监听推送到 main 分支的事件
 
 jobs:
   deploy:
@@ -13,19 +13,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3  # 检出仓库中的代码
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3  # 设置 Node.js 版本
-      with:
-        node-version: '20'  # 明确指定使用 Node.js 20 版本
-
-    - name: Install dependencies
-      run: npm install  # 安装依赖，如果不需要这一步可以删除
-
-    - name: Build project
-      run: npm run build  # 如果需要构建项目，否则删除这行
-
     - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3  # 部署到 GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3  # 使用 peaceiris GitHub Actions 部署到 GitHub Pages
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./docs  # 指定要发布的目录为 docs 文件夹
