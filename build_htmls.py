@@ -39,7 +39,7 @@ class WebFileCopier:
         Returns:
             List[str]: A list of paths to HTML, CSS, and JavaScript files.
         """
-        file_types = ('.html', '.css', '.js')
+        file_types = ('.html', '.css', '.js', '.md')
         files = []
         for root, _, filenames in os.walk(self.source_dir):
             for filename in filenames:
@@ -75,7 +75,7 @@ def cp_files(source_directory = '/Users/mx/Documents/0-GitHub/CLASS/Recommendati
     """
     # destination_directory = './Recommendation-System-Tutorial'
     script_dir = Path(__file__).parent.resolve()
-    destination_folder = 'BOOKS'
+    destination_folder = 'BOOK'
     destination_directory = script_dir / destination_folder
     # 结合目标目录的完整路径
     destination_directory = destination_directory.resolve()

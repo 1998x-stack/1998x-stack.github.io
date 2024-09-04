@@ -1,0 +1,9 @@
+# 00_3.7.1_Mean_Portfolio_Variance_and_the_Uniform_Dirichlet_Distribution
+
+"""
+
+Lecture: 3_Portfolio_Theory_and_Security_Valuation/3.7_Diversification_and_Randomly_Selected_Securities
+Content: 00_3.7.1_Mean_Portfolio_Variance_and_the_Uniform_Dirichlet_Distribution
+
+"""
+

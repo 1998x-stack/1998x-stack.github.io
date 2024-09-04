@@ -1,0 +1,9 @@
+# 02_8.2.3_Delta_and_the_Partial_Derivative_Relative_to_Strike_Price
+
+"""
+
+Lecture: 8_The_BSM_Model_and_European_Option_Pricing/8.2_Applications_of_BSM_Pricing_to_European_Calls_and_Puts
+Content: 02_8.2.3_Delta_and_the_Partial_Derivative_Relative_to_Strike_Price
+
+"""
+
