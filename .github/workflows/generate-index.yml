@@ -137,24 +137,24 @@ jobs:
         const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
         <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
           <url>
-            <loc>https://yourusername.github.io/</loc>
+            <loc>https://1998x-stack.github.io/</loc>
             <changefreq>daily</changefreq>
             <priority>1.0</priority>
           </url>
           ${posts.map(post => `
           <url>
-            <loc>https://yourusername.github.io/#/post/${post.slug}</loc>
+            <loc>https://1998x-stack.github.io/#/post/${post.slug}</loc>
             <lastmod>${post.date}</lastmod>
             <changefreq>monthly</changefreq>
             <priority>0.8</priority>
           </url>`).join('')}
           <url>
-            <loc>https://yourusername.github.io/tags.html</loc>
+            <loc>https://1998x-stack.github.io/tags.html</loc>
             <changefreq>weekly</changefreq>
             <priority>0.6</priority>
           </url>
           <url>
-            <loc>https://yourusername.github.io/archives.html</loc>
+            <loc>https://1998x-stack.github.io/archives.html</loc>
             <changefreq>weekly</changefreq>
             <priority>0.6</priority>
           </url>
