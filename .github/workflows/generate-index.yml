@@ -1,0 +1,175 @@
+name: Generate Post Index
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'assets/posts/**' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Install dependencies
+      run: |
+        npm install js-yaml marked
+        
+    - name: Generate post index
+      run: |
+        cat > generate-index.js << 'EOF'
+        const fs = require('fs');
+        const path = require('path');
+        const yaml = require('js-yaml');
+        const marked = require('marked');
+
+        function extractFrontMatter(content) {
+          const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+          if (!frontMatterMatch) return null;
+          
+          try {
+            const frontMatter = yaml.load(frontMatterMatch[1]) || {};
+            const bodyContent = frontMatterMatch[2];
+            return { frontMatter, bodyContent };
+          } catch (error) {
+            console.error('Error parsing front matter:', error);
+            return null;
+          }
+        }
+
+        function extractExcerpt(content, maxLength = 160) {
+          const plainText = content
+            .replace(/^#.*$/gm, '')
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            .replace(/\*(.*?)\*/g, '$1')
+            .replace(/`(.*?)`/g, '$1')
+            .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
+            .replace(/\n/g, ' ')
+            .trim();
+          
+          return plainText.length > maxLength 
+            ? plainText.substring(0, maxLength) + '...'
+            : plainText;
+        }
+
+        function calculateReadingTime(content) {
+          const wordsPerMinute = 200;
+          const words = content.split(/\s+/).length;
+          const minutes = Math.ceil(words / wordsPerMinute);
+          return `${minutes} min read`;
+        }
+
+        function parsePost(content, filename) {
+          const parsed = extractFrontMatter(content);
+          if (!parsed) return null;
+          
+          const { frontMatter, bodyContent } = parsed;
+          
+          // Extract date and slug from filename
+          const filenameMatch = filename.match(/(\d{4}-\d{2}-\d{2})--(.+)\.md$/);
+          const fileDate = filenameMatch ? filenameMatch[1] : null;
+          const fileSlug = filenameMatch ? filenameMatch[2] : filename.replace('.md', '');
+
+          const post = {
+            slug: fileSlug,
+            title: frontMatter.title || 'Untitled',
+            date: frontMatter.date || fileDate || new Date().toISOString().split('T')[0],
+            tags: frontMatter.tags || [],
+            series: frontMatter.series || null,
+            description: frontMatter.description || extractExcerpt(bodyContent),
+            cover: frontMatter.cover || null,
+            filename: filename,
+            readingTime: calculateReadingTime(bodyContent)
+          };
+
+          return post;
+        }
+
+        // Main execution
+        const postsDir = './assets/posts';
+        const posts = [];
+
+        if (fs.existsSync(postsDir)) {
+          const files = fs.readdirSync(postsDir)
+            .filter(file => file.endsWith('.md'))
+            .sort()
+            .reverse();
+
+          for (const file of files) {
+            const filePath = path.join(postsDir, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            const post = parsePost(content, file);
+            
+            if (post) {
+              posts.push(post);
+              console.log(`Processed: ${post.title} (${post.date})`);
+            }
+          }
+        }
+
+        // Sort posts by date (newest first)
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        // Ensure meta directory exists
+        const metaDir = './assets/meta';
+        if (!fs.existsSync(metaDir)) {
+          fs.mkdirSync(metaDir, { recursive: true });
+        }
+
+        // Write index.json
+        const indexPath = path.join(metaDir, 'index.json');
+        fs.writeFileSync(indexPath, JSON.stringify(posts, null, 2));
+
+        console.log(`Generated index with ${posts.length} posts`);
+
+        // Generate sitemap.xml
+        const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+        <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+          <url>
+            <loc>https://yourusername.github.io/</loc>
+            <changefreq>daily</changefreq>
+            <priority>1.0</priority>
+          </url>
+          ${posts.map(post => `
+          <url>
+            <loc>https://yourusername.github.io/#/post/${post.slug}</loc>
+            <lastmod>${post.date}</lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.8</priority>
+          </url>`).join('')}
+          <url>
+            <loc>https://yourusername.github.io/tags.html</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.6</priority>
+          </url>
+          <url>
+            <loc>https://yourusername.github.io/archives.html</loc>
+            <changefreq>weekly</changefreq>
+            <priority>0.6</priority>
+          </url>
+        </urlset>`;
+
+        fs.writeFileSync('./sitemap.xml', sitemap);
+        console.log('Generated sitemap.xml');
+        EOF
+        
+        node generate-index.js
+        
+    - name: Commit changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add assets/meta/index.json sitemap.xml
+        git diff --staged --quiet || git commit -m "Auto-generate post index and sitemap"
+        git push

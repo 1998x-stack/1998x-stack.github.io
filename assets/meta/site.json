@@ -1,0 +1,31 @@
+{
+  "title": "XM's Blog",
+  "subtitle": "Thoughts, ideas, and daily experiences",
+  "description": "A personal blog about technology, life, and everything in between",
+  "author": {
+    "name": "1998x-stack",
+    "email": "hackxie1998@gmail.com",
+    "bio": "Software developer, writer, and lifelong learner"
+  },
+  "url": "https://1998x-stack.github.io",
+  "baseUrl": "",
+  "navigation": {
+    "showTags": true,
+    "showArchives": true,
+    "showAbout": true,
+    "showSearch": true
+  },
+  "pagination": {
+    "postsPerPage": 10
+  },
+  "social": {
+    "github": "1998x-stack",
+    "twitter": "1998x-stack",
+    "linkedin": "1998x-stack"
+  },
+  "theme": {
+    "primaryColor": "#2563eb",
+    "accentColor": "#059669",
+    "fontFamily": "Inter, system-ui, sans-serif"
+  }
+}
